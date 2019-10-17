@@ -1,0 +1,36 @@
+*********************************
+*********************************
+*********************************
+      SOLUTION: MAXIMIZING CRITERION     
+*********************************
+*********************************
+
+
+
+Sol ID : 26
+Type of solution: MS
+Sol total time: 2.2010445284125364
+Sol total distance: 23.771281326671314
+Sol total coverage: 6.0
+Sol run time: 9.8545E-5
+
+Note: 
+If last connection is: 
+
+# of routes in sol: 4
+
+
+List of routes (cost and nodes): 
+
+Route after insertion 1 || Last insertions = ACTIVED CONNECTION || Travel time = 0.42228714829979797 || Travel distance = 4.560701282182699 || 
+
+Nodes = 0  - 2
+Route after insertion 2 || Last insertions = ACTIVED CONNECTION || Travel time = 1.1002812141919112 || Travel distance = 11.883037323134626 || 
+
+Nodes = 0  - 2  - 4  - 1
+Route after insertion 3 || Last insertions = ACTIVED CONNECTION || Travel time = 1.3879149917049154 || Travel distance = 14.98948217513686 || 
+
+Nodes = 0  - 2  - 4  - 1  - 3
+Route after insertion 4 || Last insertions = ACTIVED CONNECTION || Travel time = 2.2010445284125364 || Travel distance = 23.771281326671314 || 
+
+Nodes = 0  - 2  - 4  - 1  - 3  - 5  - 0

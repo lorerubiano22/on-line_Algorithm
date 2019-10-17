@@ -1,0 +1,60 @@
+*********************************
+*********************************
+*********************************
+      SOLUTION: MAXIMIZING CRITERION     
+*********************************
+*********************************
+
+
+
+Sol ID : 419
+Type of solution: Conservative
+Sol total time: 10.316470348224094
+Sol total distance: 111.41788172853077
+Sol total visited victims: 16.0
+Sol run time: 0.002335648
+
+# of routes in sol: 13
+
+
+List of routes (cost and nodes): 
+
+Route after insertion 1 || Travel time = 0.31967921645139913 || Travel distance = 3.4525355986490824 || 
+
+Nodes = 0  - 31
+Route after insertion 2 || Travel time = 0.5344462367709535 || Travel distance = 5.772019459063828 || 
+
+Nodes = 0  - 31  - 25
+Route after insertion 3 || Travel time = 1.0086377368074897 || Travel distance = 10.89328774990327 || 
+
+Nodes = 0  - 31  - 25  - 31  - 22
+Route after insertion 4 || Travel time = 1.1114322886227013 || Travel distance = 12.00346892911406 || 
+
+Nodes = 0  - 31  - 25  - 31  - 22  - 26
+Route after insertion 5 || Travel time = 1.3638146966334828 || Travel distance = 14.729198983768624 || 
+
+Nodes = 0  - 31  - 25  - 31  - 22  - 26  - 22  - 23
+Route after insertion 6 || Travel time = 1.7917969299887881 || Travel distance = 19.351407185637054 || 
+
+Nodes = 0  - 31  - 25  - 31  - 22  - 26  - 22  - 23  - 22  - 21
+Route after insertion 7 || Travel time = 2.1363857693387245 || Travel distance = 23.072966716341472 || 
+
+Nodes = 0  - 31  - 25  - 31  - 22  - 26  - 22  - 23  - 22  - 21  - 24
+Route after insertion 8 || Travel time = 2.907001157022019 || Travel distance = 31.395613050304274 || 
+
+Nodes = 0  - 31  - 25  - 31  - 22  - 26  - 22  - 23  - 22  - 21  - 24  - 21  - 27
+Route after insertion 9 || Travel time = 3.27189120725251 || Travel distance = 35.33642566239083 || 
+
+Nodes = 0  - 31  - 25  - 31  - 22  - 26  - 22  - 23  - 22  - 21  - 24  - 21  - 27  - 19
+Route after insertion 10 || Travel time = 4.107176908178652 || Travel distance = 44.35751139171127 || 
+
+Nodes = 0  - 31  - 25  - 31  - 22  - 26  - 22  - 23  - 22  - 21  - 24  - 21  - 27  - 19  - 20
+Route after insertion 11 || Travel time = 5.771707438859709 || Travel distance = 62.33444144055069 || 
+
+Nodes = 0  - 31  - 25  - 31  - 22  - 26  - 22  - 23  - 22  - 21  - 24  - 21  - 27  - 19  - 20  - 28
+Route after insertion 12 || Travel time = 9.284405564110669 || Travel distance = 100.27158186325505 || 
+
+Nodes = 0  - 31  - 25  - 31  - 22  - 26  - 22  - 23  - 22  - 21  - 24  - 21  - 27  - 19  - 20  - 28  - 20  - 29
+Route after insertion 13 || Travel time = 10.316470348224094 || Travel distance = 111.41788172853077 || 
+
+Nodes = 0  - 31  - 25  - 31  - 22  - 26  - 22  - 23  - 22  - 21  - 24  - 21  - 27  - 19  - 20  - 28  - 20  - 29  - 18  - 0

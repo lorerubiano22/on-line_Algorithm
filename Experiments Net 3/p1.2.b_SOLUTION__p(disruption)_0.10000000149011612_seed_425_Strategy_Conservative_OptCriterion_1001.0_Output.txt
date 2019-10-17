@@ -1,0 +1,51 @@
+*********************************
+*********************************
+*********************************
+      SOLUTION: MAXIMIZING CRITERION     
+*********************************
+*********************************
+
+
+
+Sol ID : 87
+Type of solution: Conservative
+Sol total time: 3.5243515800434753
+Sol total distance: 38.06299773668624
+Sol total visited victims: 9.0
+Sol run time: 0.002646766
+
+# of routes in sol: 10
+
+
+List of routes (cost and nodes): 
+
+Route after insertion 1 || Travel time = 0.07051637234140201 || Travel distance = 0.7615768347370724 || 
+
+Nodes = 0  - 31
+Route after insertion 2 || Travel time = 0.2884534653044912 || Travel distance = 3.115297480306637 || 
+
+Nodes = 0  - 31  - 27
+Route after insertion 3 || Travel time = 0.6685345254511245 || Travel distance = 7.2201730023849855 || 
+
+Nodes = 0  - 31  - 27  - 26
+Route after insertion 4 || Travel time = 0.8333908316877343 || Travel distance = 9.000621141184217 || 
+
+Nodes = 0  - 31  - 27  - 26  - 30
+Route after insertion 5 || Travel time = 1.055805877857747 || Travel distance = 11.402703682242656 || 
+
+Nodes = 0  - 31  - 27  - 26  - 30  - 29
+Route after insertion 6 || Travel time = 1.780930539961024 || Travel distance = 19.2340501712646 || 
+
+Nodes = 0  - 31  - 27  - 26  - 30  - 29  - 28
+Route after insertion 7 || Travel time = 2.688385145102044 || Travel distance = 29.034560079870843 || 
+
+Nodes = 0  - 31  - 27  - 26  - 30  - 29  - 28  - 4
+Route after insertion 8 || Travel time = 2.875870856627068 || Travel distance = 31.059405800101164 || 
+
+Nodes = 0  - 31  - 27  - 26  - 30  - 29  - 28  - 4  - 3
+Route after insertion 9 || Travel time = 3.2820136389736723 || Travel distance = 35.44574792691008 || 
+
+Nodes = 0  - 31  - 27  - 26  - 30  - 29  - 28  - 4  - 3  - 2
+Route after insertion 10 || Travel time = 3.5243515800434753 || Travel distance = 38.06299773668624 || 
+
+Nodes = 0  - 31  - 27  - 26  - 30  - 29  - 28  - 4  - 3  - 2  - 1  - 0

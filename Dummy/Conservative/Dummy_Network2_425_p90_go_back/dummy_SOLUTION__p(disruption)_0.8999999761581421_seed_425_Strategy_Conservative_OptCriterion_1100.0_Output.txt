@@ -1,0 +1,33 @@
+*********************************
+*********************************
+*********************************
+      SOLUTION: MAXIMIZING CRITERION     
+*********************************
+*********************************
+
+
+
+Sol ID : 45
+Type of solution: Conservative
+Sol total time: 3.0231804625805427
+Sol total distance: 32.65034957249577
+Sol total visited victims: 2.0
+Sol run time: 1.835E-4
+
+# of routes in sol: 4
+
+
+List of routes (cost and nodes): 
+
+Route after insertion 1 || Travel time = 0.42228714829979797 || Travel distance = 4.560701282182699 || 
+
+Nodes = 0  - 2
+Route after insertion 2 || Travel time = 1.6634409354283008 || Travel distance = 17.965162419901826 || 
+
+Nodes = 0  - 2  - 1  - 4  - 0
+Route after insertion 3 || Travel time = 2.210050925872922 || Travel distance = 23.868550420961316 || 
+
+Nodes = 0  - 2  - 1  - 4  - 0  - 3
+Route after insertion 4 || Travel time = 3.0231804625805427 || Travel distance = 32.65034957249577 || 
+
+Nodes = 0  - 2  - 1  - 4  - 0  - 3  - 5  - 0

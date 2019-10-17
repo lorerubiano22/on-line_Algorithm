@@ -1,0 +1,51 @@
+*********************************
+*********************************
+*********************************
+      SOLUTION: MAXIMIZING CRITERION     
+*********************************
+*********************************
+
+
+
+Sol ID : 176
+Type of solution: Risky
+Sol total time: 4.493549192973887
+Sol total distance: 48.53033214119448
+Sol total visited victims: 9.0
+Sol run time: 0.0023487
+
+# of routes in sol: 10
+
+
+List of routes (cost and nodes): 
+
+Route after insertion 1 || Travel time = 0.07051637234140201 || Travel distance = 0.7615768347370724 || 
+
+Nodes = 0  - 31
+Route after insertion 2 || Travel time = 0.2884534653044912 || Travel distance = 3.115297480306637 || 
+
+Nodes = 0  - 31  - 27
+Route after insertion 3 || Travel time = 1.1575423580200557 || Travel distance = 12.501457687400285 || 
+
+Nodes = 0  - 31  - 27  - 1
+Route after insertion 4 || Travel time = 1.3998802990898584 || Travel distance = 15.118707497176448 || 
+
+Nodes = 0  - 31  - 27  - 1  - 2
+Route after insertion 5 || Travel time = 1.8060230814364626 || Travel distance = 19.505049623985364 || 
+
+Nodes = 0  - 31  - 27  - 1  - 2  - 3
+Route after insertion 6 || Travel time = 1.9935087929614865 || Travel distance = 21.529895344215685 || 
+
+Nodes = 0  - 31  - 27  - 1  - 2  - 3  - 4
+Route after insertion 7 || Travel time = 2.870845006403237 || Travel distance = 31.005126616725192 || 
+
+Nodes = 0  - 31  - 27  - 1  - 2  - 3  - 4  - 26
+Route after insertion 8 || Travel time = 3.5460094847005976 || Travel distance = 38.29690311111409 || 
+
+Nodes = 0  - 31  - 27  - 1  - 2  - 3  - 4  - 26  - 28
+Route after insertion 9 || Travel time = 4.271134146803875 || Travel distance = 46.12824960013604 || 
+
+Nodes = 0  - 31  - 27  - 1  - 2  - 3  - 4  - 26  - 28  - 29
+Route after insertion 10 || Travel time = 4.493549192973887 || Travel distance = 48.53033214119448 || 
+
+Nodes = 0  - 31  - 27  - 1  - 2  - 3  - 4  - 26  - 28  - 29  - 30  - 0

@@ -1,0 +1,30 @@
+*********************************
+*********************************
+*********************************
+      SOLUTION: MAXIMIZING CRITERION     
+*********************************
+*********************************
+
+
+
+Sol ID : 64
+Type of solution: Jumping
+Sol total time: 1.7828990612874664
+Sol total distance: 19.255310201965646
+Sol total visited victims: 2.0
+Sol run time: 1.523E-4
+
+# of routes in sol: 3
+
+
+List of routes (cost and nodes): 
+
+Route after insertion 1 || Travel time = 0.5522470100268626 || Travel distance = 5.9642678136228735 || 
+
+Nodes = 0  - 2  - 3
+Route after insertion 2 || Travel time = 1.0698760078856646 || Travel distance = 11.554661089227832 || 
+
+Nodes = 0  - 2  - 3  - 1  - 4
+Route after insertion 3 || Travel time = 1.7828990612874664 || Travel distance = 19.255310201965646 || 
+
+Nodes = 0  - 2  - 3  - 1  - 4  - 5  - 0

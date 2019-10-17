@@ -1,0 +1,22 @@
+*********************************
+*********************************
+*********************************
+      SOLUTION: MAXIMIZING CRITERION     
+*********************************
+*********************************
+
+
+
+Sol ID : 667
+Type of solution: MS
+Sol total time: 2.8484077804184333
+Sol total distance: 30.762804571809745
+Sol run time: 0.016148611
+# of routes in sol: 1
+
+
+List of routes (cost and nodes): 
+
+Route 1 || Travel time = 2.8484077804184333 || Travel distance = 30.762804571809745 || 
+
+Nodes = 0  - 27  - 26  - 30  - 29  - 25  - 28  - 16  - 31

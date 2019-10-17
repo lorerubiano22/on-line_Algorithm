@@ -1,0 +1,12 @@
+1. Nodes coordinate of the road network (G)
+2. Para cada intermediate node se calcula la ruta más corta al depot
+if(existe una ruta desde el intermediate node al depot){
+	3. Se crea una copia de la road network (G')
+	4. Se elimina el depot de G'
+	5. Para cada intermediate node se calcula la ruta más corta a al menos una victima
+	if(existe una ruta para al menos una victima){
+	el nodo permanece en la red}
+	else{el intermediate nodo se elimina}
+else{el intemediate nodo se elimina}
+
+NOTES

@@ -1,0 +1,30 @@
+*********************************
+*********************************
+*********************************
+      SOLUTION: MAXIMIZING CRITERION     
+*********************************
+*********************************
+
+
+
+Sol ID : 9
+Type of solution: Risky
+Sol total time: 1.745949963529346
+Sol total distance: 18.856259939130464
+Sol total visited victims: 2.0
+Sol run time: 2.23144E-4
+
+# of routes in sol: 3
+
+
+List of routes (cost and nodes): 
+
+Route after insertion 1 || Travel time = 0.42228714829979797 || Travel distance = 4.560701282182699 || 
+
+Nodes = 0  - 2
+Route after insertion 2 || Travel time = 1.0329269101275442 || Travel distance = 11.15561082639265 || 
+
+Nodes = 0  - 2  - 1  - 4
+Route after insertion 3 || Travel time = 1.745949963529346 || Travel distance = 18.856259939130464 || 
+
+Nodes = 0  - 2  - 1  - 4  - 5  - 0

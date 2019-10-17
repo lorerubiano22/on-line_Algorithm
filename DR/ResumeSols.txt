@@ -1,0 +1,9 @@
+Instance  solMethod     Euclidean_Network?	 iteration   p(disruption)   seed     TravelTime(solMinDist)     TravelDistance(solMinDist)	Coverage(solMinDist)   TravelTime(solMaxCoverage)   TravelDistance(solMaxCoverage)   Coverage(solMaxCoverage)
+dummy  CPLEX   false         0         0.05           2.13          23.01           6.00          2.42           26.18
+dummy  MS   false         0         0.05           2.13          23.01           6.00          0.70           7.52
+dummy  CPLEX   false         1         0.05           2.13          23.01           6.00          2.07           22.30
+dummy  MS   false         1         0.05           2.13          23.01           6.00          1.69           18.27
+dummy  CPLEX   false         2         0.05           2.13          23.01           6.00          2.07           22.30
+dummy  MS   false         2         0.05           2.13          23.01           6.00          2.00           21.59
+dummy  CPLEX   false         3         0.05           2.13          23.01           6.00          2.33           25.11
+dummy  MS   false         3         0.05           2.13          23.01           6.00          2.00           21.59

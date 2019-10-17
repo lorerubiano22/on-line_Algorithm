@@ -1,0 +1,51 @@
+*********************************
+*********************************
+*********************************
+      SOLUTION: MAXIMIZING CRITERION     
+*********************************
+*********************************
+
+
+
+Sol ID : 217
+Type of solution: Conservative
+Sol total time: 9.94197765788041
+Sol total distance: 107.37336060139019
+Sol total visited victims: 16.0
+Sol run time: 0.0025852
+
+# of routes in sol: 10
+
+
+List of routes (cost and nodes): 
+
+Route after insertion 1 || Travel time = 0.07051637234140201 || Travel distance = 0.7615768347370724 || 
+
+Nodes = 0  - 31
+Route after insertion 2 || Travel time = 0.2884534653044912 || Travel distance = 3.115297480306637 || 
+
+Nodes = 0  - 31  - 27
+Route after insertion 3 || Travel time = 1.1575423580200557 || Travel distance = 12.501457687400285 || 
+
+Nodes = 0  - 31  - 27  - 1
+Route after insertion 4 || Travel time = 2.8974447205833314 || Travel distance = 31.292403534943702 || 
+
+Nodes = 0  - 31  - 27  - 1  - 27  - 2
+Route after insertion 5 || Travel time = 4.5767882709873415 || Travel distance = 49.42931419961638 || 
+
+Nodes = 0  - 31  - 27  - 1  - 27  - 2  - 27  - 3
+Route after insertion 6 || Travel time = 6.03353263555402 || Travel distance = 65.16215361478845 || 
+
+Nodes = 0  - 31  - 27  - 1  - 27  - 2  - 27  - 3  - 27  - 4
+Route after insertion 7 || Travel time = 7.061827979711033 || Travel distance = 76.26774352781597 || 
+
+Nodes = 0  - 31  - 27  - 1  - 27  - 2  - 27  - 3  - 27  - 4  - 27  - 26
+Route after insertion 8 || Travel time = 7.825246818351289 || Travel distance = 84.5126671307413 || 
+
+Nodes = 0  - 31  - 27  - 1  - 27  - 2  - 27  - 3  - 27  - 4  - 27  - 26  - 27  - 28
+Route after insertion 9 || Travel time = 8.823402106745512 || Travel distance = 95.29274443578193 || 
+
+Nodes = 0  - 31  - 27  - 1  - 27  - 2  - 27  - 3  - 27  - 4  - 27  - 26  - 27  - 28  - 27  - 29
+Route after insertion 10 || Travel time = 9.94197765788041 || Travel distance = 107.37336060139019 || 
+
+Nodes = 0  - 31  - 27  - 1  - 27  - 2  - 27  - 3  - 27  - 4  - 27  - 26  - 27  - 28  - 27  - 29  - 27  - 30  - 0

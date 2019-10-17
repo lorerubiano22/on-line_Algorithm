@@ -1,0 +1,51 @@
+*********************************
+*********************************
+*********************************
+      SOLUTION: MAXIMIZING CRITERION     
+*********************************
+*********************************
+
+
+
+Sol ID : 298
+Type of solution: Jumping
+Sol total time: 6.789105689843299
+Sol total distance: 73.32234274522676
+Sol total visited victims: 9.0
+Sol run time: 5.7655E-4
+
+# of routes in sol: 10
+
+
+List of routes (cost and nodes): 
+
+Route after insertion 1 || Travel time = 0.32394178514467054 || Travel distance = 3.4985713413494333 || 
+
+Nodes = 0  - 5  - 4
+Route after insertion 2 || Travel time = 0.6933922287206405 || Travel distance = 7.4886362024369895 || 
+
+Nodes = 0  - 5  - 4  - 11  - 10
+Route after insertion 3 || Travel time = 1.643995045725364 || Travel distance = 17.7551468074011 || 
+
+Nodes = 0  - 5  - 4  - 11  - 10  - 14  - 15
+Route after insertion 4 || Travel time = 2.798176895206439 || Travel distance = 30.22031100193943 || 
+
+Nodes = 0  - 5  - 4  - 11  - 10  - 14  - 15  - 12  - 13
+Route after insertion 5 || Travel time = 3.361120659820553 || Travel distance = 36.30010376714486 || 
+
+Nodes = 0  - 5  - 4  - 11  - 10  - 14  - 15  - 12  - 13  - 8  - 7
+Route after insertion 6 || Travel time = 3.7054627886055362 || Travel distance = 40.01899882370073 || 
+
+Nodes = 0  - 5  - 4  - 11  - 10  - 14  - 15  - 12  - 13  - 8  - 7  - 1  - 2
+Route after insertion 7 || Travel time = 4.548894641344861 || Travel distance = 49.1280629941573 || 
+
+Nodes = 0  - 5  - 4  - 11  - 10  - 14  - 15  - 12  - 13  - 8  - 7  - 1  - 2  - 17  - 18
+Route after insertion 8 || Travel time = 5.3211226854704545 || Travel distance = 57.468126018004504 || 
+
+Nodes = 0  - 5  - 4  - 11  - 10  - 14  - 15  - 12  - 13  - 8  - 7  - 1  - 2  - 17  - 18  - 19  - 3
+Route after insertion 9 || Travel time = 6.193266746899003 || Travel distance = 66.8872820477811 || 
+
+Nodes = 0  - 5  - 4  - 11  - 10  - 14  - 15  - 12  - 13  - 8  - 7  - 1  - 2  - 17  - 18  - 19  - 3  - 6  - 9
+Route after insertion 10 || Travel time = 6.789105689843299 || Travel distance = 73.32234274522676 || 
+
+Nodes = 0  - 5  - 4  - 11  - 10  - 14  - 15  - 12  - 13  - 8  - 7  - 1  - 2  - 17  - 18  - 19  - 3  - 6  - 9  - 16  - 0
