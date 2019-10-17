@@ -12,7 +12,7 @@ Type of solution: Risky
 Sol total time: 1.6800235675353288
 Sol total distance: 18.144254849820616
 Sol total visited victims: 2.0
-Sol run time: 3.815E-4
+Sol run time: 1.866E-4
 
 # of routes in sol: 3
 

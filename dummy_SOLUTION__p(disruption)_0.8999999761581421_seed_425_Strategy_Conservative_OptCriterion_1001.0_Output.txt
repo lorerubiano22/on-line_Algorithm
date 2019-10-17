@@ -12,7 +12,7 @@ Type of solution: Conservative
 Sol total time: 4.6539640794732415
 Sol total distance: 50.26281294598421
 Sol total visited victims: 2.0
-Sol run time: 7.54E-5
+Sol run time: 1.112E-4
 
 # of routes in sol: 5
 

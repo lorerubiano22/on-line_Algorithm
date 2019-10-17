@@ -11,7 +11,7 @@ public class StartTester
 	final static String inputFolder = "inputs";
 	final static String outputFolder = "outputs";
 	final static String testFolder = "tests";
-    final static String fileNameTest = "test2Run.txt"; 
+    final static String fileNameTest = "TTT.txt"; 
     final static String sufixFileNodes = ".txt";
 	final static String sufixFileVehicules = "_input_vehicles.txt";
 	final static String sufixFileOutput = "_outputs.txt";

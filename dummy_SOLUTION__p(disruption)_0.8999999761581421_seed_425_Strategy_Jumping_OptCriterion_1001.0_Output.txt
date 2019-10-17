@@ -12,7 +12,7 @@ Type of solution: Jumping
 Sol total time: 1.7828990612874664
 Sol total distance: 19.255310201965646
 Sol total visited victims: 2.0
-Sol run time: 2.226E-4
+Sol run time: 2.136E-4
 
 # of routes in sol: 3
 

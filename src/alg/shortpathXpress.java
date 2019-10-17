@@ -11,8 +11,8 @@ public class shortpathXpress {
 		boolean path= false;
 		//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-		origin=0;
-		end=5;
+		//origin=0;
+		//end=5;
 
 		/*SETS*/
 
@@ -21,7 +21,7 @@ public class shortpathXpress {
 		int n=victims.length; //set of node
 		XPRBindexSet ITEMS;                /* Set of items */
 
-		try {
+		//try {
 			// MODEL
 			XPRB bcl = new XPRB();
 			XPRBprob p=bcl.newProb("ShortPath");  // inicialización del problema
@@ -119,8 +119,8 @@ public class shortpathXpress {
 				}
 				p.newCtr("Segment",segment.lEql(1));
 			}
-			
-			
+
+
 			//segment_end(k,j)$(ord(j)<>1)..sum(i$(ord(i)<>end),X(i,j,k))=l=1; 
 			for(int j=1;j<n;j++) {
 				XPRBexpr segmentEnd = new XPRBexpr();
@@ -129,7 +129,7 @@ public class shortpathXpress {
 				}
 				p.newCtr("SegmentEnd",segmentEnd.lEql(1));
 			}
-			
+
 
 			////////////////////////////////////////
 
@@ -137,10 +137,10 @@ public class shortpathXpress {
 
 
 			//route ends from the depot. for all i {depot}
-//			for(int i=0;i<n;i++) {
-//				endRoutecrt.add(x[i][end].mul(1));  
-//				p.newCtr("OrigenEnd", endRoutecrt.eql(1) );  
-//			}
+			//			for(int i=0;i<n;i++) {
+			//				endRoutecrt.add(x[i][end].mul(1));  
+			//				p.newCtr("OrigenEnd", endRoutecrt.eql(1) );  
+			//			}
 
 
 			//			// safety: no origin to the origin node
@@ -192,24 +192,24 @@ public class shortpathXpress {
 			/****SOLVING + OUTPUT****/
 			p.setSense(XPRB.MINIM);            /* Choose the sense of the optimization */
 			p.mipOptimize("");                 /* Solve the MIP-problem */
+
 			System.out.println("Objective: " + p.getObjVal());  /* Get objective value */
 
-
-			for(int i=0;i<n;i++) {
-				for(int j=0;j<n;j++){
-					if(x[i][j].getSol()>0){
-						System.out.println("x"+x[i][j].getName()+": "+x[i][j].getSol());
+			if((p.getMIPStat()==XPRB.MIP_SOLUTION) || (p.getMIPStat()==XPRB.MIP_OPTIMAL)) {
+				path=true;
+				for(int i=0;i<n;i++) {
+					for(int j=0;j<n;j++){
+						if(x[i][j].getSol()>0){
+							System.out.println("x"+x[i][j].getName()+": "+x[i][j].getSol());
+						}
 					}
 				}
 			}
+		//}
 
-
-
-		}
-		finally {
-			XPRS.free();
-		}
-
+//		finally {
+//			XPRS.free();
+//		}
 
 		////
 		return path;
