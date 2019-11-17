@@ -14,7 +14,7 @@ public class Test
 	/* INSTANCE FIELDS AND CONSTRUCTOR */
 	private String instanceName;
 	private float maxTime; // period between events
-	private float probDisruption; //p(x) disruption
+	private float percentageDisruption; //p(x) disruption
 	private static float travelSpeed;//travel speed
 	private long seed; // Seed value for the Random Number Generator (RNG)
 	private boolean typeNetwork;
@@ -30,7 +30,7 @@ public class Test
 	{
 		instanceName = name;   
 		maxTime = t; // interval of times it represents how the stop criteria is splited
-		probDisruption=disrup;
+		percentageDisruption=disrup;
 		travelSpeed=speed;
 		seed=s;
 		this.criterion=criterion;
@@ -39,12 +39,12 @@ public class Test
 	}
 
 
-	
+
 
 	/* GET METHODS */
 	public String getInstanceName(){return instanceName;}
 	public float getMaxTime(){return maxTime;} // the time is giving in minutes and here is becoming in hours
-	public float getprobDisruption(){return probDisruption;}
+	public float getpercentangeDisruption(){return percentageDisruption;}
 	public static float getTravelSpeed(){return travelSpeed;}
 	public long getseed(){return seed;}
 	public boolean gettypeNetwork(){return typeNetwork;}

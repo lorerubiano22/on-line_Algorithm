@@ -2,11 +2,14 @@ package alg;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 
 public class Edge implements Serializable
 {
 	/* INSTANCE FIELDS & CONSTRUCTOR */
+	private String key;
 	private Node origin; // origin node
+	private int typeEdge;// 1 if it belongs to the road network 0 otherwise
 	private Node end; // end node
 	private double time = 0.0; // edge costs (travel time)
 	private double distance = 0.0; // edge costs (travel distance)
@@ -15,29 +18,37 @@ public class Edge implements Serializable
 	private Route inRoute = null; // route containing this edge (0 if no route assigned)
 	private Edge inverseEdge = null; // edge with inverse direction
 	private Edge thisEdge = null; // edge 
-	private int state=0; // edge states
+	private int state; // edge states
 	private double optCriterion; // selection criterion
 	private double nodesImportance;
-	
-	
+	private LinkedList<Edge> roadInflexion;
+	private LinkedList<Node> roadInflexionNode;
+
+
 	public Edge(Node originNode, Node endNode) 
 	{   origin = originNode;
 	end = endNode;
+	  String s1 = Integer.toString(originNode.getId()); 
+      String s2 = Integer.toString(endNode.getId()); 
+	String keyEdge=s1+","+s2;
+	this.key=keyEdge;
+	this.state=0;
 
 	}
 
 
-	public Edge(Edge e){   
+	public Edge(Edge e){  
+		this.key=e.key;
 		this.origin = e.origin;
 		this.end = e.end; 
 		this.time = e.time;
 		this.importance = e.importance; 
 		this.distance=e.distance;
-		this.selection=e.selection;
+		//this.selection=e.selection;
 		this.state=e.state;
-		this.optCriterion=e.optCriterion;
+		//this.optCriterion=e.optCriterion;
 		this.inverseEdge=e.inverseEdge;
-this.nodesImportance=e.nodesImportance;
+		//this.nodesImportance=e.nodesImportance;
 		if(e.inRoute !=null){
 			this.inRoute = new Route (e.inRoute);
 		}else{
@@ -49,6 +60,7 @@ this.nodesImportance=e.nodesImportance;
 
 
 	/* SET METHODS */
+	public void settypeEdge(int c){typeEdge = c;}
 	public void setState(int c){state = c;}
 	public void setDistance(double c){distance = c;}
 	public void setTime(double c){time = c;}
@@ -64,9 +76,10 @@ this.nodesImportance=e.nodesImportance;
 
 	/* GET METHODS */
 
-	
 
 
+
+	public int gettypeEdge(){return typeEdge;}
 	public int getState(){return state;}
 	public Node getOrigin(){return origin;}
 	public Node getEnd(){return end;}
@@ -77,6 +90,10 @@ this.nodesImportance=e.nodesImportance;
 	public Edge getInverseEdge(){return inverseEdge;}
 	public double getoptCriterion() {return optCriterion;}
 	public double getvalueSelection() {return selection;}
+	public LinkedList<Edge> getInflexionEdge() {return  roadInflexion;}
+	public LinkedList<Node> getroadInflexionNode() {return  roadInflexionNode;}
+	public String getKey(){return key;}
+	
 	public Edge getEdge(Edge e) {return thisEdge;}
 
 	/* AUXILIARY METHODS */
@@ -157,7 +174,7 @@ this.nodesImportance=e.nodesImportance;
 				return 0;
 			}
 		};
-		
+
 		static final Comparator<Edge>nodesImportanceComp = new Comparator<Edge>(){
 			public int compare(Edge a1, Edge a2){
 				if (a1.nodesImportance < a2.nodesImportance) return 1;
@@ -184,13 +201,25 @@ this.nodesImportance=e.nodesImportance;
 			s = s.concat("\nEdge ditance: " + (this.getDistance()));
 			s = s.concat("\nEdge importance: " + (this.getImportance()));
 			s=  s.concat("\nEdge status: " + (this.getState()));
-			
-			
 			return s;
 		}
 
 
-		
+		public void setInflextionNodes(LinkedList<Edge> inflexionsEdge) {
+			roadInflexion= new LinkedList<Edge> ();
+			roadInflexionNode = new LinkedList<Node>();
+			for(int i=0; i<inflexionsEdge.size();i++) {
+			//for(Edge e:inflexionsEdge) {
+				roadInflexion.add(new Edge (inflexionsEdge.get(i)));
+				roadInflexionNode.add(inflexionsEdge.get(i).end);
+			}
+			System.out.println("done");
+			
+
+		}
+
+
+
 
 
 

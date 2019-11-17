@@ -1,2 +1,2 @@
 #inst	   	intervals(min)    p(disruption)   speed   seed  optCriterion   EuclideanNetwork    timeHorizont(hours)
-dummy  1  0.9  10.8   1001      425   false 1
+dummy  1  0.5  10.8   1001      79852   false 1

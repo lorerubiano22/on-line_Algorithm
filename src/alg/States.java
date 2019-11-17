@@ -233,7 +233,7 @@ public class States {
 				if(Network[i][j]==1) {totalEdges++;}
 			}
 		}
-		totaldisrup=Math.round(totalEdges*Optimization.aTest.getprobDisruption()/2);
+		totaldisrup=Math.round(totalEdges*Optimization.aTest.getpercentangeDisruption()/2);
 		int disruption=0;
 		while(disruption<totaldisrup) {
 			int randomEdge=rn.nextInt(Optimization.inputs.getedgeList().size()-1);

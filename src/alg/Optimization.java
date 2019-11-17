@@ -2,6 +2,7 @@ package alg;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
 import java.util.Locale;
 
 import ilog.concert.IloException;
@@ -268,7 +269,7 @@ public class Optimization {
 				sol.settypeSol(Method);
 				sol.setObjective(Obj);
 				sol.setPCTime(cplex.getCplexTime());
-				sol.setprobDisruption(aTest.getprobDisruption());
+				sol.setprobDisruption(aTest.getpercentangeDisruption());
 				sol.setoptCriterion(aTest.getOptcriterion());
 				sol.setsol_typeNetwork(aTest.gettypeNetwork());
 				sol.solCondition(inputs, aTest);
@@ -279,4 +280,5 @@ public class Optimization {
 			e.printStackTrace();
 		}
 	}
+	
 }

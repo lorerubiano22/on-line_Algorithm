@@ -1,6 +1,11 @@
 package alg;
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.io.IOException;
+
 import umontreal.iro.lecuyer.rng.LFSR113;
 import umontreal.iro.lecuyer.rng.RandomStream;
 
@@ -11,8 +16,8 @@ public class StartTester
 	final static String inputFolder = "inputs";
 	final static String outputFolder = "outputs";
 	final static String testFolder = "tests";
-    final static String fileNameTest = "TTT.txt"; 
-    final static String sufixFileNodes = ".txt";
+	final static String fileNameTest = "TTT.txt"; 
+	final static String sufixFileNodes = ".txt";
 	final static String sufixFileVehicules = "_input_vehicles.txt";
 	final static String sufixFileOutput = "_outputs.txt";
 
@@ -35,7 +40,7 @@ public class StartTester
 		{   
 			aTest = testsList.get(k);
 			//System.out.println("\n# STARTING TEST " + (k + 1) + " OF " + nTests);
-			System.out.print("Start test for Instance: " + aTest.getInstanceName());
+			System.out.print("Start test for Network: " + aTest.getInstanceName());
 			System.out.println();
 
 			// 2.1 GET THE INSTANCE INPUTS (DATA ON NODES AND VEHICLES)
@@ -44,48 +49,79 @@ public class StartTester
 
 			// Read inputs files (nodes) and construct the inputs object
 			Inputs inputs = InputsManager.readInputs(inputNodesPath);
-			new Optimization(aTest,inputs);
-			new States();
-			InputsManager.generateDepotEdges(inputs);
-			InputsManager.generatesetEdgeList(inputs);
-			// It is generated an initial condition of the network
-			States.setNonDirectConnections();
-			States.generatingStatesNetwork(inputs,aTest);
-			CPLEXDist MinDist = new CPLEXDist();
-			CPLEXBenefit MaxBenefit = new CPLEXBenefit();
-			InsertionAlgorithm MS = new InsertionAlgorithm(aTest,inputs);
-			States.generatingEvents();
-			Importances.Conditions();
-			States.importancesRouting();
-			
-			States.UpdatingStatesEdges();
-			Optimization.inputs.UpdatingEdgesList(Optimization.inputs.edgeList);
+			Network Network = new Network(inputs);
+
+			// set the disaster conditions and the disrupted road network: this information is static does not change over the time
+			Disaster Event = new Disaster(Network,aTest);
+			UpdateRoadInformation revealedRoadInformation= new UpdateRoadInformation(Network);
 			
 
 
-
-			/*Printing inputs*/
-			String importance_file= new String(Optimization.aTest.getInstanceName()+"_Initial_importances_"+"_P(disruption)_"+Optimization.aTest.getprobDisruption()+"_Seed_"+Optimization.aTest.getseed()+"_OptCriterion"+Optimization.aTest.getOptcriterion()+"_importance.txt");
-			Optimization.writeList(importance_file, States.importancesEdges,States.DisruptedNetwork,true);
-			String TV_file= new String(Optimization.aTest.getInstanceName()+"Times"+"_OptCriterion"+Optimization.aTest.getOptcriterion()+"_P(disruption)_"+Optimization.aTest.getprobDisruption()+"_Seed_"+Optimization.aTest.getseed()+"_"+"TravelTime.txt");
-			Optimization.writeList(TV_file, States.TravelTime,States.DisruptedNetwork,false);
-			
-			String mix_criterion_file= new String(Optimization.aTest.getInstanceName()+"_Initial_Mix_criterion_"+"_P(disruption)_"+Optimization.aTest.getprobDisruption()+"_Seed_"+Optimization.aTest.getseed()+"_OptCriterion"+Optimization.aTest.getOptcriterion()+"Mix_criterion.txt");
-			Optimization.writeWeigthedCriterion(mix_criterion_file);
+//			String TV_file= new String(aTest.getInstanceName()+"Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
+//			writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
+//
+			String TV_file= new String(aTest.getInstanceName()+"Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
+			writeLinkedList(TV_file, revealedRoadInformation.edgeRoadConnection,revealedRoadInformation.revealedDisruptedRoadNetwork,Event.DisruptedRoadConnections,false);
 
 
-			/**/
-			RandomStream stream = new LFSR113(); // L'Ecuyer stream
-			aTest.setRandomStream(stream);
 
-			/********* online System********/
+			Assessment LabeledNetwork= new Assessment(revealedRoadInformation,inputs); // This constructor clean the network
+			LabeledNetwork.computingPriorities();
 
-			OnlineSistem onlineSol= new OnlineSistem(MinDist,MaxBenefit,inputs,aTest); 
-			onlineSol.solveMe();
-			outList.addAll(onlineSol.outList);
-			new Outputs(inputs,aTest);
-			Outputs.printSolST(outList);
-			Outputs.printSol(outList);
+
+
+
+
+
+
+
+
+
+			////////////////////////////////////
+	
+			//			
+			//			new Optimization(aTest,inputs);
+			//			new States();
+			//			InputsManager.generateDepotEdges(inputs);
+			//			InputsManager.generatesetEdgeList(inputs);
+			//			// It is generated an initial condition of the network
+			//			States.setNonDirectConnections();
+			//			States.generatingStatesNetwork(inputs,aTest);
+			//			CPLEXDist MinDist = new CPLEXDist();
+			//			CPLEXBenefit MaxBenefit = new CPLEXBenefit();
+			//			InsertionAlgorithm MS = new InsertionAlgorithm(aTest,inputs);
+			//			States.generatingEvents();
+			//			Importances.Conditions();
+			//			States.importancesRouting();
+			//			
+			//			States.UpdatingStatesEdges();
+			//			Optimization.inputs.UpdatingEdgesList(Optimization.inputs.edgeList);
+			//			
+			//
+			//
+			//
+			//			/*Printing inputs*/
+			//			String importance_file= new String(Optimization.aTest.getInstanceName()+"_Initial_importances_"+"_P(disruption)_"+Optimization.aTest.getpercentangeDisruption()+"_Seed_"+Optimization.aTest.getseed()+"_OptCriterion"+Optimization.aTest.getOptcriterion()+"_importance.txt");
+			//			Optimization.writeList(importance_file, States.importancesEdges,States.DisruptedNetwork,true);
+			//			String TV_file= new String(Optimization.aTest.getInstanceName()+"Times"+"_OptCriterion"+Optimization.aTest.getOptcriterion()+"_P(disruption)_"+Optimization.aTest.getpercentangeDisruption()+"_Seed_"+Optimization.aTest.getseed()+"_"+"TravelTime.txt");
+			//			Optimization.writeList(TV_file, States.TravelTime,States.DisruptedNetwork,false);
+			//			
+			//			String mix_criterion_file= new String(Optimization.aTest.getInstanceName()+"_Initial_Mix_criterion_"+"_P(disruption)_"+Optimization.aTest.getpercentangeDisruption()+"_Seed_"+Optimization.aTest.getseed()+"_OptCriterion"+Optimization.aTest.getOptcriterion()+"Mix_criterion.txt");
+			//			Optimization.writeWeigthedCriterion(mix_criterion_file);
+			//
+			//
+			//			/**/
+			//			RandomStream stream = new LFSR113(); // L'Ecuyer stream
+			//			aTest.setRandomStream(stream);
+			//
+			//			/********* online System********/
+			//
+			//			OnlineSistem onlineSol= new OnlineSistem(MinDist,MaxBenefit,inputs,aTest); 
+			//			onlineSol.solveMe();
+			//			outList.addAll(onlineSol.outList);
+			//			new Outputs(inputs,aTest);
+			//			Outputs.printSolST(outList);
+			//			Outputs.printSol(outList);
 		}
 
 
@@ -94,6 +130,38 @@ public class StartTester
 		long programEnd = ElapsedTime.systemTime();
 		System.out.println("Total elapsed time = "
 				+ ElapsedTime.calcElapsedHMS(programStart, programEnd));
+	}
+
+
+
+	private static void writeLinkedList(String tV_file, LinkedList<Edge> edgeRoadConnection,
+			LinkedList<Edge> disruptedEdges, LinkedList<Edge> disruptedRoadNetwork, boolean b) {
+
+		// writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadNetwork,false);
+		try {
+			PrintWriter bw = new PrintWriter(tV_file);
+			bw.println("Road_Connections");
+			for(Edge e:edgeRoadConnection ) {
+				bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
+			}
+
+			bw.println("Disrupted_Edge");
+			for(Edge e:disruptedEdges ) {
+				bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
+			}
+			bw.println("Disrupted_Network");
+			for(Edge e:disruptedRoadNetwork) {
+				bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
+			}
+			bw.flush();
+		} 
+		catch (IOException e) {
+			//why does the catch need its own curly?
+		}
+
+
+		//writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,false);
+
 	}
 
 

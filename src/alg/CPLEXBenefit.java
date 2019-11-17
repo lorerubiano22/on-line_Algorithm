@@ -235,7 +235,7 @@ public class CPLEXBenefit {
 			if (cplex.solve()) {
 				Max_CPLEX= new Solution();
 				//if (cplex.solveFixed()) {
-				String CPLEX_file= new String(t.getInstanceName()+"_"+"_DProb_"+t.getprobDisruption()+"_network_"+euclidean +"_DR_"+inp.getDrivingRange() +"_MaxCoverge_CPLEX.txt");
+				String CPLEX_file= new String(t.getInstanceName()+"_"+"_DProb_"+t.getpercentangeDisruption()+"_network_"+euclidean +"_DR_"+inp.getDrivingRange() +"_MaxCoverge_CPLEX.txt");
 				//String CPLEX_file= new String(t.getInstanceName()+"_"+"_Seed_"+t.getseed()+"_DProb_"+t.getprobDisruption()+"_network_"+euclidean +"_DR_"+inp.getDrivingRange() +"_MaxCoverge_CPLEX.txt");
 				//Optimization.writeFile(CPLEX_file,cplex,x,length,coverage,V,n,K);
 				Optimization.SetSolution(CPLEX_file,cplex,x,length,coverage,V,n,K,new String ("CPLEX"),new String ("MaxBenefit"));

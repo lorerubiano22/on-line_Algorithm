@@ -8,10 +8,7 @@ import java.util.List;
 
 import java.util.Scanner;
 
-/**
- * @author Angel A. Juan - ajuanp(@)gmail.com
- * @version 130112
- */
+
 public class InputsManager
 {
 
@@ -30,7 +27,6 @@ public class InputsManager
 			int k = 0;
 			int nLine = 0;
 			int nNodes = 0;
-
 			while( in.hasNextLine() )
 			{  
 				if(!in.hasNext()) {
@@ -75,7 +71,8 @@ public class InputsManager
 	}
 
 
-
+	
+	
 
 	/**
 	 * Creates the edges

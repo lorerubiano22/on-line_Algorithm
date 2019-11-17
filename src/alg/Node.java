@@ -1,5 +1,6 @@
 package alg;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 
 public class Node implements Comparable<Node>
@@ -150,9 +151,20 @@ public class Node implements Comparable<Node>
 		if(comparestu.profit>profit) return 1;
 		if(comparestu.profit<profit) return -1;
 		else return 0;
-
 	}
-
+	static final Comparator<Node>positionY = new Comparator<Node>(){
+		public int compare(Node a1, Node a2){
+			if (a1.getY() < a2.getY()) return -1;
+			if (a1.getY() > a2.getY()) return 1;
+			return 0;
+	};};
+	
+	static final Comparator<Node>positionX = new Comparator<Node>(){
+		public int compare(Node a1, Node a2){
+			if (a1.getX() < a2.getX()) return -1;
+			if (a1.getX() > a2.getX()) return 1;
+			return 0;
+	};};
 
 	//	public static void setImpAdjdges(Inputs inputs) {
 	//		LinkedList<Edge> edges= new LinkedList<Edge>();

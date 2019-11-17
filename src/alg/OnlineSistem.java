@@ -61,7 +61,7 @@ public class OnlineSistem {
 
 
 		/*** Printing disruptions***/
-		String disruptionList_file= new String(Optimization.aTest.getInstanceName()+"_Disruptions"+"_Percentage(disruptions)_"+Optimization.aTest.getprobDisruption()+"_Seed_"+Optimization.aTest.getseed()+"_OptCriterion"+Optimization.aTest.getOptcriterion()+"_importance.txt");
+		String disruptionList_file= new String(Optimization.aTest.getInstanceName()+"_Disruptions"+"_Percentage(disruptions)_"+Optimization.aTest.getpercentangeDisruption()+"_Seed_"+Optimization.aTest.getseed()+"_OptCriterion"+Optimization.aTest.getOptcriterion()+"_importance.txt");
 		double [][] Disruptions= removedTimes(States.Disruptions);
 		int [][] CoveDisruptions=removedEdges(States.Disruptions);
 		Optimization.writeDisruptions(disruptionList_file);
@@ -159,12 +159,12 @@ public class OnlineSistem {
 
 			/************************************************************/
 
-			String importance_file= new String(Optimization.aTest.getInstanceName()+"_"+Strategy+"_Weights_after_insertion_"+insertions+"_P(disruption)_"+Optimization.aTest.getprobDisruption()+"_Seed_"+Optimization.aTest.getseed()+"_OptCriterion"+Optimization.aTest.getOptcriterion()+"_Weight_criterion.txt");
+			String importance_file= new String(Optimization.aTest.getInstanceName()+"_"+Strategy+"_Weights_after_insertion_"+insertions+"_P(disruption)_"+Optimization.aTest.getpercentangeDisruption()+"_Seed_"+Optimization.aTest.getseed()+"_OptCriterion"+Optimization.aTest.getOptcriterion()+"_Weight_criterion.txt");
 			Optimization.writeList(importance_file, States.importancesEdges,States.DisruptedNetwork,true);
 
 			/*Mix criterion*/
 
-			String mix_criterion_file= new String(Optimization.aTest.getInstanceName()+"_"+Strategy+"_Score_after_insertion_"+insertions+"_P(disruption)_"+Optimization.aTest.getprobDisruption()+"_Seed_"+Optimization.aTest.getseed()+"_OptCriterion"+Optimization.aTest.getOptcriterion()+"_Score_criterion.txt");
+			String mix_criterion_file= new String(Optimization.aTest.getInstanceName()+"_"+Strategy+"_Score_after_insertion_"+insertions+"_P(disruption)_"+Optimization.aTest.getpercentangeDisruption()+"_Seed_"+Optimization.aTest.getseed()+"_OptCriterion"+Optimization.aTest.getOptcriterion()+"_Score_criterion.txt");
 			Optimization.writeWeigthedCriterion(mix_criterion_file);
 			iterations++;
 			insertions++;
@@ -215,7 +215,7 @@ public class OnlineSistem {
 		final_Sol.updatingSolutionAttributes(Optimization.inputs);
 		final_Sol.settypeSol(a);
 		final_Sol.setSolveconditions(Optimization.TravelTime, Optimization.imp,Optimization.cover);
-		final_Sol.setprobDisruption(Optimization.aTest.getprobDisruption());
+		final_Sol.setprobDisruption(Optimization.aTest.getpercentangeDisruption());
 		final_Sol.setoptCriterion(Optimization.aTest.getOptcriterion());
 		final_Sol.setsol_typeNetwork(Optimization.aTest.gettypeNetwork());
 		final_Sol.solCondition(Optimization.inputs, Optimization.aTest);
