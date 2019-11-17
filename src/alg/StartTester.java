@@ -54,14 +54,14 @@ public class StartTester
 			// set the disaster conditions and the disrupted road network: this information is static does not change over the time
 			Disaster Event = new Disaster(Network,aTest);
 			UpdateRoadInformation revealedRoadInformation= new UpdateRoadInformation(Network);
-			
+			// Lorena
 
 
 //			String TV_file= new String(aTest.getInstanceName()+"Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
 //			writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
 //
-			String TV_file= new String(aTest.getInstanceName()+"Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
-			writeLinkedList(TV_file, revealedRoadInformation.edgeRoadConnection,revealedRoadInformation.revealedDisruptedRoadNetwork,Event.DisruptedRoadConnections,false);
+		//	String TV_file= new String(aTest.getInstanceName()+"Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
+			//writeLinkedList(TV_file, revealedRoadInformation.edgeRoadConnection,revealedRoadInformation.revealedDisruptedRoadNetwork,Event.DisruptedRoadConnections,false);
 
 
 
