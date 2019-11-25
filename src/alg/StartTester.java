@@ -23,6 +23,8 @@ public class StartTester
 
 	public static void main( String[] args )
 	{
+
+		
 		ArrayList<Outputs> outList = new ArrayList<Outputs>();
 		System.out.println("****  WELCOME TO THIS PROGRAM  ****");
 		long programStart = ElapsedTime.systemTime();
@@ -49,24 +51,26 @@ public class StartTester
 
 			// Read inputs files (nodes) and construct the inputs object
 			Inputs inputs = InputsManager.readInputs(inputNodesPath);
-			Network Network = new Network(inputs);
+			Network Network = new Network();
+			Network = Network.generateroadNetwork();// The information of the network have to be full. This knowledge is a static one
 
 			// set the disaster conditions and the disrupted road network: this information is static does not change over the time
 			Disaster Event = new Disaster(Network,aTest);
 			UpdateRoadInformation revealedRoadInformation= new UpdateRoadInformation(Network);
-			// Lorena
+
+			String Disrup_file= new String(aTest.getInstanceName()+"Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
+			writeLinkedList(Disrup_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
+
+			String TV_file= new String(aTest.getInstanceName()+"Network"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
+			writeLinkedList(TV_file, revealedRoadInformation.edgeRoadConnection,revealedRoadInformation.revealedDisruptedRoadNetwork,Event.DisruptedRoadConnections,false);
+
+			Assessment LabeledNetwork= new Assessment(revealedRoadInformation,inputs); //  Aquí se va a evaluar la conectividad sobre la red conocida hasta el momento. es la evaluadión inicial
+			//LabeledNetwork.computingPriorities();
 
 
-//			String TV_file= new String(aTest.getInstanceName()+"Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
-//			writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
-//
-		//	String TV_file= new String(aTest.getInstanceName()+"Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
-			//writeLinkedList(TV_file, revealedRoadInformation.edgeRoadConnection,revealedRoadInformation.revealedDisruptedRoadNetwork,Event.DisruptedRoadConnections,false);
 
 
-
-			Assessment LabeledNetwork= new Assessment(revealedRoadInformation,inputs); // This constructor clean the network
-			LabeledNetwork.computingPriorities();
+			
 
 
 

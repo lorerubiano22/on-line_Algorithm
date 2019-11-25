@@ -11,6 +11,7 @@ public class Inputs implements Serializable
 	public static Node[] nodes; // List of all nodes in the problem/sub-problem
 	public static LinkedList<Node> victimnodes= new LinkedList<Node>(); 
 	public static LinkedList<Node> intermediatenodes= new LinkedList<Node>(); 
+	public static LinkedList<Edge> edgesList= new LinkedList<Edge>(); 
 	private int vehicles = 0; // Vehicle capacity (homogeneous fleet
 	public double DrivingRange=0;
 	public double BenchmarkTime=0;
@@ -19,7 +20,7 @@ public class Inputs implements Serializable
 	public static double Max_Distance;
 	public static double Min_Distance;
 	public static double Max_Importance;
-	HashMap<String, Edge> directoryEdges;
+	static HashMap<String, Edge> directoryEdges;
 	public Inputs(int n)
 	{   nodes = new Node[n]; // n nodes, including the depot
 	}
@@ -60,10 +61,12 @@ public class Inputs implements Serializable
 	public void setDrivingRange(double DR){DrivingRange = DR;}
 	public void setNodes(Node[] nodes){this.nodes = nodes;}
 	public void setdistanceDepot(LinkedList<Edge> sList){depotDistance = sList;}
-	public void setEdgeList(LinkedList<Edge> sList) {	
+	
+	public static void setEdgeList(LinkedList<Edge> sList) {	
 		directoryEdges = new HashMap<String, Edge>();
 		for(Edge e:sList) {
 			directoryEdges.put(e.getKey(),e);
+			edgesList.add(e);
 			}
 		
 	}
@@ -139,7 +142,8 @@ public class Inputs implements Serializable
 	public static double getMaxImportance() {return Max_Importance;}
 	public  LinkedList<Node> getvictimnodes() {return victimnodes;}
 	public  LinkedList<Node> getintermediatenodes() {return intermediatenodes;}
-
+	public static Edge getdirectoryEdges(String a) {return directoryEdges.get(a);}
+	
 	
 	public static void setMaximportance(LinkedList<Edge> edgeList2) {
 		double imp=0;
@@ -165,6 +169,31 @@ if(nodes[i].getProfit()>1) {
 }
 else {intermediatenodes.add(nodes[i]);}
 		}
+		
+	}
+
+
+
+	public static void setAdjEdges() {
+			for(Node n:nodes) {
+				LinkedList<Edge> adjEdges= new LinkedList<Edge>();
+				for(int j=0;j<=nodes.length;j++) {
+					String s1 = Integer.toString(n.getId()); 
+				      String s2 = Integer.toString(j); 
+					String key=s1+","+s2;
+					
+						Edge e= directoryEdges.get(key);
+						
+					if(e!=null) {
+						adjEdges.add(e);}
+					
+				}
+				n.setAdjedges(adjEdges);
+		
+			}
+			
+			System.out.println("Done");
+			
 		
 	}
 

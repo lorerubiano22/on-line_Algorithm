@@ -11,6 +11,8 @@ el nodo permanece en la red}
 else{el intermediate nodo se elimina}
 else{el intemediate nodo se elimina}
 
+la ruta resultante es el depot, victim nodes, intermediate nodes with: more than one active and adjacent connection. Any direct connection with victim nodes.
+
 NOTES:
 
 
@@ -51,6 +53,12 @@ edgeRoadNetwork-> represents the road, it considers the road crossings
 This class is the interface between the on-line routing and the assesment process
 
 Note: Assessment process is where the priorities are estimated
+
+
+Class: Assessment
+
+Edges list have to be connected in order to update the information. the state.
+This list of edge have to be independent to the inputs list> network list of edges
 
 
 Class: shortpathXpress

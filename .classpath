@@ -7,37 +7,30 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="C:/Program Files/IBM/ILOG/CPLEX_Studio_Community129/cplex/lib/cplex.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Program Files/IBM/ILOG/CPLEX_Studio_Community129/cplex/bin/x64_win64"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="C:/Users/lorer/Documents/wokspace_Java/Libraries/ssj-3.2.1/lib/colt-1.2.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/lorer/Documents/wokspace_Java/Libraries/ssj-3.2.1/lib/concurrent-1.3.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/lorer/Documents/wokspace_Java/Libraries/ssj-3.2.1/lib/jcommon-1.0.15.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/lorer/Documents/wokspace_Java/Libraries/ssj-3.2.1/lib/jfreechart-1.0.12.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/lorer/Documents/wokspace_Java/Libraries/ssj-3.2.1/lib/optimization-1.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/lorer/Documents/wokspace_Java/Libraries/ssj-3.2.1/lib/ssj-3.2.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/lorer/Documents/wokspace_Java/Libraries/log4j-1.2.15.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/lorer/Documents/wokspace_Java/Libraries/log4j-1.2.17.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/lorer/Documents/wokspace_Java/Libraries/LRP.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/lorer/Documents/wokspace_Java/Libraries/ssj.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/lorer/Documents/wokspace_Java/Libraries/ssj-2.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib">
+	<classpathentry kind="lib" path="lib">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/xpressmp/bin"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="lib/cplex.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/Lorena/Documents/wokspace_Java_BOKU/Libraries/ssj.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Program Files/IBM/ILOG/CPLEX_Studio_Community129/cplex/bin/x64_win64"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/Lorena/Documents/wokspace_Java_BOKU/Libraries/ssj-3.2.1"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/aec2-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Lorena/Documents/wokspace_Java_BOKU/on-line_Algorithm/lib">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/xpressmp/bin"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/aec2-javadoc.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/xpressmp/bin"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/aec2.jar"/>
 	<classpathentry kind="lib" path="lib/bindrv-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/bindrv.jar"/>
-	<classpathentry kind="lib" path="lib/jsch-0.1.55.jar"/>
+	<classpathentry kind="lib" path="lib/jsch-0.1.50.jar"/>
 	<classpathentry kind="lib" path="lib/mosjvm.jar"/>
 	<classpathentry kind="lib" path="lib/xprb-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/xprb.jar"/>

@@ -159,6 +159,13 @@ public class Node implements Comparable<Node>
 			return 0;
 	};};
 	
+	static final Comparator<Node>ID = new Comparator<Node>(){
+		public int compare(Node a1, Node a2){
+			if (a1.getId() < a2.getId()) return -1;
+			if (a1.getId() > a2.getId()) return 1;
+			return 0;
+	};};
+	
 	static final Comparator<Node>positionX = new Comparator<Node>(){
 		public int compare(Node a1, Node a2){
 			if (a1.getX() < a2.getX()) return -1;
