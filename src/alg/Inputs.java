@@ -142,7 +142,6 @@ public class Inputs implements Serializable
 	public static double getMaxImportance() {return Max_Importance;}
 	public  LinkedList<Node> getvictimnodes() {return victimnodes;}
 	public  LinkedList<Node> getintermediatenodes() {return intermediatenodes;}
-	public static Edge getdirectoryEdges(String a) {return directoryEdges.get(a);}
 	
 	
 	public static void setMaximportance(LinkedList<Edge> edgeList2) {

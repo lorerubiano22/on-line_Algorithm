@@ -30,14 +30,15 @@ public class TestsManager
 				in.nextLine(); // skip comment lines
 			else
 			{   String instanceName = s; // e.g.: A-n32-k5
-			float maxTime = in.nextFloat(); // max computational time (in sec)
+			//float maxTime = in.nextFloat(); // max computational time (in sec)
+			float percentageDistance= in.nextFloat(); // to compute the weight- weight for the distance criterion 
 			float prob= in.nextFloat();// disruption p(x)
 			float speed= in.nextFloat();// travel speed p(x)
 			double criterion=in.nextDouble();// importance is the optimization criterion
 			Long seed= in.nextLong();// seed
-			boolean Euclidean=in.nextBoolean();// Euclidean distance
-			int MaxIter=in.nextInt();// maximum number of interations
-			Test aTest = new Test(instanceName,maxTime,prob,speed,criterion,seed,Euclidean,MaxIter);
+			//boolean Euclidean=in.nextBoolean();// Euclidean distance
+			//int MaxIter=in.nextInt();// maximum number of interations
+			Test aTest = new Test(instanceName,percentageDistance,prob,speed,criterion,seed);
 			list.add(aTest);
 			}
 		}

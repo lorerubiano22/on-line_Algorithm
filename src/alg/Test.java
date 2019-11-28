@@ -12,46 +12,41 @@ import umontreal.iro.lecuyer.rng.RandomStreamBase;
 public class Test
 {
 	/* INSTANCE FIELDS AND CONSTRUCTOR */
-	private String instanceName;
-	private float maxTime; // period between events
-	private float percentageDisruption; //p(x) disruption
+	private static String instanceName;
+	private static float percentageDistance; // period between events
+	private static float percentageDisruption; //p(x) disruption
 	private static float travelSpeed;//travel speed
-	private long seed; // Seed value for the Random Number Generator (RNG)
-	private boolean typeNetwork;
-	private int StopCriterion;// Max num iterations
+	private static long seed; // Seed value for the Random Number Generator (RNG)
 	private double criterion;// optimization criterion 1011 dist-imp // 1101 imp- dist // 1100 imp  //  1010 dist  // 1001 weighted criterion  
-	private RandomStream rng;
+	private static RandomStream rng;
 
 
 
+// Test(instanceName,percentageDistance,prob,speed,criterion,seed)
 
-
-	public Test(String name,  float t, float disrup,float speed,double criterion,long s, boolean euclidean, int MaxIter)
+	public Test(String name,  float t, float disrup,float speed,double criterion,long s)
 	{
 		instanceName = name;   
-		maxTime = t; // interval of times it represents how the stop criteria is splited
+		percentageDistance = t; // weight for the distance criterion
 		percentageDisruption=disrup;
 		travelSpeed=speed;
 		seed=s;
 		this.criterion=criterion;
-		typeNetwork=euclidean;
-		StopCriterion=MaxIter; // number of events or time horizont
+		
 	}
 
 
 
 
 	/* GET METHODS */
-	public String getInstanceName(){return instanceName;}
-	public float getMaxTime(){return maxTime;} // the time is giving in minutes and here is becoming in hours
-	public float getpercentangeDisruption(){return percentageDisruption;}
+	public static String getInstanceName(){return instanceName;}
+	public static float getpercentageDistance(){return percentageDistance;} // the time is giving in minutes and here is becoming in hours
+	public static float getpercentangeDisruption(){return percentageDisruption;}
 	public static float getTravelSpeed(){return travelSpeed;}
-	public long getseed(){return seed;}
-	public boolean gettypeNetwork(){return typeNetwork;}
-	public int getStopCriterion() {return StopCriterion;}
-	public RandomStream getRandomStream() {return rng;}
+	public static long getseed(){return seed;}
+	public static RandomStream getRandomStream() {return rng;}
 
-	public void setRandomStream(RandomStream stream) {rng = stream;}
+	public static void setRandomStream(RandomStream stream) {rng = stream;}
 
 
 	public double getOptcriterion() {return criterion;	}

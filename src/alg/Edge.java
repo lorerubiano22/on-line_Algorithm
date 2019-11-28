@@ -23,6 +23,12 @@ public class Edge implements Serializable
 	private double nodesImportance;
 	private LinkedList<Edge> roadInflexion;
 	private LinkedList<Node> roadInflexionNode;
+	public double connectivity=0.0;
+	public double weight=0.0;
+	
+	public double maxAdjConnectivity=0;
+	public double minAdjDistance=0;
+	public double maxAdjDistance=0;
 
 
 	public Edge(Node originNode, Node endNode) 
@@ -64,9 +70,14 @@ public class Edge implements Serializable
 	public void setState(int c){state = c;}
 	public void setDistance(double c){distance = c;}
 	public void setTime(double c){time = c;}
-	public void setImportance(double s){importance = s;
-	optCriterion();
-	setnodesImportance();}
+	
+	public void setConnectivity(double s){connectivity = s;}
+	public void setWeight(double s){weight = s;}
+	
+	
+//	public void setImportance(double s){importance = s;
+//	optCriterion();
+//	setnodesImportance();}
 	public void setInRoute(Route r){inRoute = r;}
 	public void setInverse(Edge e){inverseEdge = e;}
 	public void setEdege(Edge e) {e=thisEdge;}
@@ -77,15 +88,14 @@ public class Edge implements Serializable
 	/* GET METHODS */
 
 
-
-
-	public int gettypeEdge(){return typeEdge;}
+public int gettypeEdge(){return typeEdge;}
 	public int getState(){return state;}
 	public Node getOrigin(){return origin;}
 	public Node getEnd(){return end;}
 	public double getTime(){return time;}
 	public double getDistance(){return distance;}
-	public double getImportance(){return importance;}
+	public double getConnectivity(){return connectivity;}
+	public double getWeight(){return weight;}
 	public Route getInRoute(){return inRoute;}
 	public Edge getInverseEdge(){return inverseEdge;}
 	public double getoptCriterion() {return optCriterion;}
@@ -199,7 +209,8 @@ public class Edge implements Serializable
 			s = s.concat("\nEdge end: " + this.getEnd());
 			s = s.concat("\nEdge time: " + (this.getTime()));
 			s = s.concat("\nEdge ditance: " + (this.getDistance()));
-			s = s.concat("\nEdge importance: " + (this.getImportance()));
+			s = s.concat("\nEdge connectivity: " + (this.getConnectivity()));
+			s = s.concat("\nEdge weight: " + (this.getWeight()));
 			s=  s.concat("\nEdge status: " + (this.getState()));
 			return s;
 		}
