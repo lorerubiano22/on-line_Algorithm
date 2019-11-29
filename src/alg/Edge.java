@@ -27,8 +27,8 @@ public class Edge implements Serializable
 	public double weight=0.0;
 	
 	public double maxAdjConnectivity=0;
-	public double minAdjDistance=0;
-	public double maxAdjDistance=0;
+	public double minAdjTime=0;
+	public double maxAdjTime=0;
 
 
 	public Edge(Node originNode, Node endNode) 

@@ -21,6 +21,7 @@ public class Inputs implements Serializable
 	public static double Min_Distance;
 	public static double Max_Importance;
 	static HashMap<String, Edge> directoryEdges;
+	static HashMap<Integer, Node> directoryNodes;
 	public Inputs(int n)
 	{   nodes = new Node[n]; // n nodes, including the depot
 	}
@@ -63,15 +64,27 @@ public class Inputs implements Serializable
 	public void setdistanceDepot(LinkedList<Edge> sList){depotDistance = sList;}
 	
 	public static void setEdgeList(LinkedList<Edge> sList) {	
+		setNodes();
 		directoryEdges = new HashMap<String, Edge>();
 		for(Edge e:sList) {
 			directoryEdges.put(e.getKey(),e);
 			edgesList.add(e);
 			}
 		
+		
 	}
 	
 	
+	private static void setNodes() {
+		directoryNodes = new HashMap<Integer, Node>();
+		for(Node n:nodes) {
+			directoryNodes.put(n.getId(),nodes[n.getId()]);	
+		}
+		
+	}
+
+
+
 	public void remove(int index){
 		Node[] nNode=new Node[getNodes().length-1];
 		int j=0;
