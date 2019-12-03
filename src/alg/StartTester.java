@@ -156,18 +156,19 @@ public class StartTester
 			}
 
 			bw.println("Disrupted_Edge");
-			for(Edge e:disruptedEdges ) {
-				//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
-				bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Connectivity_"+e.getConnectivity());
-			}
+			if(disruptedEdges!=null) {
+				for(Edge e:disruptedEdges ) {
+					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
+					bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Connectivity_"+e.getConnectivity());
+				}}
 			bw.println("Disrupted_Network");
 			for(Edge e:disruptedRoadNetwork) {
 				//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
 				bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Connectivity_"+e.getConnectivity());
 
 			}
-			
-			
+
+
 			for(Edge e:disruptedRoadNetwork) {
 				//bw.println("("+e.getOrigin().getId()+")_Connectivity_"+e.getOrigin().getImportance());
 				bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Connectivity_"+e.getConnectivity());

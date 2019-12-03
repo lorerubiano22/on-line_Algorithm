@@ -203,10 +203,11 @@ public class shortpathXpress {
 		System.out.println("Objective: " + p.getObjVal());  /* Get objective value */
 
 		if((p.getMIPStat()==XPRB.MIP_SOLUTION) || (p.getMIPStat()==XPRB.MIP_OPTIMAL)) {
-			path=true;
+			
 			for(int i=0;i<n;i++) {
 				for(int j=0;j<n;j++){
 					if(x[i][j].getSol()>0){
+						path=true;
 						System.out.println("x"+x[i][j].getName()+": "+x[i][j].getSol());
 					}
 				}
