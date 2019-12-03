@@ -36,9 +36,10 @@ public class TestsManager
 			float speed= in.nextFloat();// travel speed p(x)
 			double criterion=in.nextDouble();// importance is the optimization criterion
 			Long seed= in.nextLong();// seed
+			double drivingRange=in.nextDouble();// driving range
 			//boolean Euclidean=in.nextBoolean();// Euclidean distance
 			//int MaxIter=in.nextInt();// maximum number of interations
-			Test aTest = new Test(instanceName,percentageDistance,prob,speed,criterion,seed);
+			Test aTest = new Test(instanceName,percentageDistance,prob,speed,criterion,seed,drivingRange);
 			list.add(aTest);
 			}
 		}

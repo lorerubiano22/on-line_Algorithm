@@ -19,12 +19,13 @@ public class Test
 	private static long seed; // Seed value for the Random Number Generator (RNG)
 	private double criterion;// optimization criterion 1011 dist-imp // 1101 imp- dist // 1100 imp  //  1010 dist  // 1001 weighted criterion  
 	private static RandomStream rng;
+	private  double drivingRange; // driving Range of the UAV Distance
 
 
 
 // Test(instanceName,percentageDistance,prob,speed,criterion,seed)
 
-	public Test(String name,  float t, float disrup,float speed,double criterion,long s)
+	public Test(String name,  float t, float disrup,float speed,double criterion,long s, double drivingRange)
 	{
 		instanceName = name;   
 		percentageDistance = t; // weight for the distance criterion
@@ -32,7 +33,7 @@ public class Test
 		travelSpeed=speed;
 		seed=s;
 		this.criterion=criterion;
-		
+		this.drivingRange=drivingRange;
 	}
 
 
@@ -45,10 +46,11 @@ public class Test
 	public static float getTravelSpeed(){return travelSpeed;}
 	public static long getseed(){return seed;}
 	public static RandomStream getRandomStream() {return rng;}
-
+	public double getdrivingRange() {return drivingRange;}
+	
+	
 	public static void setRandomStream(RandomStream stream) {rng = stream;}
-
-
+	
 	public double getOptcriterion() {return criterion;	}
 
 

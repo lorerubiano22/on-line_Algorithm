@@ -58,9 +58,9 @@ public class StartTester
 			// set the disaster conditions and the disrupted road network: this information is static does not change over the time
 			Disaster Event = new Disaster(Network,aTest);
 			UpdateRoadInformation revealedRoadInformation= new UpdateRoadInformation(Network);
-			Assessment LabeledNetwork= new Assessment(revealedRoadInformation,inputs); //  Aquí se va a evaluar la conectividad sobre la red conocida hasta el momento. es la evaluadión inicial
-
-			//InsertionAlgorithm MS = new InsertionAlgorithm(aTest,inputs);
+			//Assessment LabeledNetwork= new Assessment(revealedRoadInformation,inputs); //  Aquí se va a evaluar la conectividad sobre la red conocida hasta el momento. es la evaluadión inicial
+			new Assessment(revealedRoadInformation,inputs);
+			InsertionProcedure MS = new InsertionProcedure(aTest,Event,revealedRoadInformation,inputs);
 
 
 

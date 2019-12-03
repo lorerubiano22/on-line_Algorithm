@@ -13,8 +13,7 @@ public class Edge implements Serializable
 	private Node end; // end node
 	private double time = 0.0; // edge costs (travel time)
 	private double distance = 0.0; // edge costs (travel distance)
-	private double importance = 0.0; // edge savings (Clarke & Wright)
-	private double selection = 0.0;
+
 	private Route inRoute = null; // route containing this edge (0 if no route assigned)
 	private Edge inverseEdge = null; // edge with inverse direction
 	private Edge thisEdge = null; // edge 
@@ -25,7 +24,7 @@ public class Edge implements Serializable
 	private LinkedList<Node> roadInflexionNode;
 	public double connectivity=0.0;
 	public double weight=0.0;
-	
+	public int disruptionIndex=-1;
 	public double maxAdjConnectivity=0;
 	public double minAdjTime=0;
 	public double maxAdjTime=0;
@@ -48,7 +47,8 @@ public class Edge implements Serializable
 		this.origin = e.origin;
 		this.end = e.end; 
 		this.time = e.time;
-		this.importance = e.importance; 
+		this.connectivity = e.connectivity; 
+		this.weight = e.weight; 
 		this.distance=e.distance;
 		//this.selection=e.selection;
 		this.state=e.state;
@@ -82,7 +82,6 @@ public class Edge implements Serializable
 	public void setInverse(Edge e){inverseEdge = e;}
 	public void setEdege(Edge e) {e=thisEdge;}
 	public void setoptCriterion(double e) {optCriterion=e;
-	optCriterion();
 	setnodesImportance();}
 
 	/* GET METHODS */
@@ -99,7 +98,6 @@ public int gettypeEdge(){return typeEdge;}
 	public Route getInRoute(){return inRoute;}
 	public Edge getInverseEdge(){return inverseEdge;}
 	public double getoptCriterion() {return optCriterion;}
-	public double getvalueSelection() {return selection;}
 	public LinkedList<Edge> getInflexionEdge() {return  roadInflexion;}
 	public LinkedList<Node> getroadInflexionNode() {return  roadInflexionNode;}
 	public String getKey(){return key;}
@@ -144,12 +142,6 @@ public int gettypeEdge(){return typeEdge;}
 	return d;
 	}
 
-	public void optCriterion()
-	{  if(this.origin.getId()!=this.end.getId()) {
-		selection=0.5*(States.importancesEdges[this.origin.getId()][this.end.getId()]/Inputs.getMaxImportance())+0.5*(Inputs.getMaxDistance()-distance)/((Inputs.getMaxDistance()+0.0001)-Inputs.getMinDistance());
-	}
-	else {selection=0;}
-	}
 
 
 	static final Comparator<Edge> minTime = new Comparator<Edge>(){
@@ -168,18 +160,18 @@ public int gettypeEdge(){return typeEdge;}
 		}
 	};
 
-	static final Comparator<Edge>importanceComp = new Comparator<Edge>(){
+	static final Comparator<Edge>connectivityComp = new Comparator<Edge>(){
 		public int compare(Edge a1, Edge a2){
-			if (a1.importance < a2.importance) return 1;
-			if (a1.importance > a2.importance) return -1;
+			if (a1.connectivity < a2.connectivity) return 1;
+			if (a1.connectivity > a2.connectivity) return -1;
 			return 0;
 		}};
 
 
-		static final Comparator<Edge>optCriterionComp = new Comparator<Edge>(){
+		static final Comparator<Edge>weightComp = new Comparator<Edge>(){
 			public int compare(Edge a1, Edge a2){
-				if (a1.selection < a2.selection) return 1;
-				if (a1.selection > a2.selection) return -1;
+				if (a1.weight < a2.weight) return 1;
+				if (a1.weight > a2.weight) return -1;
 
 				return 0;
 			}
@@ -225,9 +217,11 @@ public int gettypeEdge(){return typeEdge;}
 				roadInflexionNode.add(inflexionsEdge.get(i).end);
 			}
 			System.out.println("done");
-			
-
-		}
+					}
+		
+		public void setDisruptionIndex(int x) {disruptionIndex=x;}
+		
+		
 
 
 
