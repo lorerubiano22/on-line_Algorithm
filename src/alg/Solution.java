@@ -12,8 +12,6 @@ public class Solution implements Cloneable
 	/* INSTANCE FIELDS & CONSTRUCTOR */
 
 	private static long nInstances = 0; // number of instances
-	public String typeSol=null; // If the solution is computed by Exact Method. Heuristic
-	private String Objective=null; // If the solution is computed for minimizing Dist. Benefit
 	private long id; // solution ID
 	private double totalTime = 0.0; // solution total travel time
 	private double totalDistance = 0.0; // solution travel distance
@@ -28,15 +26,6 @@ public class Solution implements Cloneable
 	private Set<Node> notUsedNodes; //Set of nodes that aren't used in the solution
 	private static final String LINE_SEPARATOR = System.lineSeparator();
 	public double Coverage;
-	public double probDisruption=0.0;
-	public double optcriterion=0;
-	public boolean sol_typeNetwork; // true:euclidean false:hamiltoniana
-	public double[][] TravelTime;
-	public double[][] importances;
-	public int[][] MatrixCoverage;
-	private Test test;
-	private Inputs inputs;
-
 
 
 	public Solution()
@@ -58,20 +47,15 @@ public class Solution implements Cloneable
 	{   nInstances++;
 
 	id = nInstances;
-	typeSol=sol.typeSol;
-	probDisruption=sol.probDisruption;
-	optcriterion=sol.optcriterion;
-	Objective=sol.Objective;
+	
 	totalTime = sol.totalTime; 
 	totalDistance = sol.totalDistance;
 	servedDemand = sol.servedDemand; 
 	timePC = sol.timePC;
 	Coverage=sol.Coverage;
-	sol_typeNetwork=sol.sol_typeNetwork;
+	
 	this.routes = new LinkedList<Route>();
-	TravelTime=sol.TravelTime;
-	importances=sol.importances;
-	MatrixCoverage=sol.MatrixCoverage;
+	
 	for(Route r : sol.getRoutes()){
 
 		Route rAux = new Route(r);
@@ -83,8 +67,7 @@ public class Solution implements Cloneable
 		//Node nAux = new Node (n);
 		this.notUsedNodes.add(n);	
 	}
-	test=sol.test;
-	inputs=sol.inputs;
+
 	stochClientsNoServed = sol.stochClientsNoServed;
 	clientsServed = sol.clientsServed;
 	percentTimesViolated = sol.percentTimesViolated;
@@ -101,20 +84,15 @@ public class Solution implements Cloneable
 	public Solution(Solution sol, LinkedList<Route> newroutes)
 	{   nInstances++;
 	id = nInstances;
-	typeSol=sol.typeSol;
-	Objective=sol.Objective;
-	optcriterion=sol.optcriterion;
+	
 	totalTime = sol.totalTime;
 	totalDistance = sol.totalDistance;
 	servedDemand = sol.servedDemand; 
-	sol_typeNetwork= sol.sol_typeNetwork; 
+
 	timePC = sol.timePC;
-	test=sol.test;
-	inputs=sol.inputs;
 	reliability = sol.reliability;
 	Coverage = sol.Coverage;
-	probDisruption=sol.probDisruption;
-	this.routes = new LinkedList<Route>();
+		this.routes = new LinkedList<Route>();
 	for(Route r : newroutes){
 		this.routes.add(r);
 	}
@@ -182,7 +160,7 @@ public class Solution implements Cloneable
 		setTotalCoverage(totalCoverage);
 	}
 
-	public void setprobDisruption(double prob) {probDisruption=prob;}
+
 	public void setTotalCoverage(double totalCoverage) {Coverage=totalCoverage;}
 
 	/**
@@ -209,7 +187,7 @@ public class Solution implements Cloneable
 	public double getTotalDistance(){return totalDistance;}
 	public float getServedDemand(){return servedDemand;}
 	public double getPCTime(){return timePC;}
-	public boolean getsol_strategy(){return sol_typeNetwork;}
+	
 	public double getReliability() {return reliability;}
 	public int getStochClientsNoServed() {return stochClientsNoServed;}
 	public int getClientsServed() {return clientsServed;}
@@ -217,12 +195,7 @@ public class Solution implements Cloneable
 	public double getDistanceViolated() {return distanceViolated;}
 	public Set<Node> getNotUsedNodes() {return notUsedNodes;}
 	public double getTotalCoverage() {return Coverage;}
-	public double getprobDisruption() {return probDisruption;}
-	public double getoptCriterion() {return optcriterion;}
-	public String gettypeSol(){return typeSol;}
-	public String getObjective(){return Objective;}
-	public Inputs getInputsCondition(){return inputs;}
-	public Test getTestCondition(){return test;}
+
 
 
 
@@ -239,13 +212,7 @@ public class Solution implements Cloneable
 	public void setClientsServed(int clientsServed) {this.clientsServed = clientsServed;}
 	public void setPercentTimesViolated(double percentTimesViolated) {this.percentTimesViolated = percentTimesViolated;}
 	public void setNotUsedNodes(Set<Node> notUsedNodes) {this.notUsedNodes = notUsedNodes;}
-	public void settypeSol(String c){typeSol = c;}
-	public void setObjective(String c){Objective = c;}
-	public void setsol_typeNetwork(boolean c){sol_typeNetwork = c;}
-	public void setoptCriterion(double getprobDisruption) {optcriterion=getprobDisruption;}
-	public void solCondition(Inputs i, Test t) { inputs=i;test=t;
-	setoptCriterion(test.getOptcriterion());}
-
+	
 
 	/*  AUXILIARY METHODS */
 
@@ -256,7 +223,7 @@ public class Solution implements Cloneable
 		String s = "";
 		s = s.concat(LINE_SEPARATOR);
 		s = s.concat("Sol ID : " + getId() + LINE_SEPARATOR);
-		s= s.concat("Type of solution: "+ this.gettypeSol()+ LINE_SEPARATOR);
+	
 		s = s.concat("Sol total time: " + getTotalTime() + LINE_SEPARATOR);
 		s = s.concat("Sol total distance: " + getTotalDistance() + LINE_SEPARATOR);
 		s = s.concat("Sol total visited victims: " + getTotalCoverage() + LINE_SEPARATOR);
@@ -351,9 +318,7 @@ public class Solution implements Cloneable
 				elementsInNetwork[i][j] =cover[i][j];	
 			}
 		}
-		TravelTime=traveltimes;
-		importances=importanceElements;
-		MatrixCoverage=elementsInNetwork;
+
 	}
 
 	
