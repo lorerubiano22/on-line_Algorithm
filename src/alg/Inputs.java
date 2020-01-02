@@ -104,48 +104,13 @@ public class Inputs implements Serializable
 			nodes[i]=new Node(nNode[i]);
 		}
 	}
-	public void UpdatingEdgesList(LinkedList<Edge> sList) {
-	//setEdgeList(sList);
-		
-	setMaximportance(sList);
-	setMaxdistance(sList);
-	setMindistance(sList);
-	for(Edge e:sList) {
-		e.optCriterion();
-	}
-	}
+
 
 	public void setBenchmarck(double totalCosts) {BenchmarkTime=(totalCosts);}
 
 
 
-	public static void setMaxdistance(LinkedList<Edge> edgeList2) {
-		double distance=0;
-		for(Edge e:edgeList2) {
-			int i=e.getOrigin().getId();
-			int j=e.getEnd().getId();
-			if(States.DisruptedNetwork[i][j]>0) {
-			if(e.getDistance()>distance) {
-				distance=e.getDistance();
-			}}
-		}
-		Max_Distance=distance;
-		
-	}
-	
-	public static void setMindistance(LinkedList<Edge> edgeList2) {
-		double distance=0;
-		for(Edge e:edgeList2) {
-			int i=e.getOrigin().getId();
-			int j=e.getEnd().getId();
-			if(States.DisruptedNetwork[i][j]>0) {
-			if(e.getDistance()<distance) {
-				distance=e.getDistance();
-			}
-		}}
-		Min_Distance=distance;
-		
-	}
+
 
 
 
@@ -156,21 +121,6 @@ public class Inputs implements Serializable
 	public  LinkedList<Node> getvictimnodes() {return victimnodes;}
 	public  LinkedList<Node> getintermediatenodes() {return intermediatenodes;}
 	
-	
-	public static void setMaximportance(LinkedList<Edge> edgeList2) {
-		double imp=0;
-		for(Edge e:edgeList2) {
-			int i=e.getOrigin().getId();
-			int j=e.getEnd().getId();
-			if(States.DisruptedNetwork[i][j]>0) {
-			if(States.importancesEdges[i][j]>imp) {
-				
-				imp=States.importancesEdges[e.getOrigin().getId()][e.getEnd().getId()];
-			}}
-		}
-		Max_Importance=imp;
-		
-	}
 
 
 

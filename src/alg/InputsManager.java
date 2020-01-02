@@ -172,16 +172,6 @@ public class InputsManager
 
 
 
-	public static void callingImportances(Inputs inputs, Optimization c) {
-		LinkedList<Edge> ImportanceList = new LinkedList<Edge>();
-		for(Edge e:inputs.getedgeList()) {
-			ImportanceList.add(new Edge(e));
-		}
-		ImportanceList.sort(Edge.importanceComp);
-
-	}
-
-
 
 
 

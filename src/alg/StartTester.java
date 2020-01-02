@@ -3,7 +3,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.io.IOException;
 
 import umontreal.iro.lecuyer.rng.LFSR113;
@@ -23,8 +26,6 @@ public class StartTester
 
 	public static void main( String[] args )
 	{
-
-
 		ArrayList<Outputs> outList = new ArrayList<Outputs>();
 		System.out.println("****  WELCOME TO THIS PROGRAM  ****");
 		long programStart = ElapsedTime.systemTime();
@@ -51,24 +52,35 @@ public class StartTester
 
 			// Read inputs files (nodes) and construct the inputs object
 			Inputs inputs = InputsManager.readInputs(inputNodesPath);
+			new Outputs(inputs, aTest);
 			Network Network = new Network();
-			Network = Network.generateroadNetwork();// The information of the network have to be full. This knowledge is a static one
+			Network = Network.generateroadNetwork(aTest);// The information of the network have to be full. This knowledge is a static one
 
 
 			// set the disaster conditions and the disrupted road network: this information is static does not change over the time
 			Disaster Event = new Disaster(Network,aTest);
 			UpdateRoadInformation revealedRoadInformation= new UpdateRoadInformation(Network);
 			//Assessment LabeledNetwork= new Assessment(revealedRoadInformation,inputs); //  Aquí se va a evaluar la conectividad sobre la red conocida hasta el momento. es la evaluadión inicial
-			new Assessment(revealedRoadInformation,inputs);
-			InsertionProcedure MS = new InsertionProcedure(aTest,Event,revealedRoadInformation,inputs);
-
+			
 
 
 			String Disrup_file= new String(aTest.getInstanceName()+"Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
 			writeLinkedList(Disrup_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
 
-			String TV_file= new String(aTest.getInstanceName()+"Network"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
-			writeLinkedList(TV_file, revealedRoadInformation.edgeRoadConnection,revealedRoadInformation.revealedDisruptedRoadNetwork,Event.DisruptedRoadConnections,false);
+			 Disrup_file= new String(aTest.getInstanceName()+"Edges_Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
+			writeLinkedList2(Disrup_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
+
+			new Assessment(revealedRoadInformation,inputs, aTest);
+			
+			
+			new DrawingNetwork(Event.edgeRoadConnection);
+			
+			//String TV_file= new String(aTest.getInstanceName()+"Network"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
+			//writeLinkedList(TV_file, revealedRoadInformation.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
+
+
+			InsertionProcedure MS = new InsertionProcedure(aTest,Event,revealedRoadInformation,inputs);
+
 
 			//LabeledNetwork.computingPriorities();
 
@@ -130,7 +142,7 @@ public class StartTester
 			//			outList.addAll(onlineSol.outList);
 			//			new Outputs(inputs,aTest);
 			//			Outputs.printSolST(outList);
-			//			Outputs.printSol(outList);
+
 		}
 
 
@@ -143,50 +155,145 @@ public class StartTester
 
 
 
+	//	private static void writeLinkedList(String tV_file, LinkedList<Edge> edgeRoadConnection,
+	//			 HashMap<String, Edge> disruptedEdges, LinkedList<Edge> disruptedRoadNetwork, boolean b) {
+	//
+	//		// writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadNetwork,false);
+	//		try {
+	//			PrintWriter bw = new PrintWriter(tV_file);
+	//			bw.println("Road_Connections");
+	//			for(Edge e:edgeRoadConnection ) {
+	//				if(e.getOrigin().getId()>e.getEnd().getId()) {
+	//				//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
+	//				bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getDistance()+"_Distance_Euclidean_"+e.getDistance());
+	//			}}
+	//
+	//			bw.println("Disrupted_Edge");
+	//			if(disruptedEdges!=null) {
+	//
+	//				Iterator hmIterator = disruptedEdges.entrySet().iterator(); 
+	//				while (hmIterator.hasNext()) { 
+	//					Map.Entry mapElement = (Map.Entry)hmIterator.next(); 
+	//					Edge e= disruptedEdges.get(mapElement.getKey());
+	//					if(e.getOrigin().getId()>e.getEnd().getId()) {
+	//					bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getDistance()+"_Distance_Euclidean_"+e.getDistance());
+	//					}
+	//				}				}
+	//			bw.println("Disrupted_Network");
+	//			for(Edge e:disruptedRoadNetwork) {
+	//				if(e.getOrigin().getId()>e.getEnd().getId()) {
+	//				//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
+	//				bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getDistance()+"_Distance_Euclidean_"+e.getDistance());
+	//				}
+	//			}
+	//
+	//
+	//			for(Edge e:disruptedRoadNetwork) {
+	//				if(e.getOrigin().getId()>e.getEnd().getId()) {
+	//				//bw.println("("+e.getOrigin().getId()+")_Connectivity_"+e.getOrigin().getImportance());
+	//				bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getDistance()+"_Distance_Euclidean_"+e.getDistance());
+	//				}
+	//			}
+	//			bw.println("("+disruptedRoadNetwork.getLast().getEnd().getId()+")_Connectivity_"+disruptedRoadNetwork.getLast().getEnd().getImportance());
+	//			bw.flush();
+	//		} 
+	//		catch (IOException e) {
+	//			//why does the catch need its own curly?
+	//		}
+
 	private static void writeLinkedList(String tV_file, LinkedList<Edge> edgeRoadConnection,
-			LinkedList<Edge> disruptedEdges, LinkedList<Edge> disruptedRoadNetwork, boolean b) {
+			HashMap<String, Edge> disruptedEdges, LinkedList<Edge> disruptedRoadNetwork, boolean b) {
 
 		// writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadNetwork,false);
 		try {
 			PrintWriter bw = new PrintWriter(tV_file);
 			bw.println("Road_Connections");
 			for(Edge e:edgeRoadConnection ) {
-				//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
-				bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Connectivity_"+e.getConnectivity());
-			}
+				if(e.getOrigin().getId()>e.getEnd().getId()) {
+					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
+					bw.println(e.getOrigin().toString());
+					bw.println(e.getEnd().toString());
+				}}
 
 			bw.println("Disrupted_Edge");
 			if(disruptedEdges!=null) {
-				for(Edge e:disruptedEdges ) {
-					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
-					bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Connectivity_"+e.getConnectivity());
-				}}
+
+				Iterator hmIterator = disruptedEdges.entrySet().iterator(); 
+				while (hmIterator.hasNext()) { 
+					Map.Entry mapElement = (Map.Entry)hmIterator.next(); 
+					Edge e= disruptedEdges.get(mapElement.getKey());
+					if(e.getOrigin().getId()>e.getEnd().getId()) {	
+						bw.println(e.getOrigin().toString());
+						bw.println(e.getEnd().toString());
+						}
+				}				}
 			bw.println("Disrupted_Network");
 			for(Edge e:disruptedRoadNetwork) {
-				//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
-				bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Connectivity_"+e.getConnectivity());
-
+				if(e.getOrigin().getId()>e.getEnd().getId()) {
+					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
+					bw.println(e.getOrigin().toString());
+					bw.println(e.getEnd().toString());
+					}
 			}
 
 
 			for(Edge e:disruptedRoadNetwork) {
-				//bw.println("("+e.getOrigin().getId()+")_Connectivity_"+e.getOrigin().getImportance());
-				bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Connectivity_"+e.getConnectivity());
-
+				if(e.getOrigin().getId()>e.getEnd().getId()) {
+					bw.println(e.getOrigin().toString());
+					bw.println(e.getEnd().toString());
+					}
 			}
-			bw.println("("+disruptedRoadNetwork.getLast().getEnd().getId()+")_Connectivity_"+disruptedRoadNetwork.getLast().getEnd().getImportance());
 			bw.flush();
 		} 
 		catch (IOException e) {
 			//why does the catch need its own curly?
 		}
-
-
 		//writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,false);
 
 	}
 
+// main
+	
+	private static void writeLinkedList2(String tV_file, LinkedList<Edge> edgeRoadConnection,
+			HashMap<String, Edge> disruptedEdges, LinkedList<Edge> disruptedRoadNetwork, boolean b) {
 
+		// writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadNetwork,false);
+		try {
+			PrintWriter bw = new PrintWriter(tV_file);
+			bw.println("Road_Connections");
+			for(Edge e:edgeRoadConnection ) {
+				if(e.getOrigin().getId()>e.getEnd().getId()) {
+					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
+					bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"  "+e.getDistance());
+					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Distance_Euclidean_"+e.getDistance());
+				}}
+
+			bw.println("Disrupted_Edge");
+			if(disruptedEdges!=null) {
+
+				Iterator hmIterator = disruptedEdges.entrySet().iterator(); 
+				while (hmIterator.hasNext()) { 
+					Map.Entry mapElement = (Map.Entry)hmIterator.next(); 
+					Edge e= disruptedEdges.get(mapElement.getKey());
+					if(e.getOrigin().getId()>e.getEnd().getId()) {	
+						bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"  "+e.getDistance());
+						}
+				}				}
+			bw.println("Disrupted_Network");
+			for(Edge e:disruptedRoadNetwork) {
+				if(e.getOrigin().getId()>e.getEnd().getId()) {
+					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
+					bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"  "+e.getDistance());
+					}
+			}
+			bw.flush();
+		} 
+		catch (IOException e) {
+			//why does the catch need its own curly?
+		}
+		//writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,false);
+
+	}
 
 
 

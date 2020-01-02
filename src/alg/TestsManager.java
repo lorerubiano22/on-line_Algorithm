@@ -5,11 +5,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
-/**
- * Generates a list of tests to be run.
- * @author Angel A. Juan - ajuanp(@)gmail.com
- * @version 130807
- */
+
 public class TestsManager
 {
 	public static ArrayList<Test> getTestsList(String testsFilePath)

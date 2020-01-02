@@ -89,10 +89,18 @@ Class: shortpathXpress
 
 Note: it returns a boolean variable-> true: if the node belongs to a route from depot to (at least) a victim 
 
-Class: Sort
 
 
 Class: BackandForwardMovement
+
+Cuando es detectada una disrupción de esta forma es enmendada:
+1. Se seleccionan los nodos que pertenecen a los arcos funcionales ya explorados (conncected nodes)
+2. se seleccionan los arcos adjyacentes a los nodos contenidos en esos arcos
+3. Se selecciona el arco con el valor de prioridad más alto <- arco a visitar
+4. se selecciona el nodo más cercano (nodo origen o nodo destino)
+5. se crea la connección aerea y se inserta
+5. se reempieza el proceso de reinsersión
+
 
 1: procedure INSERTIONPROCEDURE(known road network, exploration strategy, labelled road network)
 2: position←Distater management centre location
@@ -113,7 +121,83 @@ Class: BackandForwardMovement
 17: return disruptednetwork, explorationRoute
 18: endprocedure
 
+Class: MaxprofitXpress
+
+
+Is used to evaluate the connectivity of the intermediate nodes. There any feasible path is determined. it tries to maximize the collected profit
+
+
 
 Class: JumpingMovement
 
 Nota: ojo con el procedimiento de que tiene que asegurar que el depot este conectado de lo contrario la ruta no empieza
+
+selectBestEdge();
+
+1. case 1: if (La lista de ejes adjacentes esta vacia)
+   if (La lista de ejes adjacentes esta vacia{
+   Selecciona el eje con más alta prioridad
+   se crean los dos ejes aereos
+   se inserta el eje más corto
+   se inserta el eje
+   }
+
+   else{ case 2:
+		2. En la lista de ejes adjacentes hay ejes que connecten nodos victimas
+		if(en la lista de ejes adjacentes hay nodos victimas sin visitar){
+			se seleccionan los ejes que contienene victimas no exploradas
+			se selecciona la que tiene más alta prioridad.}
+		else{
+			3. En la lista de ejes adjacentes hay ejes que connecten road crossings
+		}
+}
+
+
+Redirect Route
+
+check si el depot esta connectado
+case 1: 
+if(There is not functional edge from depot to victim node){ // NO CONNECTIVITY !!
+  UAV returns to depot
+  Accessibility of victim nodes is known	
+}
+si aún el depot no esta conectado tiene el UAV tiene que regresar
+        No existe labelled
+case 2: 
+
+
+
+case 1.
+If the disrupted edge connects a victim Node
+
+
+
+Class driving range limitations
+
+The sort insertion procedure evaluates the current position of the UAV
+1.	If the current position is a disruption location, the buffer is defined once the function redirectRoute (line 11) defines the aerial edge aerialEdge.
+I.	Using as a reference the origin- and end node of the aerial edge in step (1), the procedure defines an additional aerial edge from the end node to the disaster management centre location.
+II.	The dynamic buffer is calculated as the sum of edges length in steps (1) and (I)
+III.	Once the buffer is known, the length of the current exploration route is evaluated.
+i.	If the length of the current exploration route plus buffer exceeds the driving range. The procedure defines an aerial edge which is used by the UAV to fly from the disruption location to disaster management centre location.
+ii.	 If the length of the current exploration route plus buffer is less than the driving range. The aerial edge in step (1) is inserted in the redirectRoute.
+iii.	The sort insertion procedure continues from the function updateUAVposition which updates the current position of the UAV (line 12).
+
+
+1. If the current position is a disruption location, the buffer is defined once the function selectThebestedge (linea 7) selects the best edge to explore next.
+I. Using as a reference the origin- and end node of the aerial edge in step (1), the procedure defines an additional aerial edge from the end node to the disaster management centre location.
+
+i.	The dynamic buffer is calculated as the sum of edges length in steps (1) and (II)
+III.	Once the buffer is known, the length of the current exploration route is evaluated.
+i.	If the length of the current exploration route plus buffer exceeds the driving range. The procedure defines an aerial edge which is used by the UAV to fly from the Current position to disaster management centre location.
+ii.	 If the length of the current exploration route plus buffer is less than the driving range. The aerial edge in step (1) is inserted in the explorationRoute.
+iii.	The sort insertion procedure continues from the function updateUAVposition which updates the current position of the UAV (line 12).
+
+
+
+     1.2.1 se crea un eje aereo desde el nodo fin del eje del punto 1.2 y al disaster management centre
+     1.2.2 se calcula la distancia del eje del paso 1.2 y la distancia del paso 1.2.1
+	 1.1.4 se evalua si la suma del paso 3 + la distancia actual de la ruta de exploración excede the safe driving range 
+	   1.1.4.1 si excede el UAV regresa al disaster management centre. Es decir se crea un eje aereo desde el punto de la disrupción hasta el disaster management centre
+	   1.1.4.2 si no excede el UAV vuela hasta el eje definido en el paso 1.2
+	   1.1.4.3 se retoma el proceso en la linea 11 del pseudocodigo 

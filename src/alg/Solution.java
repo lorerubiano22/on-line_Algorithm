@@ -140,24 +140,16 @@ public class Solution implements Cloneable
 	 * visited with the number of vehicles available
 	 * @param inputs Inputs instance that specifies the number of vehicles available
 	 */
-	public void updatingSolutionAttributes(Inputs inputs){
+	public void updatingSolutionAttributes(){
 		Collections.sort(routes);
 		double totalCost = 0.0;
-		double totalCoverage = 0.0;
 		double distance = 0.0;
-		int used_veh = Math.min(inputs.getVehNumber(),routes.size());
-
-		//sliceSolution(used_veh);
-
-		//for(int i = 0; i < used_veh; i++){
-			Route r = routes.getLast();
+		for(Route r:this.routes){
 			totalCost += r.getTime();
 			distance+=r.getDistance();
-			totalCoverage+=r.getcoverage();
-		//}
+		}
 		setDistance(distance);
 		setTime(totalCost);
-		setTotalCoverage(totalCoverage);
 	}
 
 

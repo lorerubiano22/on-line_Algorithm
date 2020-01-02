@@ -3,10 +3,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * @author Angel A. Juan - ajuanp(@)gmail.com
- * @version 130112
- */
+
 public class Route implements Serializable,Comparable<Route>
 {
 	/* INSTANCE FIELDS & CONSTRUCTOR */
