@@ -20,15 +20,15 @@ public class Outputs
 	private Solution bestInitSol; // saving the sol with routes per iteration
 	private Solution Min_CPLEX_Sol;
 	private Solution Max_CPLEX_Sol;
-	private static JumpingMovement Jumping_Strategy;
-	private static BackandForwardMovement Back_Strategy;
+	private JumpingMovement Jumping_Strategy;
+	private BackandForwardMovement Back_Strategy;
 	private Solution Back_Sol;
 	private Solution Ahead_Sol;
 	private float runningTime;
 	private ArrayList<Outputs> list = null;
 	private ArrayList<Solution> finalsol = new ArrayList<Solution>(); // saving all solution from the iterations
-	private static Inputs inputs;
-	private static Test test;
+	private Inputs inputs;
+	private Test test;
 
 
 	public void setList(){
@@ -46,17 +46,35 @@ public class Outputs
 		float runningTime;
 		ArrayList<Outputs> list = null;
 		ArrayList<Solution> finalsol = new ArrayList<Solution>(); // saving all solution from the iterations
-		Inputs inputs;
-		Test test;
+		
 	}
 
 	/* SET METHODS */
 
-	public Outputs(Inputs inp, Test t) {
+	public Outputs(Inputs inp, Test t, BackandForwardMovement obSol) {
+		new Outputs();
+		test=t;
+		inp=inputs;
+		this.setBack(obSol);
+		
+		
+	}
+	
+	public Outputs(Inputs inp, Test t, JumpingMovement obSol) {
+		new Outputs();
 		test=t;
 		instanceName=t.getInstanceName();
+		this.setJumping(obSol);
 		inp=inputs;
-		new Outputs();
+		
+	}
+
+
+
+	public Outputs(Disaster Event, Inputs inp, Test aTest) {
+		String Disrup_file= new String(aTest.getInstanceName()+"Edges_Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
+		writeLinkedList2(Disrup_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
+
 	}
 
 
@@ -64,9 +82,12 @@ public class Outputs
 	public void setBestInitSol(Solution aSol){bestInitSol = aSol;}
 	public void setMin_CPLEXSol(Solution obSol){Min_CPLEX_Sol = obSol;}
 	public void setMax_CPLEX_SolSol(Solution obSol){Max_CPLEX_Sol = obSol;}
-	public void setJumping(JumpingMovement obSol){Jumping_Strategy = obSol;
+	public void setJumping(JumpingMovement obSol){
+		Jumping_Strategy = obSol;
+		this.Ahead_Sol=obSol.jump_Sol;
 	printJumpSol();}
 	public void setBack(BackandForwardMovement obSol){Back_Strategy = obSol;
+	this.Back_Sol=obSol.back_Sol;
 	 printBackSol();}
 	public void setAhead(Solution obSol){Ahead_Sol = obSol;}
 	public void setRunningT(float t){runningTime = t;}
@@ -86,7 +107,50 @@ public class Outputs
 	
 	
 	
-	public static void printJumpSol(){
+	public void writeLinkedList2(String tV_file, LinkedList<Edge> edgeRoadConnection,
+			HashMap<String, Edge> disruptedEdges, LinkedList<Edge> disruptedRoadNetwork, boolean b) {
+
+		// writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadNetwork,false);
+		try {
+			PrintWriter bw = new PrintWriter(tV_file);
+			bw.println("Road_Connections");
+			for(Edge e:edgeRoadConnection ) {
+				int i=0;
+				if(e.getOrigin().getId()>e.getEnd().getId()) {
+										//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
+					bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_Distance_"+e.getDistance()+"_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getWeight());
+					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Distance_Euclidean_"+e.getDistance());
+				}}
+
+			bw.println("Disrupted_Edge");
+			if(disruptedEdges!=null) {
+
+				Iterator hmIterator = disruptedEdges.entrySet().iterator(); 
+				while (hmIterator.hasNext()) { 
+					Map.Entry mapElement = (Map.Entry)hmIterator.next(); 
+					Edge e= disruptedEdges.get(mapElement.getKey());
+					if(e.getOrigin().getId()>e.getEnd().getId()) {	
+						bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_Distance_"+e.getDistance()+"_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getWeight());
+						}
+				}				}
+			bw.println("Disrupted_Network");
+			for(Edge e:disruptedRoadNetwork) {
+				if(e.getOrigin().getId()>e.getEnd().getId()) {
+					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
+					bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_Distance_"+e.getDistance()+"_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getWeight());
+					}
+			}
+			bw.flush();
+		} 
+		catch (IOException e) {
+			//why does the catch need its own curly?
+		}
+		//writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,false);
+
+	}
+
+	
+	public void printJumpSol(){
 		/*
 		 * Script with routes per instance
 		 */
@@ -97,8 +161,8 @@ public class Outputs
 				//{
 					//Solution sol = o.getMin_CPLEX_SolSol();
 					//Solution sol1 = o.getBestInitSol();
-					if(Jumping_Strategy.jump_Sol!=null) {
-						String file_name= new String(Jumping_Strategy.aTest.getInstanceName()+"_SOLUTION_"+"_p(disruption)_"+Jumping_Strategy.aTest.getpercentangeDisruption()+"_seed_"+Jumping_Strategy.aTest.getseed()+"_Strategy_Jumping_OptCriterion_"+Jumping_Strategy.aTest.getOptcriterion()+"_Output.txt");
+					if(this.Jumping_Strategy.jump_Sol!=null) {
+						String file_name= new String(this.Jumping_Strategy.aTest.getInstanceName()+"_SOLUTION_"+"_p(disruption)_"+this.Jumping_Strategy.aTest.getpercentangeDisruption()+"_seed_"+this.Jumping_Strategy.aTest.getseed()+"_Strategy_Jumping_OptCriterion_"+this.Jumping_Strategy.aTest.getOptcriterion()+"_Output.txt");
 						PrintWriter out = new PrintWriter(file_name);
 						out.printf("*********************************\n");
 						//out.printf("******solution Min_Distance****");
@@ -137,7 +201,7 @@ public class Outputs
 	
 	
 	
-	public static void printBackSol(){
+	public void printBackSol(){
 		/*
 		 * Script with routes per instance
 		 */
@@ -148,8 +212,8 @@ public class Outputs
 				//{
 					//Solution sol = o.getMin_CPLEX_SolSol();
 					//Solution sol1 = o.getBestInitSol();
-					if(Back_Strategy.back_Sol!=null) {
-						String file_name= new String(Back_Strategy.aTest.getInstanceName()+"_SOLUTION_"+"_p(disruption)_"+Back_Strategy.aTest.getpercentangeDisruption()+"_seed_"+Back_Strategy.aTest.getseed()+"_Strategy_BackandForward_OptCriterion_"+Back_Strategy.aTest.getOptcriterion()+"_Output.txt");
+					if(this.Back_Strategy.back_Sol!=null) {
+						String file_name= new String(this.Back_Strategy.aTest.getInstanceName()+"_SOLUTION_"+"_p(disruption)_"+this.Back_Strategy.aTest.getpercentangeDisruption()+"_seed_"+this.Back_Strategy.aTest.getseed()+"_Strategy_BackandForward_OptCriterion_"+this.Back_Strategy.aTest.getOptcriterion()+"_Output.txt");
 						PrintWriter out = new PrintWriter(file_name);
 						out.printf("*********************************\n");
 						//out.printf("******solution Min_Distance****");

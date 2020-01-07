@@ -52,7 +52,7 @@ public class StartTester
 
 			// Read inputs files (nodes) and construct the inputs object
 			Inputs inputs = InputsManager.readInputs(inputNodesPath);
-			new Outputs(inputs, aTest);
+			
 			Network Network = new Network();
 			Network = Network.generateroadNetwork(aTest);// The information of the network have to be full. This knowledge is a static one
 
@@ -61,20 +61,22 @@ public class StartTester
 			Disaster Event = new Disaster(Network,aTest);
 			UpdateRoadInformation revealedRoadInformation= new UpdateRoadInformation(Network);
 			//Assessment LabeledNetwork= new Assessment(revealedRoadInformation,inputs); //  Aquí se va a evaluar la conectividad sobre la red conocida hasta el momento. es la evaluadión inicial
-			
-
-
-			String Disrup_file= new String(aTest.getInstanceName()+"Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
-			writeLinkedList(Disrup_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
-
-			 Disrup_file= new String(aTest.getInstanceName()+"Edges_Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
-			writeLinkedList2(Disrup_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
-
+			new DrawingNetwork(Network.getedgeRoadNetwork());
 			new Assessment(revealedRoadInformation,inputs, aTest);
 			
+			new Outputs(Event,inputs, aTest);
+
+
+			//String Disrup_file= new String(aTest.getInstanceName()+"Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
+			//writeLinkedList(Disrup_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
+
+			 //Disrup_file= new String(aTest.getInstanceName()+"Edges_Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
+			//writeLinkedList2(Disrup_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
+
+			//new Assessment(revealedRoadInformation,inputs, aTest);
 			
-			new DrawingNetwork(Event.edgeRoadConnection);
 			
+		
 			//String TV_file= new String(aTest.getInstanceName()+"Network"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
 			//writeLinkedList(TV_file, revealedRoadInformation.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
 
@@ -262,9 +264,10 @@ public class StartTester
 			PrintWriter bw = new PrintWriter(tV_file);
 			bw.println("Road_Connections");
 			for(Edge e:edgeRoadConnection ) {
+				int i=0;
 				if(e.getOrigin().getId()>e.getEnd().getId()) {
-					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
-					bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"  "+e.getDistance());
+										//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
+					bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_Distance_"+e.getDistance()+"_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getWeight());
 					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Distance_Euclidean_"+e.getDistance());
 				}}
 
@@ -276,14 +279,14 @@ public class StartTester
 					Map.Entry mapElement = (Map.Entry)hmIterator.next(); 
 					Edge e= disruptedEdges.get(mapElement.getKey());
 					if(e.getOrigin().getId()>e.getEnd().getId()) {	
-						bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"  "+e.getDistance());
+						bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_Distance_"+e.getDistance()+"_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getWeight());
 						}
 				}				}
 			bw.println("Disrupted_Network");
 			for(Edge e:disruptedRoadNetwork) {
 				if(e.getOrigin().getId()>e.getEnd().getId()) {
 					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
-					bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"  "+e.getDistance());
+					bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_Distance_"+e.getDistance()+"_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getWeight());
 					}
 			}
 			bw.flush();
