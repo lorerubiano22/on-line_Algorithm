@@ -72,7 +72,7 @@ public class Outputs
 
 
 	public Outputs(Disaster Event, Inputs inp, Test aTest) {
-		String Disrup_file= new String(aTest.getInstanceName()+"Edges_Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
+		String Disrup_file= new String(aTest.getInstanceName()+"_Edges_Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
 		writeLinkedList2(Disrup_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
 
 	}
@@ -117,10 +117,10 @@ public class Outputs
 			for(Edge e:edgeRoadConnection ) {
 				int i=0;
 				if(e.getOrigin().getId()>e.getEnd().getId()) {
-										//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
-					bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_Distance_"+e.getDistance()+"_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getWeight());
-					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Distance_Euclidean_"+e.getDistance());
-				}}
+					//bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_aerial_Distance_"+e.getDistance()+"_road_Distance_"+e.getDistanceRoad());
+					
+					bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_"+"_Distance_"+e.getDistance()+"_Road_Distance_"+e.getDistanceRoad()+"_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getWeight());
+						}}
 
 			bw.println("Disrupted_Edge");
 			if(disruptedEdges!=null) {
@@ -130,14 +130,17 @@ public class Outputs
 					Map.Entry mapElement = (Map.Entry)hmIterator.next(); 
 					Edge e= disruptedEdges.get(mapElement.getKey());
 					if(e.getOrigin().getId()>e.getEnd().getId()) {	
-						bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_Distance_"+e.getDistance()+"_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getWeight());
-						}
+							//bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_aerial_Distance_"+e.getDistance()+"_road_Distance_"+e.getDistanceRoad());
+						bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_"+"_Distance_"+e.getDistance()+"_Road_Distance_"+e.getDistanceRoad()+"_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getWeight());
+							
+					}
 				}				}
 			bw.println("Disrupted_Network");
 			for(Edge e:disruptedRoadNetwork) {
 				if(e.getOrigin().getId()>e.getEnd().getId()) {
-					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
-					bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_Distance_"+e.getDistance()+"_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getWeight());
+					//bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_aerial_Distance_"+e.getDistance()+"_road_Distance_"+e.getDistanceRoad());
+					bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_"+"_Distance_"+e.getDistance()+"_Road_Distance_"+e.getDistanceRoad()+"_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getWeight());
+						
 					}
 			}
 			bw.flush();
@@ -177,15 +180,19 @@ public class Outputs
 						out.println("\n");
 						out.print(Jumping_Strategy.jump_Sol.toString());
 						out.println("\n");
-						out.printf("      unreachable victims     \n");
+						out.printf("      Victims     \n");
+						out.println("\n");
+						out.println("ID      State");
 						Iterator hmIterator = Jumping_Strategy.VictimList.entrySet().iterator(); 
 						while (hmIterator.hasNext()) { 
 							Map.Entry mapElement = (Map.Entry)hmIterator.next(); 
 							Node v= Jumping_Strategy.VictimList.get(mapElement.getKey());
 							if(!Jumping_Strategy.connectedNodestoRevealedRoadNetwork.containsKey(v.getId())) {
-								out.print(v.toString());
+								out.print(v.getId() + "      Unreachable");
 								out.println("\n");
 							}
+							else {out.print(v.getId() + "      reachable");
+							out.println("\n");}
 							
 						}
 						out.close();	

@@ -11,9 +11,10 @@ public class Edge implements Serializable
 	private Node origin; // origin node
 	private int typeEdge;// 1 if it belongs to the road network 0 otherwise
 	private Node end; // end node
-	private double time = 0.0; // edge costs (travel time)
-	private double distance = 0.0; // edge costs (travel distance)
-
+	private double timeEuclidean = 0.0; // edge costs (travel time)
+	private double distanceEuclidean = 0.0; // edge costs (travel distance)
+	private double timeRoad = 0.0; // edge costs (travel time)
+	private double distanceRoad = 0.0; // edge costs (travel distance)
 	private Route inRoute = null; // route containing this edge (0 if no route assigned)
 	private Edge inverseEdge = null; // edge with inverse direction
 	private Edge thisEdge = null; // edge 
@@ -46,10 +47,10 @@ public class Edge implements Serializable
 		this.key=e.key;
 		this.origin = e.origin;
 		this.end = e.end; 
-		this.time = e.time;
+		this.timeEuclidean = e.timeEuclidean;
 		this.connectivity = e.connectivity; 
 		this.weight = e.weight; 
-		this.distance=e.distance;
+		this.distanceEuclidean=e.distanceEuclidean;
 		//this.selection=e.selection;
 		this.state=e.state;
 		//this.optCriterion=e.optCriterion;
@@ -68,11 +69,14 @@ public class Edge implements Serializable
 	/* SET METHODS */
 	public void settypeEdge(int c){typeEdge = c;}
 	public void setState(int c){state = c;}
-	public void setDistance(double c){distance = c;}
-	public void setTime(double c){time = c;}
+	public void setDistance(double c){distanceEuclidean = c;}
+	public void setTime(double c){timeEuclidean = c;}
 	
 	public void setConnectivity(double s){connectivity = s;}
 	public void setWeight(double s){weight = s;}
+	public void setDistanceRoad(double c){distanceRoad = c;}
+	public void setTimeRoad(double c){timeRoad = c;}
+	
 	
 	
 //	public void setImportance(double s){importance = s;
@@ -83,6 +87,8 @@ public class Edge implements Serializable
 	public void setEdege(Edge e) {e=thisEdge;}
 	public void setoptCriterion(double e) {optCriterion=e;
 	setnodesImportance();}
+	
+	public void setDisruptionIndex(int x) {disruptionIndex=x;}
 
 	/* GET METHODS */
 
@@ -91,8 +97,11 @@ public int gettypeEdge(){return typeEdge;}
 	public int getState(){return state;}
 	public Node getOrigin(){return origin;}
 	public Node getEnd(){return end;}
-	public double getTime(){return time;}
-	public double getDistance(){return distance;}
+	public double getTime(){return timeEuclidean;}
+	public double getDistance(){return distanceEuclidean;}
+	public double getTimeRoad(){return timeRoad;}
+	public double getDistanceRoad(){return distanceRoad;}
+	public int getDisruptionIndex() {return disruptionIndex;}
 	public double getConnectivity(){return connectivity;}
 	public double getWeight(){return weight;}
 	public Route getInRoute(){return inRoute;}
@@ -101,6 +110,7 @@ public int gettypeEdge(){return typeEdge;}
 	public LinkedList<Edge> getInflexionEdge() {return  roadInflexion;}
 	public LinkedList<Node> getroadInflexionNode() {return  roadInflexionNode;}
 	public String getKey(){return key;}
+	
 	
 	public Edge getEdge(Edge e) {return thisEdge;}
 
@@ -146,16 +156,16 @@ public int gettypeEdge(){return typeEdge;}
 
 	static final Comparator<Edge> minTime = new Comparator<Edge>(){
 		public int compare(Edge a1, Edge a2){
-			if (a1.time > a2.time) return 1;
-			if (a1.time < a2.time) return -1;
+			if (a1.timeEuclidean > a2.timeEuclidean) return 1;
+			if (a1.timeEuclidean < a2.timeEuclidean) return -1;
 			return 0;
 		}
 	};
 
 	static final Comparator<Edge> minDistance = new Comparator<Edge>(){
 		public int compare(Edge a1, Edge a2){
-			if (a1.distance > a2.distance) return 1;
-			if (a1.distance < a2.distance) return -1;
+			if (a1.distanceEuclidean > a2.distanceEuclidean) return 1;
+			if (a1.distanceEuclidean < a2.distanceEuclidean) return -1;
 			return 0;
 		}
 	};
@@ -201,6 +211,8 @@ public int gettypeEdge(){return typeEdge;}
 			s = s.concat("\nEdge end: " + this.getEnd());
 			s = s.concat("\nEdge time: " + (this.getTime()));
 			s = s.concat("\nEdge ditance: " + (this.getDistance()));
+			s = s.concat("\nEdge road_time: " + (this.getTimeRoad()));
+			s = s.concat("\nEdge road_ditance: " + (this.getDistanceRoad()));
 			s = s.concat("\nEdge connectivity: " + (this.getConnectivity()));
 			s = s.concat("\nEdge weight: " + (this.getWeight()));
 			s=  s.concat("\nEdge status: " + (this.getState()));
@@ -219,7 +231,7 @@ public int gettypeEdge(){return typeEdge;}
 			System.out.println("done");
 					}
 		
-		public void setDisruptionIndex(int x) {disruptionIndex=x;}
+
 		
 		
 

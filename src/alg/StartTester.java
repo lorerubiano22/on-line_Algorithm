@@ -11,7 +11,11 @@ import java.io.IOException;
 
 import umontreal.iro.lecuyer.rng.LFSR113;
 import umontreal.iro.lecuyer.rng.RandomStream;
-
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 
 public class StartTester
@@ -55,21 +59,26 @@ public class StartTester
 			
 			Network Network = new Network();
 			Network = Network.generateroadNetwork(aTest);// The information of the network have to be full. This knowledge is a static one
-
-
+			
+			
+			
+			String Disrup_file= new String(aTest.getInstanceName()+"_Road_Network_Distances"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
+			writeLinkedList2(Disrup_file, Network.getEdgeConnections(),false);
+			new DrawingNetwork(Network.getedgeRoadNetwork());
 			// set the disaster conditions and the disrupted road network: this information is static does not change over the time
 			Disaster Event = new Disaster(Network,aTest);
+			
 			UpdateRoadInformation revealedRoadInformation= new UpdateRoadInformation(Network);
 			//Assessment LabeledNetwork= new Assessment(revealedRoadInformation,inputs); //  Aquí se va a evaluar la conectividad sobre la red conocida hasta el momento. es la evaluadión inicial
-			new DrawingNetwork(Network.getedgeRoadNetwork());
-			new Assessment(revealedRoadInformation,inputs, aTest);
 			
-			new Outputs(Event,inputs, aTest);
+		new Assessment(revealedRoadInformation,inputs, aTest);
+			
+			
+			
+     	new Outputs(Event,inputs, aTest);
 
 
-			//String Disrup_file= new String(aTest.getInstanceName()+"Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
-			//writeLinkedList(Disrup_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
-
+			
 			 //Disrup_file= new String(aTest.getInstanceName()+"Edges_Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
 			//writeLinkedList2(Disrup_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
 
@@ -81,7 +90,7 @@ public class StartTester
 			//writeLinkedList(TV_file, revealedRoadInformation.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
 
 
-			InsertionProcedure MS = new InsertionProcedure(aTest,Event,revealedRoadInformation,inputs);
+	InsertionProcedure MS = new InsertionProcedure(aTest,Event,revealedRoadInformation,inputs);
 
 
 			//LabeledNetwork.computingPriorities();
@@ -256,39 +265,38 @@ public class StartTester
 
 // main
 	
-	private static void writeLinkedList2(String tV_file, LinkedList<Edge> edgeRoadConnection,
-			HashMap<String, Edge> disruptedEdges, LinkedList<Edge> disruptedRoadNetwork, boolean b) {
+	private static void writeLinkedList2(String tV_file, LinkedList<Edge> edgeRoadConnection, boolean b) {
 
 		// writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadNetwork,false);
 		try {
 			PrintWriter bw = new PrintWriter(tV_file);
+			 HashMap<Integer, Node> nodes = new HashMap<Integer, Node>();// It contains all nodes of the network
 			bw.println("Road_Connections");
 			for(Edge e:edgeRoadConnection ) {
+				nodes.put(e.getOrigin().getId(), e.getOrigin());
+				nodes.put(e.getEnd().getId(), e.getEnd());
 				int i=0;
 				if(e.getOrigin().getId()>e.getEnd().getId()) {
 										//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
-					bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_Distance_"+e.getDistance()+"_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getWeight());
+					bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_Distance_"+e.getDistance()+"_road_Distance_"+e.getDistanceRoad());
 					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Distance_Euclidean_"+e.getDistance());
 				}}
-
-			bw.println("Disrupted_Edge");
-			if(disruptedEdges!=null) {
-
-				Iterator hmIterator = disruptedEdges.entrySet().iterator(); 
-				while (hmIterator.hasNext()) { 
-					Map.Entry mapElement = (Map.Entry)hmIterator.next(); 
-					Edge e= disruptedEdges.get(mapElement.getKey());
-					if(e.getOrigin().getId()>e.getEnd().getId()) {	
-						bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_Distance_"+e.getDistance()+"_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getWeight());
-						}
-				}				}
-			bw.println("Disrupted_Network");
-			for(Edge e:disruptedRoadNetwork) {
-				if(e.getOrigin().getId()>e.getEnd().getId()) {
-					//bw.println("("+e.getOrigin().getId()+","+e.getEnd().getId()+")_Time_"+e.getTime());
-					bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_Distance_"+e.getDistance()+"_Connectivity_"+e.getConnectivity()+"_Weight_"+e.getWeight());
-					}
+			bw.println("Node");
+			Iterator hmIterator = nodes.entrySet().iterator(); 
+			while (hmIterator.hasNext()) { 
+				Map.Entry mapElement = (Map.Entry)hmIterator.next(); 
+				Node nn= nodes.get(mapElement.getKey());
+				if(nn.getProfit()>1 && nn.getId()!=0) {
+					bw.println(+nn.getId()+"  "+"_Victim_");
+				}
+				if(nn.getProfit()>1 && nn.getId()==0) {
+					bw.println(+nn.getId()+"  "+"_Depot_");
+				}
+				if(nn.getProfit()==1 ) {
+					bw.println(+nn.getId()+"  "+"_road_Crossing_");
+				}
 			}
+
 			bw.flush();
 		} 
 		catch (IOException e) {

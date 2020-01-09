@@ -142,6 +142,7 @@ public class Node implements Comparable<Node>
 	s = s.concat(this.getId() + " ");
 	s = s.concat(this.getX() + " ");
 	s = s.concat(this.getY() + " ");
+	s = s.concat(this.getProfit() + " ");
 	return s;
 	}
 
