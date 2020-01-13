@@ -17,7 +17,7 @@ public class Solution implements Cloneable
 	private double totalDistance = 0.0; // solution travel distance
 	private float servedDemand = 0.0F; // accum. demand served so far
 	private LinkedList<Route> routes; // list of routes in this solution
-	private double timePC = 0.0; // elapsed computational time (in seconds)
+	private String timePC ; // elapsed computational time (in seconds)
 	private double reliability = 1.0;
 	private int stochClientsNoServed = 0; //Clientes no servidos 
 	private int clientsServed = 0;
@@ -178,7 +178,7 @@ public class Solution implements Cloneable
 	public double getTotalTime(){return totalTime;}
 	public double getTotalDistance(){return totalDistance;}
 	public float getServedDemand(){return servedDemand;}
-	public double getPCTime(){return timePC;}
+	public String getPCTime(){return timePC;}
 	
 	public double getReliability() {return reliability;}
 	public int getStochClientsNoServed() {return stochClientsNoServed;}
@@ -198,7 +198,7 @@ public class Solution implements Cloneable
 	public void setTime(double c){totalTime = c;}
 	public void setDistance(double c){totalDistance = c;}
 	public void setServedDemand(float d){servedDemand = d;}
-	public void setPCTime(double t){timePC = t;}
+	public void setPCTime(String t){timePC = t;}
 	public void setReliability(double rel){reliability = rel;}
 	public void setStochClientsNoServed(int stochClientsNoServed) {this.stochClientsNoServed = stochClientsNoServed;}
 	public void setClientsServed(int clientsServed) {this.clientsServed = clientsServed;}
@@ -218,7 +218,7 @@ public class Solution implements Cloneable
 	
 		s = s.concat("Sol total time: " + getTotalTime() + LINE_SEPARATOR);
 		s = s.concat("Sol total distance: " + getTotalDistance() + LINE_SEPARATOR);
-		s = s.concat("Sol total visited victims: " + getTotalCoverage() + LINE_SEPARATOR);
+		//s = s.concat("Sol total visited victims: " + getTotalCoverage() + LINE_SEPARATOR);
 		s = s.concat("Sol run time: " + getPCTime() + LINE_SEPARATOR);
 		s = s.concat(LINE_SEPARATOR);
 //		s = s.concat("Note: "+ LINE_SEPARATOR);
@@ -226,13 +226,12 @@ public class Solution implements Cloneable
 		//s = s.concat("-1: aerial disrupted connection."+ LINE_SEPARATOR);
 		//s = s.concat("1: active connection."+ LINE_SEPARATOR);
 		//s = s.concat(LINE_SEPARATOR);
-		s = s.concat("# of routes in sol: " + routes.size());
-		
+				
 		s = s.concat("\r\n\r\n\r\n");
 		s = s.concat("List of routes (cost and nodes): \r\n\r\n");
 		for (int i = 1; i <= routes.size(); i++)
 		{   aRoute = routes.get(i - 1);
-		s = s.concat("Route after insertion " + i + " || ");
+		
 //	if(aRoute.getLastconnections()==-1) {
 //		s = s.concat("AERIAL CONNECTION. Last insertions = DISRUPTED CONNECTION || ");
 //	}

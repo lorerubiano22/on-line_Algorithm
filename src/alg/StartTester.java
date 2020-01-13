@@ -60,7 +60,15 @@ public class StartTester
 			Network Network = new Network();
 			Network = Network.generateroadNetwork(aTest);// The information of the network have to be full. This knowledge is a static one
 			
+			///////
+			//pathVictims xpress= new pathVictims();
+			//boolean path= xpress.solveMe(inputs,Network.getEdgeConnections(),0,5);
+			//boolean path2= xpress.solveMe(inputs,Network.getEdgeConnections(),0,3);
+//			BFS bfs=new BFS(Network.getEdgeConnections(),0,3);
+//			boolean x=bfs.isReachable();
 			
+			//boolean path3= xpress.solveMe(inputs,Network.getEdgeConnections(),0,3);
+			//////
 			
 			String Disrup_file= new String(aTest.getInstanceName()+"_Road_Network_Distances"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
 			writeLinkedList2(Disrup_file, Network.getEdgeConnections(),false);
@@ -70,7 +78,12 @@ public class StartTester
 			
 			UpdateRoadInformation revealedRoadInformation= new UpdateRoadInformation(Network);
 			//Assessment LabeledNetwork= new Assessment(revealedRoadInformation,inputs); //  Aquí se va a evaluar la conectividad sobre la red conocida hasta el momento. es la evaluadión inicial
-			
+			HashMap<Integer, Node> victims= new HashMap<Integer, Node>();
+			for(Node n:Network.getNodes()) {
+				if(n.getProfit()>1 && n.getId()!=0) {
+					victims.put(n.getId(),n);
+				}
+			}
 		new Assessment(revealedRoadInformation,inputs, aTest);
 			
 			
@@ -93,6 +106,8 @@ public class StartTester
 	InsertionProcedure MS = new InsertionProcedure(aTest,Event,revealedRoadInformation,inputs);
 
 
+
+	
 			//LabeledNetwork.computingPriorities();
 
 
@@ -158,8 +173,10 @@ public class StartTester
 
 
 		/* 3. END OF PROGRAM */
+		
 		System.out.println("****  END OF PROGRAM, CHECK OUTPUTS FILES  ****");
 		long programEnd = ElapsedTime.systemTime();
+		
 		System.out.println("Total elapsed time = "
 				+ ElapsedTime.calcElapsedHMS(programStart, programEnd));
 	}

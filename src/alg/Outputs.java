@@ -174,11 +174,19 @@ public class Outputs
 						//out.print(sol.toString());
 						//out.printf("runTime	%f\n",sol.getTime());
 						out.printf("*********************************\n");
-						out.printf("      SOLUTION: MAXIMIZING CRITERION     \n");
-						out.printf("*********************************\n");
+						out.printf("      Jumping___________"+this.Jumping_Strategy.aTest.getpercentangeDisruption());
+						out.println("\n");
 						out.printf("*********************************\n");
 						out.println("\n");
+						out.printf("*********************************\n");
+						out.printf("      Orientation Route    \n");
+						out.println("\n");
 						out.print(Jumping_Strategy.jump_Sol.toString());
+						out.println("\n");
+						out.printf("*********************************\n");
+						out.printf("      Exploration Route    \n");
+						out.println("\n");
+						out.print(Jumping_Strategy.exploration_Sol.toString());
 						out.println("\n");
 						out.printf("      Victims     \n");
 						out.println("\n");
@@ -229,21 +237,32 @@ public class Outputs
 						//out.print(sol.toString());
 						//out.printf("runTime	%f\n",sol.getTime());
 						out.printf("*********************************\n");
-						out.printf("      SOLUTION: MAXIMIZING CRITERION     \n");
+						out.printf("      Back and Forward    \n");
 						out.printf("*********************************\n");
+						out.println("\n");
 						out.printf("*********************************\n");
+						out.printf("      Orientation Route    \n");
 						out.println("\n");
 						out.print(Back_Strategy.back_Sol.toString());
 						out.println("\n");
-						out.printf("      unreachable victims     \n");
+						out.printf("*********************************\n");
+						out.printf("      Exploration Route    \n");
+						out.println("\n");
+						out.print(Back_Strategy.exploration_Sol.toString());
+						out.println("\n");
+						out.printf("      Victims     \n");
+						out.println("\n");
+						out.println("ID      State");
 						Iterator hmIterator = Back_Strategy.VictimList.entrySet().iterator(); 
 						while (hmIterator.hasNext()) { 
 							Map.Entry mapElement = (Map.Entry)hmIterator.next(); 
 							Node v= Back_Strategy.VictimList.get(mapElement.getKey());
 							if(!Back_Strategy.connectedNodestoRevealedRoadNetwork.containsKey(v.getId())) {
-								out.print(v.toString());
+								out.print(v.getId() + "      Unreachable");
 								out.println("\n");
 							}
+							else {out.print(v.getId() + "      reachable");
+							out.println("\n");}
 						}
 						//out.printf("runTime	%f",sol1.getPCTime());
 						//out.println();

@@ -21,8 +21,8 @@ public class Edge implements Serializable
 	private int state; // edge states
 	private double optCriterion; // selection criterion
 	private double nodesImportance;
-	private LinkedList<Edge> roadInflexion;
-	private LinkedList<Node> roadInflexionNode;
+	public LinkedList<Edge> roadInflexion;
+	public LinkedList<Node> roadInflexionNode;
 	public double connectivity=0.0;
 	public double weight=0.0;
 	public int disruptionIndex=-1;
