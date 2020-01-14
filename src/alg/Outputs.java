@@ -1,4 +1,5 @@
 package alg;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class Outputs
 		Solution Back_Sol;
 		Solution Ahead_Sol;
 		float runningTime;
-		ArrayList<Outputs> list = null;
+		ArrayList<Outputs> list = new ArrayList<Outputs>();
 		ArrayList<Solution> finalsol = new ArrayList<Solution>(); // saving all solution from the iterations
 		
 	}
@@ -72,7 +73,11 @@ public class Outputs
 
 
 	public Outputs(Disaster Event, Inputs inp, Test aTest) {
-		String Disrup_file= new String(aTest.getInstanceName()+"_Edges_Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
+		double alpha=0;
+		if(aTest.getOptcriterion()==1001) {
+			alpha=aTest.getOptcriterion();
+		}
+		String Disrup_file= new String(aTest.getInstanceName()+"_Edges_Disruptions"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_Alpha_"+alpha+"_"+"Disruptions.txt");
 		writeLinkedList2(Disrup_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadConnections,false);
 
 	}
@@ -164,8 +169,12 @@ public class Outputs
 				//{
 					//Solution sol = o.getMin_CPLEX_SolSol();
 					//Solution sol1 = o.getBestInitSol();
+			double alpha=0;
 					if(this.Jumping_Strategy.jump_Sol!=null) {
-						String file_name= new String(this.Jumping_Strategy.aTest.getInstanceName()+"_SOLUTION_"+"_p(disruption)_"+this.Jumping_Strategy.aTest.getpercentangeDisruption()+"_seed_"+this.Jumping_Strategy.aTest.getseed()+"_Strategy_Jumping_OptCriterion_"+this.Jumping_Strategy.aTest.getOptcriterion()+"_Output.txt");
+						if(this.Jumping_Strategy.aTest.getOptcriterion()==1001) {
+							alpha=this.Jumping_Strategy.aTest.getOptcriterion();
+						}
+						String file_name= new String(this.Jumping_Strategy.aTest.getInstanceName()+"_SOLUTION_"+"_p(disruption)_"+this.Jumping_Strategy.aTest.getpercentangeDisruption()+"_seed_"+this.Jumping_Strategy.aTest.getseed()+"_Strategy_Jumping_OptCriterion_"+this.Jumping_Strategy.aTest.getOptcriterion()+"_Alpha_"+alpha+"_Output.txt");
 						PrintWriter out = new PrintWriter(file_name);
 						out.printf("*********************************\n");
 						//out.printf("******solution Min_Distance****");
@@ -184,10 +193,10 @@ public class Outputs
 						out.print(Jumping_Strategy.jump_Sol.toString());
 						out.println("\n");
 						out.printf("*********************************\n");
-						out.printf("      Exploration Route    \n");
-						out.println("\n");
-						out.print(Jumping_Strategy.exploration_Sol.toString());
-						out.println("\n");
+//						out.printf("      Exploration Route    \n");
+//						out.println("\n");
+//						out.print(Jumping_Strategy.exploration_Sol.toString());
+//						out.println("\n");
 						out.printf("      Victims     \n");
 						out.println("\n");
 						out.println("ID      State");
@@ -277,6 +286,45 @@ public class Outputs
 		}
 	}//end method
 
+	
+	
+	public static void printSolST(ArrayList<Outputs> list){
+		try 
+		{   
+			FileWriter fileWriter = new FileWriter("C:/Users/Lorena/Documents/wokspace_Java_BOKU/on-line_Algorithm/Outputs/ResumeSols.txt", true); //Set true for append mode
+			   
+			PrintWriter out = new PrintWriter(fileWriter);
+			//out.printf("Instance   strategy     optCriteria   p(disruption)  seed    TravelTime     Aerial_Time(BKS)       TravelDistance       Aerial_Distance(BKS)    visitedVictims   Run_time   Route     network     disrupEdges ");
+
+			out.printf("Instance   strategy     optCriteria   p(disruption)      importanceDistance      seed    Distance   Time   ");
+			for(Outputs o : list){
+					
+						//Solution sol2 = o.getMax_CPLEX_Sol();
+						out.println();
+						String a= new String();
+						//						if(o.getMin_CPLEX_SolSol()!=null || o.getMax_CPLEX_Sol()!=null) {
+						//							a= new String(sol2.gettypeSol());
+						//						}
+						//out.printf("%s  %s   %s	 %2f  %2f	%2f	%2f	%2f", o.instanceName,a, sol1.getsol_typeNetwork(),sol1.getprobDisruption(),(float)sol1.getTestCondition().getseed(),sol1.getTotalCosts(),sol1.getTotalCoverage(),sol2.getTotalCosts(),sol2.getTotalCoverage());
+						out.printf("%s   %s ", o.Jumping_Strategy.aTest.getInstanceName(),"Jumping");
+						Locale.setDefault(Locale.US);
+						double alpha=0;
+						if(o.Jumping_Strategy.aTest.getOptcriterion()==1001) {
+							alpha=o.Jumping_Strategy.aTest.getOptcriterion();
+						}
+					
+						out.printf(" %.0f     %.3f           %.3f           %.3f           %.3f           %.3f                                ", o.Jumping_Strategy.aTest.getOptcriterion(),o.Jumping_Strategy.aTest.getpercentangeDisruption(),alpha,(float)o.Jumping_Strategy.aTest.getseed(),o.Jumping_Strategy.jump_Sol.getTotalDistance(),o.Jumping_Strategy.jump_Sol.getTotalTime());
+						String s="  ";
+						
+				
+			}
+			out.close();
+			
+		} 
+		catch (IOException exception) 
+		{   System.out.println("Error processing output file: " + exception);
+		}
+	}//end method
 
 
 

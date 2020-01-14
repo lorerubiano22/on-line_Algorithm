@@ -121,7 +121,7 @@ public int gettypeEdge(){return typeEdge;}
 	double Y1 = origin.getY();
 	double X2 = end.getX();
 	double Y2 = end.getY();
-	double time = Math.sqrt((X2 - X1) * (X2 - X1) + (Y2 - Y1) * (Y2 - Y1))/Test.getTravelSpeed();
+	double time = Math.sqrt((X2 - X1) * (X2 - X1) + (Y2 - Y1) * (Y2 - Y1))/10.8;
 	return time;
 	}
 
@@ -139,7 +139,7 @@ public int gettypeEdge(){return typeEdge;}
 	double Y1 = origin.getY();
 	double X2 = end.getX();
 	double Y2 = end.getY();
-	double d = Math.sqrt((X2 - X1) * (X2 - X1) + (Y2 - Y1) * (Y2 - Y1))/Test.getTravelSpeed();
+	double d = Math.sqrt((X2 - X1) * (X2 - X1) + (Y2 - Y1) * (Y2 - Y1))/10.8;
 	return d;
 	}
 

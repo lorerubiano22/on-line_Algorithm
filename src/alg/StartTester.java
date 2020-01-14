@@ -23,7 +23,7 @@ public class StartTester
 	final static String inputFolder = "inputs";
 	final static String outputFolder = "outputs";
 	final static String testFolder = "tests";
-	final static String fileNameTest = "TTT.txt"; 
+	final static String fileNameTest = "test2Run.txt"; 
 	final static String sufixFileNodes = ".txt";
 	final static String sufixFileVehicules = "_input_vehicles.txt";
 	final static String sufixFileOutput = "_outputs.txt";
@@ -60,19 +60,11 @@ public class StartTester
 			Network Network = new Network();
 			Network = Network.generateroadNetwork(aTest);// The information of the network have to be full. This knowledge is a static one
 			
-			///////
-			//pathVictims xpress= new pathVictims();
-			//boolean path= xpress.solveMe(inputs,Network.getEdgeConnections(),0,5);
-			//boolean path2= xpress.solveMe(inputs,Network.getEdgeConnections(),0,3);
-//			BFS bfs=new BFS(Network.getEdgeConnections(),0,3);
-//			boolean x=bfs.isReachable();
-			
-			//boolean path3= xpress.solveMe(inputs,Network.getEdgeConnections(),0,3);
-			//////
+
 			
 			String Disrup_file= new String(aTest.getInstanceName()+"_Road_Network_Distances"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
 			writeLinkedList2(Disrup_file, Network.getEdgeConnections(),false);
-			new DrawingNetwork(Network.getedgeRoadNetwork());
+			//new DrawingNetwork(Network.getedgeRoadNetwork());
 			// set the disaster conditions and the disrupted road network: this information is static does not change over the time
 			Disaster Event = new Disaster(Network,aTest);
 			
