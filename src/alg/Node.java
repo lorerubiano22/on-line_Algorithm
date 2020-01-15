@@ -49,12 +49,20 @@ public class Node implements Comparable<Node>
 				this.profit = n.profit;
 				closestNodes=new LinkedList<Edge>();
 				for(Edge e: n.getconnectionsList()){
-					this.closestNodes.add(e);
+					Edge newEdge = new Edge(e);
+					newEdge.setOrigin(new Node(e.getOrigin().getId(),e.getOrigin().getX(),e.getOrigin().getY(),e.getOrigin().getProfit()));
+					newEdge.setEnd(new Node(e.getEnd().getId(),e.getEnd().getX(),e.getEnd().getY(),e.getEnd().getProfit()));
+				
+					this.closestNodes.add(newEdge);
 				}
 
 		Adjedges=new LinkedList<Edge>();
 		for(Edge e: n.getAdjEdgesList()){
-			this.Adjedges.add(e);
+			Edge newEdge = new Edge(e);
+			newEdge.setOrigin(new Node(e.getOrigin().getId(),e.getOrigin().getX(),e.getOrigin().getY(),e.getOrigin().getProfit()));
+			newEdge.setEnd(new Node(e.getEnd().getId(),e.getEnd().getX(),e.getEnd().getY(),e.getEnd().getProfit()));
+		
+			this.Adjedges.add(newEdge);
 		}
 		this.connection=n.connection;
 		this.importance=n.importance;

@@ -183,7 +183,7 @@ public class Outputs
 						//out.print(sol.toString());
 						//out.printf("runTime	%f\n",sol.getTime());
 						out.printf("*********************************\n");
-						out.printf("      Jumping___________"+this.Jumping_Strategy.aTest.getpercentangeDisruption());
+						out.printf("      Jumping___________" + this.Jumping_Strategy.aTest.getpercentangeDisruption() +"  "+this.Jumping_Strategy.aTest.getOptcriterion() );
 						out.println("\n");
 						out.printf("*********************************\n");
 						out.println("\n");
@@ -246,7 +246,7 @@ public class Outputs
 						//out.print(sol.toString());
 						//out.printf("runTime	%f\n",sol.getTime());
 						out.printf("*********************************\n");
-						out.printf("      Back and Forward    \n");
+						out.printf("      Back and Forward    \n" + this.Back_Strategy.aTest.getpercentangeDisruption() +"  "+this.Back_Strategy.aTest.getOptcriterion() );
 						out.printf("*********************************\n");
 						out.println("\n");
 						out.printf("*********************************\n");
@@ -255,11 +255,11 @@ public class Outputs
 						out.print(Back_Strategy.back_Sol.toString());
 						out.println("\n");
 						out.printf("*********************************\n");
-						out.printf("      Exploration Route    \n");
-						out.println("\n");
-						out.print(Back_Strategy.exploration_Sol.toString());
-						out.println("\n");
-						out.printf("      Victims     \n");
+//						out.printf("      Exploration Route    \n");
+//						out.println("\n");
+//						out.print(Back_Strategy.exploration_Sol.toString());
+//						out.println("\n");
+//						out.printf("      Victims     \n");
 						out.println("\n");
 						out.println("ID      State");
 						Iterator hmIterator = Back_Strategy.VictimList.entrySet().iterator(); 
@@ -291,12 +291,14 @@ public class Outputs
 	public static void printSolST(ArrayList<Outputs> list){
 		try 
 		{   
-			FileWriter fileWriter = new FileWriter("C:/Users/Lorena/Documents/wokspace_Java_BOKU/on-line_Algorithm/Outputs/ResumeSols.txt", true); //Set true for append mode
-			   
+			//
+			//FileWriter fileWriter = new FileWriter("C:/Users/Simulant_64/Documents/Work_Java/on-line_Algorithm/Outputs/ResumeSols.txt", true);
+			FileWriter fileWriter = new FileWriter("C:/Users/Lorena/Documents/wokspace_Java_BOKU/on-line_Algorithm/Outputs/ResumeSols_Jumping.txt", true);
+			
 			PrintWriter out = new PrintWriter(fileWriter);
 			//out.printf("Instance   strategy     optCriteria   p(disruption)  seed    TravelTime     Aerial_Time(BKS)       TravelDistance       Aerial_Distance(BKS)    visitedVictims   Run_time   Route     network     disrupEdges ");
 
-			out.printf("Instance   strategy     optCriteria   p(disruption)      importanceDistance      seed    Distance   Time   ");
+			
 			for(Outputs o : list){
 					
 						//Solution sol2 = o.getMax_CPLEX_Sol();
@@ -313,7 +315,47 @@ public class Outputs
 							alpha=o.Jumping_Strategy.aTest.getOptcriterion();
 						}
 					
-						out.printf(" %.0f     %.3f           %.3f           %.3f           %.3f           %.3f                                ", o.Jumping_Strategy.aTest.getOptcriterion(),o.Jumping_Strategy.aTest.getpercentangeDisruption(),alpha,(float)o.Jumping_Strategy.aTest.getseed(),o.Jumping_Strategy.jump_Sol.getTotalDistance(),o.Jumping_Strategy.jump_Sol.getTotalTime());
+						out.printf(" %.0f         %.3f           %.3f           %.3f           %.3f           %.3f           ", o.Jumping_Strategy.aTest.getOptcriterion(),o.Jumping_Strategy.aTest.getpercentangeDisruption(),alpha,(float)o.Jumping_Strategy.aTest.getseed(),o.Jumping_Strategy.jump_Sol.getTotalDistance(),(float)o.Jumping_Strategy.jump_Sol.getTotalTime());
+						String s="  ";
+						
+				
+			}
+			out.close();
+			
+		} 
+		catch (IOException exception) 
+		{   System.out.println("Error processing output file: " + exception);
+		}
+	}//end method
+	
+	public static void printSolSTB(ArrayList<Outputs> list){
+		try 
+		{   
+			//
+			//FileWriter fileWriter = new FileWriter("C:/Users/Simulant_64/Documents/Work_Java/on-line_Algorithm/Outputs/ResumeSols.txt", true);
+			FileWriter fileWriter = new FileWriter("C:/Users/Lorena/Documents/wokspace_Java_BOKU/on-line_Algorithm/Outputs/ResumeSols_BackandForward.txt", true);
+			
+			PrintWriter out = new PrintWriter(fileWriter);
+			//out.printf("Instance   strategy     optCriteria   p(disruption)  seed    TravelTime     Aerial_Time(BKS)       TravelDistance       Aerial_Distance(BKS)    visitedVictims   Run_time   Route     network     disrupEdges ");
+
+			
+			for(Outputs o : list){
+					
+						//Solution sol2 = o.getMax_CPLEX_Sol();
+						out.println();
+						String a= new String();
+						//						if(o.getMin_CPLEX_SolSol()!=null || o.getMax_CPLEX_Sol()!=null) {
+						//							a= new String(sol2.gettypeSol());
+						//						}
+						//out.printf("%s  %s   %s	 %2f  %2f	%2f	%2f	%2f", o.instanceName,a, sol1.getsol_typeNetwork(),sol1.getprobDisruption(),(float)sol1.getTestCondition().getseed(),sol1.getTotalCosts(),sol1.getTotalCoverage(),sol2.getTotalCosts(),sol2.getTotalCoverage());
+						out.printf("%s   %s ", o.Back_Strategy.aTest.getInstanceName(),"Jumping");
+						Locale.setDefault(Locale.US);
+						double alpha=0;
+						if(o.Back_Strategy.aTest.getOptcriterion()==1001) {
+							alpha=o.Back_Strategy.aTest.getpercentageDistance();
+						}
+					
+						out.printf(" %.0f         %.3f           %.3f           %.3f           %.3f           %.3f           %.3f           ", o.Back_Strategy.aTest.getOptcriterion(),o.Back_Strategy.aTest.getpercentangeDisruption(),alpha,(float)o.Back_Strategy.aTest.getseed(),o.Back_Strategy.back_Sol.getTotalDistance(),o.Back_Strategy.back_Sol.getTotalTime(),o.Back_Strategy.back_Sol.getPCTime());
 						String s="  ";
 						
 				

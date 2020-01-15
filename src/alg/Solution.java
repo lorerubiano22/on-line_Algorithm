@@ -17,7 +17,7 @@ public class Solution implements Cloneable
 	private double totalDistance = 0.0; // solution travel distance
 	private float servedDemand = 0.0F; // accum. demand served so far
 	private LinkedList<Route> routes; // list of routes in this solution
-	private String timePC ; // elapsed computational time (in seconds)
+	private double timePC ; // elapsed computational time (in seconds)
 	private double reliability = 1.0;
 	private int stochClientsNoServed = 0; //Clientes no servidos 
 	private int clientsServed = 0;
@@ -178,7 +178,7 @@ public class Solution implements Cloneable
 	public double getTotalTime(){return totalTime;}
 	public double getTotalDistance(){return totalDistance;}
 	public float getServedDemand(){return servedDemand;}
-	public String getPCTime(){return timePC;}
+	public double getPCTime(){return timePC;}
 	
 	public double getReliability() {return reliability;}
 	public int getStochClientsNoServed() {return stochClientsNoServed;}
@@ -198,7 +198,7 @@ public class Solution implements Cloneable
 	public void setTime(double c){totalTime = c;}
 	public void setDistance(double c){totalDistance = c;}
 	public void setServedDemand(float d){servedDemand = d;}
-	public void setPCTime(String t){timePC = t;}
+	public void setPCTime(double t){timePC = t;}
 	public void setReliability(double rel){reliability = rel;}
 	public void setStochClientsNoServed(int stochClientsNoServed) {this.stochClientsNoServed = stochClientsNoServed;}
 	public void setClientsServed(int clientsServed) {this.clientsServed = clientsServed;}
