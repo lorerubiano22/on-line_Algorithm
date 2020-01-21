@@ -1,38 +1,203 @@
-0 -- 31 == 7.615773105863909
-9 -- 10 == 10.770329614269007
-7 -- 8 == 14.035668847618199
-6 -- 5 == 14.035668847618199
-30 -- 25 == 14.212670403551895
-11 -- 20 == 15.132745950421556
-18 -- 19 == 15.556349186104045
-19 -- 26 == 17.204650534085253
-21 -- 22 == 17.72004514666935
-30 -- 26 == 17.804493814764857
-27 -- 0 == 17.88854381999832
-7 -- 9 == 18.24828759089466
-2 -- 6 == 20.0
-4 -- 3 == 20.248456731316587
-31 -- 17 == 21.095023109728988
-5 -- 12 == 21.840329667841555
-4 -- 5 == 22.561028345356956
-20 -- 19 == 22.627416997969522
-24 -- 22 == 23.08679276123039
-21 -- 20 == 23.430749027719962
-30 -- 29 == 24.020824298928627
-1 -- 7 == 24.839484696748443
-10 -- 11 == 25.495097567963924
-2 -- 1 == 26.1725046566048
-23 -- 22 == 26.30589287593181
-28 -- 16 == 26.419689627245813
-14 -- 13 == 30.528675044947494
-0 -- 18 == 32.7566787083184
-14 -- 15 == 35.35533905932738
-27 -- 16 == 39.293765408777
-14 -- 16 == 46.75467891024384
+CLEANING PROCEDURE
+
+1. Nodes coordinate of the road network (G)
+2. Para cada intermediate node se calcula la ruta más corta al depot
+if(existe una ruta desde el intermediate node al depot){
+3. Se crea una copia de la road network (G')
+4. Se elimina el depot de G'
+5. Para cada intermediate node se calcula la ruta más corta a al menos una victima
+if(existe una ruta para al menos una victima){
+el nodo permanece en la red}
+else{el intermediate nodo se elimina}
+else{el intemediate nodo se elimina}
+
+la ruta resultante es el depot, victim nodes, intermediate nodes with: more than one active and adjacent connection. Any direct connection with victim nodes.
+
+NOTES:
 
 
 
+Class: NETWORK
+
+1. Reading the coordinates
+2. Generation of road connections
+3. Generation of the road network // se asume que el depot no esta conectado con el depot
+
+Class: DISASTER
+
+This class could be replaced by online information. The output of this class is the information that we nwws to detect
+The disrupted network is created under the following consideration:
+In advance is randomly defined the connections which are missing in the road network
+Then the disruption are located on the edge.
+
+Procedure to locate the disruptions on the edge
+
+1. Identify in the road connection which edges are disrupted
+2. Select the road connection
+3. Select the road network
+4. Copy the road conection into the disrupted road conection network
+5. Select the disrupted connections
+6. Start to read the road connection and compare against disrupted edges
+if connection is disrupted
+        1. remove the disrupted edge from the road conection network
+2. select the list of random nodes of the edge
+2.randomly set a disruption node
+7. Copy the road network itno the disrupted road network
 
 
-						
-						
+Class: UpdateRoadInformation
+
+edgeRoadConnection-> represents the connections.
+edgeRoadNetwork-> represents the road, it considers the road crossings
+
+This class is the interface between the on-line routing and the assesment process
+
+Note: Assessment process is where the priorities are estimated
+
+
+Class: Assessment
+
+Edges list have to be connected in order to update the information. the state.
+This list of edge have to be independent to the inputs list> network list of edges
+
+1. cleanning the road network
+2. The criteria is computing
+	2.1. Computing the importance of nodes *  importanceNodes()
+	2.2  Computing the average node connectivity
+	2.3. Computing the importance of edges
+
+3. update the values for each element in the network
+
+*** Check if each element has the same information in each part of the network.
+
+More details
+
+private static void importanceNodes() {
+	1. Classification of active and disrupted nodes
+	2. An importance value is assigned to the active nodes
+		2.1 Computing the dynamic score to identify the disaster centre management and location of victims -> static score/ size of adjacent edges of this node
+		2.2 Computing the dynamic connectivity value for the road crossings -> sum of the dynamic score of nodes/  / size of adjacent edges of this node
+		2.3 Computing the average dynamic score
+		2.4 computing the average time
+}
+
+
+Class: shortpathXpress
+
+1. Setting problems parameters
+2. TSP problem-> Min. travel distance
+
+Note: it returns a boolean variable-> true: if the node belongs to a route from depot to (at least) a victim 
+
+
+
+Class: BackandForwardMovement
+
+Cuando es detectada una disrupción de esta forma es enmendada:
+1. Se seleccionan los nodos que pertenecen a los arcos funcionales ya explorados (conncected nodes)
+2. se seleccionan los arcos adjyacentes a los nodos contenidos en esos arcos
+3. Se selecciona el arco con el valor de prioridad más alto <- arco a visitar
+4. se selecciona el nodo más cercano (nodo origen o nodo destino)
+5. se crea la connección aerea y se inserta
+5. se reempieza el proceso de reinsersión
+
+
+1: procedure INSERTIONPROCEDURE(known road network, exploration strategy, labelled road network)
+2: position←Distater management centre location
+3: disruptednetwork←known road network
+4: victims←selectVictimLocations(known road network) . Victimstoevaluatetheroadaccess
+5: explorationRoute←new route . Explorationrouteisempty
+6: while victims is not empty do
+7: edgeToinsert←selectbestEdge(position, labelled road network) . Orientationstrategy
+8: explorationRoute←setExplorationRoute(edgeToinsert, explorationRoute)
+9: if edgeToinsert is disrutedthen
+10: labelled road network←updatepriorities(edgeToinsert) . Updatedlabelled
+11: aerialEdge←redirectRoute(position,explorationRoute) . Movementstrategy
+12: position←updateUAVposition(edgeToinsert)
+13: endif
+14: disruptednetwork←updateState(explorationRoute, victims) . updateroadinformation
+15: position←updateUAVposition(edgeToinsert)
+16: endwhile
+17: return disruptednetwork, explorationRoute
+18: endprocedure
+
+Class: MaxprofitXpress
+
+
+Is used to evaluate the connectivity of the intermediate nodes. There any feasible path is determined. it tries to maximize the collected profit
+
+
+
+Class: JumpingMovement
+
+Nota: ojo con el procedimiento de que tiene que asegurar que el depot este conectado de lo contrario la ruta no empieza
+
+selectBestEdge();
+
+1. case 1: if (La lista de ejes adjacentes esta vacia)
+   if (La lista de ejes adjacentes esta vacia{
+   Selecciona el eje con más alta prioridad
+   se crean los dos ejes aereos
+   se inserta el eje más corto
+   se inserta el eje
+   }
+
+   else{ case 2:
+		2. En la lista de ejes adjacentes hay ejes que connecten nodos victimas
+		if(en la lista de ejes adjacentes hay nodos victimas sin visitar){
+			se seleccionan los ejes que contienene victimas no exploradas
+			se selecciona la que tiene más alta prioridad.}
+		else{
+			3. En la lista de ejes adjacentes hay ejes que connecten road crossings
+		}
+}
+
+
+Redirect Route
+
+check si el depot esta connectado
+case 1: 
+if(There is not functional edge from depot to victim node){ // NO CONNECTIVITY !!
+  UAV returns to depot
+  Accessibility of victim nodes is known	
+}
+si aún el depot no esta conectado tiene el UAV tiene que regresar
+        No existe labelled
+case 2: 
+
+
+
+case 1.
+If the disrupted edge connects a victim Node
+
+
+
+Class driving range limitations
+
+The sort insertion procedure evaluates the current position of the UAV
+1.	If the current position is a disruption location, the buffer is defined once the function redirectRoute (line 11) defines the aerial edge aerialEdge.
+I.	Using as a reference the origin- and end node of the aerial edge in step (1), the procedure defines an additional aerial edge from the end node to the disaster management centre location.
+II.	The dynamic buffer is calculated as the sum of edges length in steps (1) and (I)
+III.	Once the buffer is known, the length of the current exploration route is evaluated.
+i.	If the length of the current exploration route plus buffer exceeds the driving range. The procedure defines an aerial edge which is used by the UAV to fly from the disruption location to disaster management centre location.
+ii.	 If the length of the current exploration route plus buffer is less than the driving range. The aerial edge in step (1) is inserted in the redirectRoute.
+iii.	The sort insertion procedure continues from the function updateUAVposition which updates the current position of the UAV (line 12).
+
+
+1. If the current position is a disruption location, the buffer is defined once the function selectThebestedge (linea 7) selects the best edge to explore next.
+I. Using as a reference the origin- and end node of the aerial edge in step (1), the procedure defines an additional aerial edge from the end node to the disaster management centre location.
+
+i.	The dynamic buffer is calculated as the sum of edges length in steps (1) and (II)
+III.	Once the buffer is known, the length of the current exploration route is evaluated.
+i.	If the length of the current exploration route plus buffer exceeds the driving range. The procedure defines an aerial edge which is used by the UAV to fly from the Current position to disaster management centre location.
+ii.	 If the length of the current exploration route plus buffer is less than the driving range. The aerial edge in step (1) is inserted in the explorationRoute.
+iii.	The sort insertion procedure continues from the function updateUAVposition which updates the current position of the UAV (line 12).
+
+
+
+     1.2.1 se crea un eje aereo desde el nodo fin del eje del punto 1.2 y al disaster management centre
+     1.2.2 se calcula la distancia del eje del paso 1.2 y la distancia del paso 1.2.1
+	 1.1.4 se evalua si la suma del paso 3 + la distancia actual de la ruta de exploración excede the safe driving range 
+	   1.1.4.1 si excede el UAV regresa al disaster management centre. Es decir se crea un eje aereo desde el punto de la disrupción hasta el disaster management centre
+	   1.1.4.2 si no excede el UAV vuela hasta el eje definido en el paso 1.2
+	   1.1.4.3 se retoma el proceso en la linea 11 del pseudocodigo 
