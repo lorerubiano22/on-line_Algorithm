@@ -1,10 +1,9 @@
 package alg;
 
+import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedList;
 
-public class Node implements Comparable<Node>
-{
+public class Node implements Comparable<Node> {
 	static int counter = 0;
 	/* INSTANCE FIELDS & CONSTRUCTOR */
 	private int id; // node ID (depotID = 0)
@@ -18,183 +17,193 @@ public class Node implements Comparable<Node>
 	private Edge diEdge = null; // edge from depot to node
 	private Edge idEdge = null; // edge from node to depot
 	private double profit = 0.0;
-	private double importance=0.0;
-	private boolean connection=false;
-	private LinkedList<Edge> Adjedges= new LinkedList<Edge>();
-	private LinkedList<Edge> closestNodes= new LinkedList<Edge>();
+	private double importance = 0.0;
+	private boolean connection = false;
+	private ArrayList<Edge> Adjedges = new ArrayList<>();
 
-
-
-
-	public Node(int nodeId, float nodeX, float nodeY, double profit)
-	{ 
+	public Node(int nodeId, float nodeX, float nodeY, double profit) {
 		id = nodeId;
 		x = nodeX;
 		y = nodeY;
 		expDemand = 0;
-		this.profit = profit; //Profit to visit a node
+		this.profit = profit; // Profit to visit a node
 	}
 
-	public Node (Node n){
+	public Node(Node n) {
 		this.id = n.id;
 		this.x = n.x;
 		this.y = n.y;
 		this.expDemand = n.expDemand;
-		if(this.inRoute != null){
+		if (this.inRoute != null) {
 			this.inRoute = new Route(n.inRoute);
 		}
 		this.isInterior = n.isInterior;
-		this.isOriginAdjacent = n.isOriginAdjacent; 
+		this.isOriginAdjacent = n.isOriginAdjacent;
 		this.isEndAdjacent = n.isEndAdjacent;
-				this.profit = n.profit;
-				closestNodes=new LinkedList<Edge>();
-				for(Edge e: n.getconnectionsList()){
-					Edge newEdge = new Edge(e);
-					newEdge.setOrigin(new Node(e.getOrigin().getId(),e.getOrigin().getX(),e.getOrigin().getY(),e.getOrigin().getProfit()));
-					newEdge.setEnd(new Node(e.getEnd().getId(),e.getEnd().getX(),e.getEnd().getY(),e.getEnd().getProfit()));
-				
-					this.closestNodes.add(newEdge);
-				}
-
-		Adjedges=new LinkedList<Edge>();
-		for(Edge e: n.getAdjEdgesList()){
+		this.profit = n.profit;
+		Adjedges = new ArrayList<>();
+		for (Edge e : n.getAdjEdgesList()) {
 			Edge newEdge = new Edge(e);
-			newEdge.setOrigin(new Node(e.getOrigin().getId(),e.getOrigin().getX(),e.getOrigin().getY(),e.getOrigin().getProfit()));
-			newEdge.setEnd(new Node(e.getEnd().getId(),e.getEnd().getX(),e.getEnd().getY(),e.getEnd().getProfit()));
-		
+			newEdge.setOrigin(new Node(e.getOrigin().getId(), e.getOrigin().getX(), e.getOrigin().getY(),
+					e.getOrigin().getProfit()));
+			newEdge.setEnd(new Node(e.getEnd().getId(), e.getEnd().getX(), e.getEnd().getY(), e.getEnd().getProfit()));
+
 			this.Adjedges.add(newEdge);
 		}
-		this.connection=n.connection;
-		this.importance=n.importance;
-		if(this.diEdge  != null){
-			this.diEdge = new Edge (n.diEdge);
+		this.connection = n.connection;
+		this.importance = n.importance;
+		if (this.diEdge != null) {
+			this.diEdge = new Edge(n.diEdge);
 		}
-		if(this.idEdge != null){
+		if (this.idEdge != null) {
 			this.idEdge = new Edge(n.idEdge);
 		}
 
-
-
-
 	}
-
-
-
-	
 
 	/* SET METHODS */
-	public void setImportance(Double i){importance = i;}
-	public void setInRoute(Route r){inRoute = r;}
-	public void setIsInterior(boolean value){isInterior = value;}
-	public void setDiEdge(Edge e){diEdge = e;}
-	public void setIdEdge(Edge e){idEdge = e;}
-	public void setProfit(double profit) {this.profit = profit;}
-	public void setAdjedges(LinkedList<Edge> sList) {Adjedges = sList;}
-	public void setConnection(boolean connection) {this.connection = connection;}
-	public void  setclosestNodesList(LinkedList<Edge> sList) {closestNodes = sList;}
-	/* GET METHODS */
-	public int getId(){return id;}
-	public float getX(){return x;}
-	public float getY(){return y;}
-	public boolean getConnection() {return connection;}
+	public void setImportance(Double i) {
+		importance = i;
+	}
 
-	public double getProfit() {return profit;}
+	public void setInRoute(Route r) {
+		inRoute = r;
+	}
+
+	public void setIsInterior(boolean value) {
+		isInterior = value;
+	}
+
+	public void setDiEdge(Edge e) {
+		diEdge = e;
+	}
+
+	public void setIdEdge(Edge e) {
+		idEdge = e;
+	}
+
+	public void setProfit(double profit) {
+		this.profit = profit;
+	}
+
+	public void setAdjedges(ArrayList<Edge> sList) {
+		Adjedges = sList;
+	}
+
+	public void setConnection(boolean connection) {
+		this.connection = connection;
+	}
+
+	/* GET METHODS */
+	public int getId() {
+		return id;
+	}
+
+	public float getX() {
+		return x;
+	}
+
+	public float getY() {
+		return y;
+	}
+
+	public boolean getConnection() {
+		return connection;
+	}
+
+	public double getProfit() {
+		return profit;
+	}
+
 	// public double getPolicyCost(int index){return PolicyCost[index];}
-	public float getExpDemand(){return expDemand;}
-	public Route getInRoute(){return inRoute;}
-	public boolean getIsInterior(){return isInterior;}
-	public Edge getDiEdge(){return diEdge;}
-	public Edge getIdEdge(){return idEdge;}
-	public boolean getIsOriginAdjacent(){return isOriginAdjacent;}
-	public boolean getIsEndAdjacent(){return isEndAdjacent;}
-	public double getImportance(){return importance;}
-	public LinkedList<Edge> getAdjEdgesList(){return Adjedges;}
-	public LinkedList<Edge>  getconnectionsList() {return closestNodes;}
+	public float getExpDemand() {
+		return expDemand;
+	}
+
+	public Route getInRoute() {
+		return inRoute;
+	}
+
+	public boolean getIsInterior() {
+		return isInterior;
+	}
+
+	public Edge getDiEdge() {
+		return diEdge;
+	}
+
+	public Edge getIdEdge() {
+		return idEdge;
+	}
+
+	public boolean getIsOriginAdjacent() {
+		return isOriginAdjacent;
+	}
+
+	public boolean getIsEndAdjacent() {
+		return isEndAdjacent;
+	}
+
+	public double getImportance() {
+		return importance;
+	}
+
+	public ArrayList<Edge> getAdjEdgesList() {
+		return Adjedges;
+	}
 	/* AUXILIARY METHODS */
 
-
-
-	private float setCurrentLevel()
-	{
-		float level = 0.0f; // default (id is odd and multiple of 3)
-		if( id % 2 != 0 && id % 3 != 0 ) // id is odd and not multiple of 3
-			level = 0.5f * expDemand;
-		else if ( id % 2 == 0 && id % 4 == 0 ) // id is even and multiple of 4
-			level = expDemand;
-		else if ( id % 2 == 0 && id % 4 != 0 ) // id is even and not multiple of 4
-			level = 1.5f * expDemand;
-		return level;
-	}
-
-
-
-	public int getIndexPolicy(float value){
-		int index;
-		if (value == 0.0) {index = 0;}
-		else if (value == 0.25) {index = 1;}
-		else if (value == 0.50) {index = 2;}
-		else if (value == 0.75) {index = 3;}
-		else if (value == 1.0) {index = 4;}
-		else {index = 5;}
-		return index;
-	}
-
-	public void setIsOriginAdjacent(boolean mIsOriginAdjacent){isOriginAdjacent=mIsOriginAdjacent;}
-	public void setIsEndAdjacent(boolean mIsEndAdjacent){isEndAdjacent=mIsEndAdjacent;}
-
-
-
 	@Override
-	public String toString() 
-	{   String s = "";
-	s = s.concat(this.getId() + " ");
-	s = s.concat(this.getX() + " ");
-	s = s.concat(this.getY() + " ");
-	s = s.concat(this.getProfit() + " ");
-	return s;
+	public String toString() {
+		String s = "";
+		s = s.concat(this.getId() + " ");
+		s = s.concat(this.getX() + " ");
+		s = s.concat(this.getY() + " ");
+		s = s.concat(this.getProfit() + " ");
+		return s;
 	}
-
 
 	@Override
 	public int compareTo(Node comparestu) {
-		if(comparestu.profit>profit) return 1;
-		if(comparestu.profit<profit) return -1;
-		else return 0;
+		if (comparestu.profit > profit)
+			return 1;
+		if (comparestu.profit < profit)
+			return -1;
+		else
+			return 0;
 	}
-	static final Comparator<Node>positionY = new Comparator<Node>(){
-		public int compare(Node a1, Node a2){
-			if (a1.getY() < a2.getY()) return -1;
-			if (a1.getY() > a2.getY()) return 1;
+
+	static final Comparator<Node> positionY = new Comparator<Node>() {
+		@Override
+		public int compare(Node a1, Node a2) {
+			if (a1.getY() < a2.getY())
+				return -1;
+			if (a1.getY() > a2.getY())
+				return 1;
 			return 0;
-	};};
-	
-	static final Comparator<Node>ID = new Comparator<Node>(){
-		public int compare(Node a1, Node a2){
-			if (a1.getId() < a2.getId()) return -1;
-			if (a1.getId() > a2.getId()) return 1;
+		};
+	};
+
+	static final Comparator<Node> ID = new Comparator<Node>() {
+		@Override
+		public int compare(Node a1, Node a2) {
+			if (a1.getId() < a2.getId())
+				return -1;
+			if (a1.getId() > a2.getId())
+				return 1;
 			return 0;
-	};};
-	
-	static final Comparator<Node>positionX = new Comparator<Node>(){
-		public int compare(Node a1, Node a2){
-			if (a1.getX() < a2.getX()) return -1;
-			if (a1.getX() > a2.getX()) return 1;
+		};
+	};
+
+	static final Comparator<Node> positionX = new Comparator<Node>() {
+		@Override
+		public int compare(Node a1, Node a2) {
+			if (a1.getX() < a2.getX())
+				return -1;
+			if (a1.getX() > a2.getX())
+				return 1;
 			return 0;
-	};};
-
-	//	public static void setImpAdjdges(Inputs inputs) {
-	//		LinkedList<Edge> edges= new LinkedList<Edge>();
-	//		for(Edge ed:Adjedges) {
-	//			int i=ed.getOrigin().getId();
-	//			int j=ed.getEnd().getId();
-	//			Edge e=inputs.getedge(i, j);
-	//			ed.setImportance(e.getImportance());
-	//			
-	//		}
-	//		
-	//	}
-
-
-
+		};
+	};
 
 }
