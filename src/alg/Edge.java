@@ -10,10 +10,10 @@ public class Edge implements Serializable {
 	private Node origin; // origin node
 	private int typeEdge;// 1 if it belongs to the road network 0 otherwise
 	private Node end; // end node
-	private double timeEuclidean = 0.0; // edge costs (travel time)
-	private double distanceEuclidean = 0.0; // edge costs (travel distance)
-	private double timeRoad = 0.0; // edge costs (travel time)
-	private double distanceRoad = 0.0; // edge costs (travel distance)
+	private double timeEuclidean ; // edge costs (travel time)
+	private double distanceEuclidean ; // edge costs (travel distance)
+	private double timeRoad ; // edge costs (travel time)
+	private double distanceRoad ; // edge costs (travel distance)
 	private Edge inverseEdge = null; // edge with inverse direction
 	private double nodesImportance;
 	private LinkedList<Edge> roadInflexion;

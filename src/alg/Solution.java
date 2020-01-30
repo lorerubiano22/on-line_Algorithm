@@ -1,10 +1,13 @@
 package alg;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class Solution implements Cloneable {
 
 	/* INSTANCE FIELDS & CONSTRUCTOR */
+	private Map<Integer, Node> recheablevictims = new HashMap<>();
 	private double totalTime; // solution total travel time
 	private double totalDistance; // solution travel distance
 	private LinkedList<Route> routes; // list of routes in this solution - keep for the extension
@@ -87,6 +90,15 @@ public class Solution implements Cloneable {
 			s = s.concat(last + "\n");
 		}
 		return s;
+	}
+
+	public void setrecheablevictims(Map<Integer, Node> victims) {
+		for(Node victim:victims.values()) {
+			recheablevictims.put(victim.getId(), victim);
+		}
+	}
+	public Map<Integer, Node> getrecheablevictims() {
+		return recheablevictims;
 	}
 
 }

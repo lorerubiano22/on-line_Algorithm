@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public class StartTester {
 	final static String inputFolder = "inputs";
@@ -16,9 +15,9 @@ public class StartTester {
 	final static String sufixFileVehicules = "_input_vehicles.txt";
 	final static String sufixFileOutput = "_outputs.txt";
 
-	public static void main(String[] args) {
+	public static void main(String[] args)  {
 
-		System.out.println("****  WELCOME TO THIS PROGRAM  ****");
+	System.out.println("****  WELCOME TO THIS PROGRAM  ****");
 		long programStart = ElapsedTime.systemTime();
 
 		/* 1. GET THE LIST OF TESTS TO RUN FORM "test2run.txt" */
@@ -50,13 +49,14 @@ public class StartTester {
 			String Disrup_file = new String(aTest.getInstanceName() + "_Road_Network_Distances" + "_Seed"
 					+ aTest.getseed() + "_P(disruption)_" + aTest.getpercentangeDisruption() + "_" + "Disruptions.txt");
 			writeLinkedList2(Disrup_file, Network.getEdgeConnections(), false);
-			new DrawingNetwork(Network.getedgeRoadNetwork());
+			new DrawingNetwork(Network.getEdgeConnections(),aTest);
 
 			Disaster Event = new Disaster(Network, aTest); // set the disaster conditions and the disrupted road
 			UpdateRoadInformation revealedRoadInformation = new UpdateRoadInformation(Network);
-			new Assessment(revealedRoadInformation, inputs, aTest);// computing labelled network for the initial network
+			Assessment labelledInformation =new Assessment(revealedRoadInformation, inputs, aTest);// computing labelled network for the initial network
 			new Outputs(Event, inputs, aTest); // printing the initial conditions
-			new InsertionProcedure(aTest, Event, revealedRoadInformation, inputs);
+			InsertionProcedure insertion=new InsertionProcedure(aTest, Event, revealedRoadInformation, inputs);
+			new Validation(aTest,inputs,insertion,Network,Event,labelledInformation);
 
 		}
 
@@ -68,12 +68,12 @@ public class StartTester {
 		System.out.println("Total elapsed time = " + ElapsedTime.calcElapsedHMS(programStart, programEnd));
 	}
 
-	private static void writeLinkedList2(String tV_file, LinkedList<Edge> edgeRoadConnection, boolean b) {
+	private static void writeLinkedList2(String tV_file, ArrayList<Edge> arrayList, boolean b) {
 		try {
 			PrintWriter bw = new PrintWriter(tV_file);
 			HashMap<Integer, Node> nodes = new HashMap<Integer, Node>();// It contains all nodes of the network
 			bw.println("Road_Connections");
-			for (Edge e : edgeRoadConnection) {
+			for (Edge e : arrayList) {
 				nodes.put(e.getOrigin().getId(), e.getOrigin());
 				nodes.put(e.getEnd().getId(), e.getEnd());
 				if (e.getOrigin().getId() > e.getEnd().getId()) {

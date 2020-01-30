@@ -7,8 +7,7 @@ public class Route {
 
 	private double time = 0.0; // route total travel time
 	private double distance = 0.0; // route total travel distance
-		private LinkedList<Edge> edges; // edges list
-
+	private LinkedList<Edge> edges; // edges list
 
 	// Constructor
 	public Route() {
@@ -17,12 +16,10 @@ public class Route {
 
 	public Route(Route r) {
 		edges = new LinkedList<Edge>();
-		LinkedList<Edge> edges;
 		for (Edge e : r.getEdges()) {
 			Edge eAux = new Edge(e);
 			this.edges.add(eAux);
 		}
-
 	}
 
 	/* SET METHODS */
@@ -34,18 +31,14 @@ public class Route {
 		distance = c;
 	}
 
-
 	public void setEdges(LinkedList<Edge> e) {
 		edges = e;
 	}
-
-
 
 	public void addEdge(int i, Edge e) {
 		Edge eAux = new Edge(e);
 		this.edges.add(i, e);
 	}
-
 
 	public double getTime() {
 		return time;
@@ -55,12 +48,9 @@ public class Route {
 		return distance;
 	}
 
-
-
 	public List<Edge> getEdges() {
 		return edges;
 	}
-
 
 	public void removeEdge(Edge e) {
 		this.edges.remove(e);
@@ -69,7 +59,6 @@ public class Route {
 	public void substractCosts(Edge e) {
 		this.time = this.time - e.getTime();
 	}
-
 
 	/* AUXILIARY METHODS */
 	/**
@@ -92,7 +81,6 @@ public class Route {
 		return s;
 	}
 
-
 	public void calcTime() {
 		double cost = 0;
 		for (Edge e : this.getEdges()) {
@@ -108,8 +96,5 @@ public class Route {
 		}
 		this.setDistance(cost);
 	}
-
-
-
 
 }

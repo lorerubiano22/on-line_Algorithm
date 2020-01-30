@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Locale;
 
 public class Outputs {
@@ -41,7 +40,7 @@ public class Outputs {
 		}
 		String Disrup_file = new String(aTest.getInstanceName() + "_Edges_Disruptions" + "_Seed" + aTest.getseed()
 				+ "_P(disruption)_" + aTest.getpercentangeDisruption() + "_Alpha_" + alpha + "_" + "Disruptions.txt");
-		writeLinkedList2(Disrup_file, Event.edgeRoadConnection, Event.DisruptedEdges, Event.DisruptedRoadConnections,
+		writeLinkedList2(Disrup_file, Event.getedgeRoadConnection(), Event.getDisruptedEdges(), Event.getDisruptedRoadConnections(),
 				false);
 
 	}
@@ -64,13 +63,13 @@ public class Outputs {
 		return Back_Strategy;
 	}
 
-	public void writeLinkedList2(String tV_file, LinkedList<Edge> edgeRoadConnection,
-			HashMap<String, Edge> disruptedEdges, LinkedList<Edge> disruptedRoadNetwork, boolean b) {
+	public void writeLinkedList2(String tV_file, ArrayList<Edge> arrayList,
+			HashMap<String, Edge> disruptedEdges, ArrayList<Edge> arrayList2, boolean b) {
 
 		try {
 			PrintWriter bw = new PrintWriter(tV_file);
 			bw.println("Road_Connections");
-			for (Edge e : edgeRoadConnection) {
+			for (Edge e : arrayList) {
 
 				if (e.getOrigin().getId() > e.getEnd().getId()) {
 
@@ -93,7 +92,7 @@ public class Outputs {
 				}
 			}
 			bw.println("Disrupted_Network");
-			for (Edge e : disruptedRoadNetwork) {
+			for (Edge e : arrayList2) {
 				if (e.getOrigin().getId() > e.getEnd().getId()) {
 					bw.println("(" + e.getOrigin().getId() + "," + e.getEnd().getId() + ")_" + "_Distance_"
 							+ e.getDistance() + "_Road_Distance_" + e.getDistanceRoad() + "_Connectivity_"
@@ -143,11 +142,11 @@ public class Outputs {
 				out.println("\n");
 				out.println("ID      State");
 				for (Node v : Jumping_Strategy.getVictimList().values()) {
-					if (!Jumping_Strategy.getConnectedNodestoRevealedRoadNetwork().containsKey(v.getId())) {
-						out.print(v.getId() + "      Unreachable");
+					if (Jumping_Strategy.getrecheablevictims().containsKey(v.getId())) {
+						out.print(v.getId() + "      Reachable");
 						out.println("\n");
 					} else {
-						out.print(v.getId() + "      reachable");
+						out.print(v.getId() + "      Unreachable");
 						out.println("\n");
 					}
 				}
@@ -191,14 +190,15 @@ public class Outputs {
 				out.println("\n");
 				out.println("ID      State");
 				for (Node v : Back_Strategy.getVictimList().values()) {
-					if (!Back_Strategy.getConnectedNodestoRevealedRoadNetwork().containsKey(v.getId())) {
-						out.print(v.getId() + "      Unreachable");
-						out.println("\n");
-					} else {
-						out.print(v.getId() + "      reachable");
-						out.println("\n");
+
+						if (Back_Strategy.getrecheablevictims().containsKey(v.getId())) {
+							out.print(v.getId() + "      Reachable");
+							out.println("\n");
+						} else {
+							out.print(v.getId() + "      Unreachable");
+							out.println("\n");
+						}
 					}
-				}
 				out.close();
 			}
 
