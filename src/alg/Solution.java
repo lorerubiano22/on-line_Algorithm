@@ -1,5 +1,6 @@
 package alg;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -100,5 +101,20 @@ public class Solution implements Cloneable {
 	public Map<Integer, Node> getrecheablevictims() {
 		return recheablevictims;
 	}
+
+	public void sorting() {
+		this.getRoutes().sort(minDistance);
+
+	}
+	static final Comparator<Route> minDistance = new Comparator<Route>() {
+		@Override
+		public int compare(Route r1, Route r2) {
+			if (r1.getDistance() >r2.getDistance())
+				return 1;
+			if (r1.getDistance() < r2.getDistance())
+				return -1;
+			return 0;
+		}
+	};
 
 }

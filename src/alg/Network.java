@@ -16,9 +16,6 @@ public class Network {
 	private final Map<Integer, Node> directoryNode=new HashMap<>();
 	private final Map<Integer, Node> VictimList=new HashMap<>(); // list of all victim nodes
 
-
-	private Random rn;
-
 	public Network(Inputs inp) {
 		nodes = new Node[inp.getNodes().length];
 		for (int i = 0; i < inp.getNodes().length; i++) {
@@ -28,7 +25,6 @@ public class Network {
 
 	public Network generateroadNetwork(Test t, Inputs inp) {
 		inp.setTypeofNodes();
-		rn = new Random(t.getseed());
 		generationRoadAerialNetwork(); // creating the aerial network
 		generatesRoadConnections(t);// creating the road connection networks
 		setAdjEdges(); // it set the adjacent edges for each node
@@ -61,8 +57,9 @@ public class Network {
 				nodes[i].setProfit(1);
 			}
 		}
+		Random rn1 = new Random(123);
 		while (totalVictim < victimNodeSize) { // checking if the total of victim nodes meet the characteristic of the
-			int IndexdisruptedNonodes = rn.nextInt(nodes.length - 1);
+			int IndexdisruptedNonodes = rn1.nextInt(nodes.length - 1);
 			if (nodes[IndexdisruptedNonodes].getProfit() == 1) {
 				nodes[IndexdisruptedNonodes].setProfit(1.1);
 				totalVictim++;

@@ -73,27 +73,27 @@ public class Disaster {
 			}
 
 			/// start to remove  testing the cutting
-			if(e.getOrigin().getId()==7 && e.getEnd().getId()==1) {
-			DisruptedEdges.put(e.getKey(),e);
-			DisruptedEdges.put(e.getInverseEdge().getKey(),e.getInverseEdge());}
-			if(e.getOrigin().getId()==8 && e.getEnd().getId()==7) {
-				DisruptedEdges.put(e.getKey(),e);
-				DisruptedEdges.put(e.getInverseEdge().getKey(),e.getInverseEdge());}
-			if(e.getOrigin().getId()==9 && e.getEnd().getId()==7) {
-				DisruptedEdges.put(e.getKey(),e);
-				DisruptedEdges.put(e.getInverseEdge().getKey(),e.getInverseEdge());}
-			if(e.getOrigin().getId()==30 && e.getEnd().getId()==24) {
-				DisruptedEdges.put(e.getKey(),e);
-				DisruptedEdges.put(e.getInverseEdge().getKey(),e.getInverseEdge());}
-			if(e.getOrigin().getId()==29 && e.getEnd().getId()==24) {
-				DisruptedEdges.put(e.getKey(),e);
-				DisruptedEdges.put(e.getInverseEdge().getKey(),e.getInverseEdge());}
-			if(e.getOrigin().getId()==20 && e.getEnd().getId()==19) {
-				DisruptedEdges.put(e.getKey(),e);
-				DisruptedEdges.put(e.getInverseEdge().getKey(),e.getInverseEdge());}
-			if(e.getOrigin().getId()==19 && e.getEnd().getId()==18) {
-				DisruptedEdges.put(e.getKey(),e);
-				DisruptedEdges.put(e.getInverseEdge().getKey(),e.getInverseEdge());}
+//			if(e.getOrigin().getId()==7 && e.getEnd().getId()==1) {
+//			DisruptedEdges.put(e.getKey(),e);
+//			DisruptedEdges.put(e.getInverseEdge().getKey(),e.getInverseEdge());}
+//			if(e.getOrigin().getId()==8 && e.getEnd().getId()==7) {
+//				DisruptedEdges.put(e.getKey(),e);
+//				DisruptedEdges.put(e.getInverseEdge().getKey(),e.getInverseEdge());}
+//			if(e.getOrigin().getId()==9 && e.getEnd().getId()==7) {
+//				DisruptedEdges.put(e.getKey(),e);
+//				DisruptedEdges.put(e.getInverseEdge().getKey(),e.getInverseEdge());}
+//			if(e.getOrigin().getId()==30 && e.getEnd().getId()==24) {
+//				DisruptedEdges.put(e.getKey(),e);
+//				DisruptedEdges.put(e.getInverseEdge().getKey(),e.getInverseEdge());}
+//			if(e.getOrigin().getId()==29 && e.getEnd().getId()==24) {
+//				DisruptedEdges.put(e.getKey(),e);
+//				DisruptedEdges.put(e.getInverseEdge().getKey(),e.getInverseEdge());}
+//			if(e.getOrigin().getId()==20 && e.getEnd().getId()==19) {
+//				DisruptedEdges.put(e.getKey(),e);
+//				DisruptedEdges.put(e.getInverseEdge().getKey(),e.getInverseEdge());}
+//			if(e.getOrigin().getId()==19 && e.getEnd().getId()==18) {
+//				DisruptedEdges.put(e.getKey(),e);
+//				DisruptedEdges.put(e.getInverseEdge().getKey(),e.getInverseEdge());}
 			////end to remove
 		}
 		int totalDisruptedEdges= (int) Math.floor((copy.size())*percentageDisruption);

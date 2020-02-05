@@ -75,7 +75,7 @@ public class JumpingMovement {
 		Node currentPostion = new Node(directoryNodes.get(0));
 		while (checkedAccesibiliyVictims.size() < VictimList.size()	&& !this.revealedDisruptedRoadConnections.isEmpty()) {
 			Edge edgeToinsert = selectBestEdge(currentPostion, aTest.getOptcriterion(), auxRoute, reveledNetwork,inputs);
-			if(edgeToinsert.getOrigin().getId()==16 && edgeToinsert.getEnd().getId()==27) {
+			if(edgeToinsert.getOrigin().getId()==29 && edgeToinsert.getEnd().getId()==24) {
 				System.out.print(this.auxRoute.toString());
 			}
 			if(edgeToinsert.getOrigin().getId()==27 && edgeToinsert.getEnd().getId()==16) {
@@ -109,7 +109,6 @@ public class JumpingMovement {
 			}
 
 			else {
-
 				cleaningProcess(edgeToinsert, auxRoute, reveledNetwork, inputs);
 			}
 			updatingReveleadedNetwork(edgeToinsert, auxRoute);
