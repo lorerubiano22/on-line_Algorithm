@@ -13,7 +13,7 @@ import java.util.Map;
 public class PrintingReveleadNetwork {
 
 	public void printingInformationsofar(Test aTest,int totalDetectedDisruption,
-			Map<String, Edge> visitedRoadConnections   , Map<String, Edge> revealedDisruptedRoadConnections,
+			Map<String, Edge> visitedRoadConnections   , Map<String, Edge> originialEdgeRoadConnection,
 			Map<String, Edge> revealedDisruptedEdges, Map<Integer, Node> checkedAccesibiliyVictims, Map<Integer, Node> connectedNodestoRevealedRoadNetwork)  {
 		// writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadNetwork,false);
 		String name= "Instance_"+aTest.getInstanceName()+"seed_"+aTest.getseed()+"disruption_"+aTest.getpercentangeDisruption()+"_OPTCriterion_"+aTest.getOptcriterion()+"_Alpha_"+aTest.getpercentageDistance()+"_Jumping.txt";
@@ -27,7 +27,7 @@ public class PrintingReveleadNetwork {
 			PrintWriter bw = new PrintWriter(fileWriter);
 			bw.println("\n\n"+"********"+"\n");
 			bw.println("Working_Edges_"+totalDetectedDisruption+"\n");
-			for(Edge e:revealedDisruptedRoadConnections.values()) {
+			for(Edge e:originialEdgeRoadConnection.values()) {
 				if(visitedRoadConnections.containsKey(e.getKey())) {
 					if(!revealedDisruptedEdges.containsKey(e.getKey())) {
 						if(e.getOrigin().getId()>e.getEnd().getId()) {
@@ -61,7 +61,7 @@ public class PrintingReveleadNetwork {
 		catch (IOException e) {
 			//why does the catch need its own curly?
 		}
-		printingNetworkStructure(revealedDisruptedRoadConnections,aTest);
+		//printingNetworkStructure(revealedDisruptedRoadConnections,aTest);
 	}
 
 	private void printingNetworkStructure(Map<String, Edge> revealedDisruptedRoadConnections, Test aTest)  {

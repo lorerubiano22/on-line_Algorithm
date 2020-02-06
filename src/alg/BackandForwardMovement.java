@@ -14,10 +14,10 @@ public class BackandForwardMovement {
 	private final Solution back_Sol= new Solution();
 	private final Test aTest;
 	private final Disaster Event;
+	private final Inputs inputs;
 	private final Map<Integer, Node> recheablevictims= new HashMap<>();
 	// update information
 	private final Map<String, Edge> revealedDisruptedRoadConnections; // revealed disrupted connections
-	private final ArrayList<Edge> edgeRoadConnection;
 	private final Map<String, Edge> directoryAerialEdges; // It contains all edges of the network
 	private final Map<String, Edge> directoryRoadEdges; // It contains all edges of the network
 	private final Map<Integer, Node> directoryNodes;// It contains all nodes of the network
@@ -26,30 +26,35 @@ public class BackandForwardMovement {
 
 
 	// local information
-	private HashMap<String, Edge> revealedDisruptedEdges = new HashMap<>(); ; // list of revealed disrupted edges
+	private final Map<String, Edge> originialEdgeRoadConnection;
+	private Map<String, Edge> revealedDisruptedEdges = new HashMap<>(); ; // list of revealed disrupted edges
 	private final HashMap<String, Edge> connectedEdgestoRevealedRoadNetwork= new HashMap<>(); // storage the edges that belong to a route to
 	private final Map<Integer, Node> connectedNodestoRevealedRoadNetwork= new HashMap<>();
 	private final HashMap<Integer, Node> visitedVictims = new HashMap<>(); // list of visited victims
-	private final HashMap<Integer, Node> checkedAccesibiliyVictims = new HashMap<>();
+	private final Map<Integer, Node> checkedAccesibiliyVictims ;
 	private final HashMap<Integer, Node> connectedNodesNotoVisit = new HashMap<>(); // consider the nodes that are connected
 	private final HashMap<Integer, Node> NodesNotoVisit = new HashMap<>(); // Nodes without adjacent edges to be explored
 	private final HashMap<String, Edge> EdgesNotoVisit = new HashMap<>(); // consider the nodes that are connected and their
-	private final HashMap<String, Edge> visitedRoadConnections = new HashMap<>(); // it considers the ground route
+	private final Map<String, Edge> visitedRoadConnections ; // it considers the ground route
 	private final HashMap<Integer, Node> visitedNodeConnections = new HashMap<>(); // it considers the ground route
 
-	public BackandForwardMovement(Test aTest, Disaster Event, UpdateRoadInformation reveledNetwork, Inputs inputs) {
+	public BackandForwardMovement(Test aTest, Disaster Event, UpdateRoadInformation reveledNetwork, Inputs inp) {
 		// Inputs
 		this.aTest = aTest;
 		this.Event = Event;
+		this.inputs = inp;
 		// Road information - online
+		originialEdgeRoadConnection=reveledNetwork.getoriginalEdgeRoadConnection();
+		visitedRoadConnections=reveledNetwork.getvisitedRoadConnections();
+		revealedDisruptedEdges=reveledNetwork.getrevealedDisruptedEdges();
+		checkedAccesibiliyVictims=reveledNetwork.getcheckedAccesibiliyVictims();
 		revealedDisruptedRoadConnections=reveledNetwork.getRevealedDisruptedRoadConnections();
-		edgeRoadConnection = reveledNetwork.getedgeRoadConnection();
+		//edgeRoadConnection = reveledNetwork.getedgeRoadConnection();
 		directoryAerialEdges=reveledNetwork.getdirectoryAerialConnections();
 		directoryRoadEdges=reveledNetwork.getdirectoryroadConnections();
 		directoryNodes = reveledNetwork.getdirectoryNodes();// It contains all nodes of the network
 		nodeList = reveledNetwork.getNodeList(); // list of nodes
 		VictimList = reveledNetwork.getVictimList(); // list of nodes
-
 		backforwardMovement(reveledNetwork, inputs);
 		back_Sol.updatingSolutionAttributes();
 		udateStateVictims(back_Sol);
@@ -70,7 +75,7 @@ public class BackandForwardMovement {
 				&& !this.revealedDisruptedRoadConnections.isEmpty()) {
 			Edge edgeToinsert = selectBestEdge(currentPostion, aTest.getOptcriterion(), auxRoute, reveledNetwork,
 					inputs);
-			if(edgeToinsert.getOrigin().getId()==10 && edgeToinsert.getEnd().getId()==11) {
+			if(edgeToinsert.getOrigin().getId()==0 && edgeToinsert.getEnd().getId()==18) {
 				System.out.println("Stop");
 			}
 			if (edgeToinsert != null) {
@@ -89,6 +94,7 @@ public class BackandForwardMovement {
 					}
 				}
 			}
+			cleaningProcess(edgeToinsert, auxRoute, reveledNetwork, inputs);
 			updatingReveleadedNetwork(edgeToinsert, auxRoute);
 			currentPostion = this.directoryNodes
 					.get(auxRoute.getEdges().get(auxRoute.getEdges().size() - 1).getEnd().getId());
@@ -102,6 +108,34 @@ public class BackandForwardMovement {
 		auxRoute.calcTime();
 		auxRoute.calcDistance();
 		back_Sol.getRoutes().add(auxRoute);
+
+	}
+
+	private void cleaningProcess(Edge edgeToinsert, Route auxRoute2, UpdateRoadInformation reveledNetwork,
+			Inputs inputs2) {
+		ArrayList<Edge> aux= new ArrayList<>();
+		for(Edge e:reveledNetwork.getRevealedDisruptedRoadConnections().values()) {
+			aux.add(e);
+		}
+		if(!aux.isEmpty()) {
+			new DrawingNetwork(aux,aTest);}
+		new Assessment(reveledNetwork, inputs, this.aTest);
+		String Disrup_file= new String(aTest.getInstanceName()+"AfterDisrution_"+edgeToinsert.getKey()+"_Road_Network_Distances"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
+		writeLinkedList2(Disrup_file, this.revealedDisruptedRoadConnections , false);
+		aux.clear();
+		for(Edge e:reveledNetwork.getRevealedDisruptedRoadConnections().values()) {
+			aux.add(e);
+		}
+		if(!aux.isEmpty()) {
+			new DrawingNetwork(aux,aTest);}
+//		else {
+//			for(Edge e:auxRoute2.getEdges()) {
+//				if(this.originialEdgeRoadConnection.containsKey(e.getKey()) &&this.visitedRoadConnections.containsKey(e.getKey())) {
+//					if(!this.disruptedEdge2(e)) {
+//						aux.add(e);}}}
+//
+//			new DrawingNetwork(aux,aTest);
+//		}
 
 	}
 
@@ -155,68 +189,86 @@ public class BackandForwardMovement {
 	}
 
 	private void updatingReveleadedNetwork(Edge disruptedEdge, Route r) {
-		// (1) revealedDisruptedEdges.add(disruptedEdge); /// La lista de ejes disruptos
-		// se la para al update information
-System.out.println(this.auxRoute.toString());
-		for (Edge e : r.getEdges()) { // (2) Actualiza la red revelada
-			if (visitedRoadConnections.containsKey(e.getKey())) {
 
+		for (Edge e : r.getEdges()) { // (2) update revelead road network
+			//	this.disruptedEdge2(e);// checking reveled disrupted Edges
+			if (revealedDisruptedRoadConnections.containsKey(e.getKey())) {
 				if (this.disruptedEdge2(e)) {
 					revealedDisruptedRoadConnections.remove(e.getKey());
 					revealedDisruptedRoadConnections.remove(e.getInverseEdge().getKey());
+
+					directoryRoadEdges.remove(e.getKey()); // updating the directory
+					directoryRoadEdges.remove(e.getInverseEdge().getKey());
 				}
 			}
 		}
 
-		for (Edge e : r.getEdges()) { // Los elementos conectados en la red
-			if (!revealedDisruptedEdges.containsKey(e.getKey())) {// No esta dentro de la lista de los elementos
-				// disruptos
-				if (revealedDisruptedRoadConnections.containsKey(e.getKey())) {// Si pertenece a la red de carreteras
-					if (e.getOrigin().getId() == 0 || e.getEnd().getId() == 0) {
-						this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
-						this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes
-						this.connectedNodestoRevealedRoadNetwork.put(e.getEnd().getId(), e.getEnd()); // nodes
-					} else {
-						if (connectedNodestoRevealedRoadNetwork.containsKey(e.getOrigin().getId())
-								|| connectedNodestoRevealedRoadNetwork.containsKey(e.getEnd().getId())) {
+		int iteration=0;
+
+		while(iteration<4) {
+
+			for (Edge e : r.getEdges()) { // Los elementos conectados en la red
+				if (!revealedDisruptedEdges.containsKey(e.getKey())) {// No esta dentro de la lista de los elementos
+					if (revealedDisruptedRoadConnections.containsKey(e.getKey())) {// Si pertenece a la red de carreteras
+						if (e.getOrigin().getId() == 0 || e.getEnd().getId() == 0) {
 							this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
 							this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes
 							this.connectedNodestoRevealedRoadNetwork.put(e.getEnd().getId(), e.getEnd()); // nodes
+						} else {
+							if (connectedNodestoRevealedRoadNetwork.containsKey(e.getOrigin().getId())) {
+								this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+								this.connectedNodestoRevealedRoadNetwork.put(e.getEnd().getId(), e.getEnd());
+								this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes
+
+							}
+							else {
+								if (connectedNodestoRevealedRoadNetwork.containsKey(e.getEnd().getId())) {
+									this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+									this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes// nodes
+								}
+							}
+
 						}
-
 					}
+
 				}
-
 			}
-		}
 
-		// inverseroute
-		for (int i = r.getEdges().size() - 1; i >= 0; i--) {
-			Edge e = r.getEdges().get(i);
-			if (!revealedDisruptedEdges.containsKey(e.getKey())) {// No esta dentro de la lista de los elementos
-				// disruptos
-				if (revealedDisruptedRoadConnections.containsKey(e.getKey())) {// Si pertenece a la red de carreteras
-					if (e.getOrigin().getId() == 0 || e.getEnd().getId() == 0) {
-						this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
-						this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes
-						this.connectedNodestoRevealedRoadNetwork.put(e.getEnd().getId(), e.getEnd()); // nodes
-					} else {
-						if (connectedNodestoRevealedRoadNetwork.containsKey(e.getOrigin().getId())
-								|| connectedNodestoRevealedRoadNetwork.containsKey(e.getEnd().getId())) {
+
+			for (int i = r.getEdges().size() - 1; i >= 0; i--) {// inverseroute
+				Edge e = r.getEdges().get(i);
+				if (!revealedDisruptedEdges.containsKey(e.getKey())) {// No esta dentro de la lista de los elementos
+					// disruptos
+					if (revealedDisruptedRoadConnections.containsKey(e.getKey())) {// Si pertenece a la red de carreteras
+						if (e.getOrigin().getId() == 0 || e.getEnd().getId() == 0) {
 							this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
 							this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes
 							this.connectedNodestoRevealedRoadNetwork.put(e.getEnd().getId(), e.getEnd()); // nodes
-						}
+						} else {
+							if (connectedNodestoRevealedRoadNetwork.containsKey(e.getOrigin().getId())) {
+								this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+								this.connectedNodestoRevealedRoadNetwork.put(e.getEnd().getId(), e.getEnd());
+								this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes
 
+							}
+							else {
+								if (connectedNodestoRevealedRoadNetwork.containsKey(e.getEnd().getId())) {
+									this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+									this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes// nodes
+								}
+							}
+
+						}
 					}
 				}
-
 			}
+			iteration++;
 		}
-		HashMap<Integer, Node> copyRoadConnections = new HashMap<Integer, Node>();
+
+		directoryNodes.clear();// It contains all nodes of the network
 		for (Edge e : revealedDisruptedRoadConnections.values()) {
-			copyRoadConnections.put(e.getOrigin().getId(), e.getOrigin());
-			copyRoadConnections.put(e.getEnd().getId(), e.getEnd());
+			directoryNodes.put(e.getOrigin().getId(), e.getOrigin());
+			directoryNodes.put(e.getEnd().getId(), e.getEnd());
 		}
 		for (Node n : connectedNodestoRevealedRoadNetwork.values()) {
 			HashMap<String, Edge> check = new HashMap<String, Edge>();
@@ -235,10 +287,9 @@ System.out.println(this.auxRoute.toString());
 				this.connectedNodesNotoVisit.put(n.getId(), n);
 			}
 		}
-		elementsNotToVisit(r); // Nodes not to visit
+		elementsNotToVisit(r);// Nodes not to visit
 		visitedVictims(r);
 	}
-
 	private void elementsNotToVisit(Route r) {
 		for (Edge e : revealedDisruptedRoadConnections.values()) {
 			HashMap<String, Edge> check = new HashMap<String, Edge>();
@@ -356,7 +407,8 @@ System.out.println(this.auxRoute.toString());
 		Edge EdgetoRedirectRoute;
 		if (disruptedEdge2(disruptedEdge)) {
 			EdgetoRedirectRoute = redirectRoute(r);
-			r.getEdges().add(EdgetoRedirectRoute);
+			jumpingEdgeHighPriority(r, EdgetoRedirectRoute);
+			//r.getEdges().add(EdgetoRedirectRoute);
 			if (disruptedEdge2(EdgetoRedirectRoute) && !this.connectedNodestoRevealedRoadNetwork.containsKey(0)) { // si
 				exploreAdjacentEdgesToDepot(r);
 				updateDisruption(EdgetoRedirectRoute, r, reveledNetwork, inputs);
@@ -367,7 +419,9 @@ System.out.println(this.auxRoute.toString());
 					updateDisruption(EdgetoRedirectRoute, r, reveledNetwork, inputs);
 					if(!checkedAccesibiliyVictims.equals(VictimList)) {
 						EdgetoRedirectRoute = redirectRoute(r);
-						r.getEdges().add(EdgetoRedirectRoute);}
+						jumpingEdgeHighPriority(r, EdgetoRedirectRoute);
+						//r.getEdges().add(EdgetoRedirectRoute);
+						}
 					updatingReveleadedNetwork(EdgetoRedirectRoute, auxRoute); // it sends the reveledNetwork to UpdateRoadInformation
 				}
 			}
@@ -375,6 +429,49 @@ System.out.println(this.auxRoute.toString());
 			updateVisitedNetwork(r);
 		}
 
+	}
+
+	private void jumpingEdgeHighPriority(Route r, Edge e) {
+		System.out.print(this.auxRoute.toString());
+		if (r.getEdges().get(r.getEdges().size() - 1).getEnd().getId() != e.getOrigin().getId()) {
+			if (r.getEdges().get(r.getEdges().size() - 1).getEnd().getId() == e.getEnd().getId()) {
+				r.getEdges().add(e.getInverseEdge());
+			}
+			else {
+				ArrayList<Edge> edges=new ArrayList<>();
+				String key = r.getEdges().get(r.getEdges().size() - 1).getEnd().getId() + "," + e.getOrigin().getId();
+				Edge connectionToOrigin = directoryAerialEdges.get(key);
+				if(!this.visitedRoadConnections.containsKey(key)) {
+					edges.add(connectionToOrigin);
+				}
+
+				key = r.getEdges().get(r.getEdges().size() - 1).getEnd().getId() + "," + e.getEnd().getId();
+				Edge connectionToEnd = directoryAerialEdges.get(key);
+				if(!this.visitedRoadConnections.containsKey(key)) {
+					edges.add(connectionToEnd);}
+				this.sortEdges(edges, 1010);
+				Edge insert=edges.get(0);
+				r.getEdges().add(insert);
+				if(r.getEdges().get(r.getEdges().size() - 1).getEnd().getId()==e.getOrigin().getId()) {
+					r.getEdges().add(e);
+				}
+				else {
+					if(r.getEdges().get(r.getEdges().size() - 1).getEnd().getId()==e.getEnd().getId()) {
+						r.getEdges().add(e.getInverseEdge());
+					}
+				}
+			}
+		}
+
+		else {
+			r.getEdges().add(e);
+		}
+
+		for (Edge edge : r.getEdges()) { // update -> visited list of edges
+			updateVisitedNetwork(edge);
+		}
+
+		updateVisitedNetwork(r);
 	}
 
 	private void exploreAdjacentEdgesToDepot(Route r) { // Explore all adjacent edges
@@ -462,10 +559,10 @@ System.out.println(this.auxRoute.toString());
 			sortEdges(currentPostion.getAdjEdgesList(), this.aTest.getOptcriterion());
 			for (Edge adj : currentPostion.getAdjEdgesList()) {
 				if(!this.visitedRoadConnections.containsKey(adj.getKey())) {
-				if (adj.getConnectivity() != 0) {
-					adjEdges.add(adj);
-				}
-			}}
+					if (adj.getConnectivity() != 0) {
+						adjEdges.add(adj);
+					}
+				}}
 		}
 		if (!adjEdges.isEmpty()) {// case 2: if ArrayList adjEdges is not empty
 
@@ -554,7 +651,7 @@ System.out.println(this.auxRoute.toString());
 	}
 
 	private Edge jumpingselectingTheBestConnectedNode(Edge toInsert) {
-		if (this.connectedEdgestoRevealedRoadNetwork .containsKey(this.auxRoute.getEdges().get(this.auxRoute.getEdges().size() - 1).getKey())) {// if current position is a
+		if (this.connectedNodestoRevealedRoadNetwork.containsKey(this.auxRoute.getEdges().get(this.auxRoute.getEdges().size() - 1).getEnd().getId())) {// if current position is a
 			if (!this.NodesNotoVisit.containsKey(this.auxRoute.getEdges().get(this.auxRoute.getEdges().size() - 1).getEnd().getId())) { // if
 				toInsert = selectBestEdgeNotDistuption(this.auxRoute.getEdges().get(this.auxRoute.getEdges().size() - 1).getEnd(),
 						aTest.getOptcriterion(), this.auxRoute);
@@ -609,8 +706,7 @@ System.out.println(this.auxRoute.toString());
 
 
 	private Edge selectBestEdgeNotDistuption(Node currentPostion, double criterion, Route r) {
-		Edge edgeToinsert = null;
-		LinkedList<Edge> adjEdges = new LinkedList<Edge>();
+		Edge edgeToinsert = null;		LinkedList<Edge> adjEdges = new LinkedList<Edge>();
 		if (!currentPostion.getAdjEdgesList().isEmpty()) {
 			sortEdges(currentPostion.getAdjEdgesList(), criterion);
 			for (Edge adj : currentPostion.getAdjEdgesList()) {
@@ -671,7 +767,7 @@ System.out.println(this.auxRoute.toString());
 				} else {
 					LinkedList<Edge> auxListEdges = new LinkedList<Edge>();
 					ArrayList<Edge> victimList = new ArrayList<>();
-					for (Edge e : this.edgeRoadConnection) {
+					for (Edge e : this.revealedDisruptedRoadConnections.values()) {
 						if (!EdgesNotoVisit.containsKey(e.getKey())) {
 							auxListEdges.add(e);
 							if (!this.checkedAccesibiliyVictims.containsKey(e.getEnd().getId())
@@ -720,18 +816,20 @@ System.out.println(this.auxRoute.toString());
 		ArrayList<Edge> nodesToVisit = new ArrayList<>();
 		if (!this.connectedNodestoRevealedRoadNetwork.isEmpty()) {
 			for (Node n : connectedNodestoRevealedRoadNetwork.values()) {
+				if(this.directoryNodes.containsKey(n.getId())) {
 				if (!this.connectedNodesNotoVisit.containsKey(n.getId())) {
 					if (this.auxRoute.getEdges().get(this.auxRoute.getEdges().size() - 1).getEnd().getId() != n.getId()) {
 						String key = this.auxRoute.getEdges().get(this.auxRoute.getEdges().size() - 1).getEnd().getId() + ","
 								+ n.getId();
-						if (!this.visitedRoadConnections.containsKey(key)) {
-							if (!this.NodesNotoVisit.containsKey(n.getId())) {
-								Edge aerialEdge = this.directoryAerialEdges.get(key);
-								nodesToVisit.add(aerialEdge);
-							}
+						//if (!this.visitedRoadConnections.containsKey(key)) {
+						if (!this.NodesNotoVisit.containsKey(n.getId())) {
+							Edge aerialEdge = this.directoryAerialEdges.get(key);
+							nodesToVisit.add(aerialEdge);
 						}
+						//}
 					}
 				}
+			}
 			}
 		}
 		if (!nodesToVisit.isEmpty()) {
@@ -743,18 +841,18 @@ System.out.println(this.auxRoute.toString());
 			nodesToVisit = new ArrayList<Edge>();
 			for (Node n : VictimList.values()) {
 				if(n.getId()!=this.auxRoute.getEdges().get(this.auxRoute.getEdges().size() - 1).getEnd().getId()) {
-				if (!this.checkedAccesibiliyVictims.containsKey(n.getId())) { // se seleccionan los nodos
-					// connectados que se pueden
-					// visitar
-					String key = this.auxRoute.getEdges().get(this.auxRoute.getEdges().size() - 1).getEnd().getId() + "," + n.getId();
-					if (!this.EdgesNotoVisit.containsKey(key)) {
-						if (!this.NodesNotoVisit.containsKey(n.getId())) {
-							Edge aerialEdge = this.directoryAerialEdges.get(key);
-							nodesToVisit.add(aerialEdge);
+					if (!this.checkedAccesibiliyVictims.containsKey(n.getId())) { // se seleccionan los nodos
+						// connectados que se pueden
+						// visitar
+						String key = this.auxRoute.getEdges().get(this.auxRoute.getEdges().size() - 1).getEnd().getId() + "," + n.getId();
+						if (!this.EdgesNotoVisit.containsKey(key)) {
+							if (!this.NodesNotoVisit.containsKey(n.getId())) {
+								Edge aerialEdge = this.directoryAerialEdges.get(key);
+								nodesToVisit.add(aerialEdge);
+							}
 						}
 					}
-				}
-			}}
+				}}
 			if (!nodesToVisit.isEmpty()) { // se revisa si hay nodos conectados que se pueden visitar
 				sortEdges(nodesToVisit, 1010);
 				edgeToinsert = nodesToVisit.get(0);
@@ -824,6 +922,7 @@ System.out.println(this.auxRoute.toString());
 
 	private Edge selectBestEdge(Node currentPostion, double criterion, Route r, UpdateRoadInformation reveledNetwork,
 			Inputs inputs) {
+		System.out.println(r.toString());
 		// case 1: if LinkedList adjEdges not empty
 		Edge edgeToinsert = exploringAdjEdges(currentPostion); // looking for the best adjacent edge to explore
 		// case 2: there is not adjacent edge to visit

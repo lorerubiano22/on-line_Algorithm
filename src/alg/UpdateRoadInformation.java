@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UpdateRoadInformation {
+	private final  Map<String, Edge> originalEdgeRoadConnection; // all road connections
 	private final ArrayList<Edge> edgeRoadConnection; // all road connections
 	private final Map<String, Edge> revealedDisruptedRoadConnections; // revealed disrupted
 	private Map<String, Edge> revealedDisruptedEdges= new HashMap<>(); // list of revealed disrupted edges
@@ -20,6 +21,7 @@ public class UpdateRoadInformation {
 	public UpdateRoadInformation(Network network) {
 		revealedDisruptedRoadConnections = new HashMap<>();
 		directoryroadConnections = new HashMap<>();
+		originalEdgeRoadConnection= new HashMap<>();
 		edgeRoadConnection = new ArrayList<>();
 		directoryAerialConnections = new HashMap<>();
 		for (Edge e : network.getEdgeAerialNetwork()) {
@@ -28,12 +30,12 @@ public class UpdateRoadInformation {
 		// TO DO
 		for (Edge e : network.getEdgeConnections()) {// the road connections are created
 			edgeRoadConnection.add(e);
+			originalEdgeRoadConnection.put(e.getKey(), e);
 		}
 		for (Edge e : edgeRoadConnection) {// the road connections are created
 			revealedDisruptedRoadConnections.put(e.getKey(), e);
 			directoryroadConnections.put(e.getKey(), e);
 		}
-
 		// TO DO
 		nodeList = new ArrayList<>();
 		directoryNodes = new HashMap<>();
@@ -100,5 +102,10 @@ public class UpdateRoadInformation {
 	public Map<String, Edge> getvisitedRoadConnections() {
 		return visitedRoadConnections;
 	}
+
+	public Map<String, Edge> getoriginalEdgeRoadConnection() {
+		return originalEdgeRoadConnection;
+	}
+
 
 }

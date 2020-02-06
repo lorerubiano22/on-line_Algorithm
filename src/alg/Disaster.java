@@ -11,7 +11,7 @@ public class Disaster {
 
 
 	private ArrayList<Edge> edgeRoadConnection = null;
-	private ArrayList<Edge> edgeRoadNetwork = null;
+
 	private ArrayList<Edge> DisruptedRoadNetwork = null;
 	private ArrayList<Edge> DisruptedRoadConnections = null; // disrupted connections
 	private HashMap<String, Edge>  DisruptedEdges = null; // disrupted edges
@@ -22,7 +22,6 @@ public class Disaster {
 		System.out.println("size_network:_"+network.getedgeRoadNetwork().size());
 		rn = new Random(aTest.getseed());
 		edgeRoadConnection= new ArrayList<Edge>();
-		edgeRoadNetwork= new ArrayList<Edge>();
 		DisruptedEdges= new HashMap<String, Edge>();
 		DisruptedRoadConnections= new ArrayList<Edge>();
 		for(Edge e:network.getEdgeConnections()) {

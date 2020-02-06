@@ -57,7 +57,7 @@ public class Network {
 				nodes[i].setProfit(1);
 			}
 		}
-		Random rn1 = new Random(123);
+		Random rn1 = new Random(93805); // this seed is set for fixing victim locations
 		while (totalVictim < victimNodeSize) { // checking if the total of victim nodes meet the characteristic of the
 			int IndexdisruptedNonodes = rn1.nextInt(nodes.length - 1);
 			if (nodes[IndexdisruptedNonodes].getProfit() == 1) {

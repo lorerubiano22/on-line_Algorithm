@@ -275,7 +275,7 @@ public class Assessment {
 				checkedCycles.put(e.getInverseEdge().getKey(),e.getInverseEdge());
 				allposiblePaths.findingallPathsToVictimNode(net,inputs,nodeList, e.getOrigin().getId(),e.getEnd().getId());
 				storingAllpaths(allposiblePaths,routesList); // store all
-				findingunnecesaryNodesandEdges(routesList);
+				findingunnecesaryNodesandEdges(routesList,e);
 			}
 		}
 		setCleanedRoadConnection(true); // leave all functional edges
@@ -325,7 +325,7 @@ public class Assessment {
 
 
 
-	private void findingunnecesaryNodesandEdges(Solution routesList) {
+	private void findingunnecesaryNodesandEdges(Solution routesList, Edge conection) {
 		//  1. Identify the visited and functional networks
 		if(!routesList.getRoutes().isEmpty()) {
 			Route auxR= visitedandFunctionalNetwork(routesList);
@@ -352,7 +352,7 @@ public class Assessment {
 				// Identify the boarding points of the sub-networks
 				ArrayList<Node> boardingNodes= new ArrayList<>();// Create the pathBoardingPoints list
 				searchingBoardingNodes(auxR,boardingNodes);
-				findingFunctionalEdges(boardingNodes,auxR);
+				findingFunctionalEdges(boardingNodes,auxR,conection);
 			}
 		}
 
@@ -398,14 +398,14 @@ public class Assessment {
 
 	}
 
-	private void findingFunctionalEdges(ArrayList<Node> boardingNodes, Route auxR) {
+	private void findingFunctionalEdges(ArrayList<Node> boardingNodes, Route auxR, Edge conection) {
 		if(!boardingNodes.isEmpty() && boardingNodes.size()>1) {
 			// if there is more than 1 boarding point
-			findingPathamongBoardingPoints(boardingNodes,auxR);}
+			findingPathamongBoardingPoints(boardingNodes,auxR,conection);}
 
 	}
 
-	private void findingPathamongBoardingPoints(ArrayList<Node> boardingNodes, Route auxR) {
+	private void findingPathamongBoardingPoints(ArrayList<Node> boardingNodes, Route auxR, Edge conection) {
 		Node[] extremNodes= new Node[2] ;
 		Solution visitedRoutesStore = new Solution();
 		findingextremeNodes(extremNodes,boardingNodes);// finding the extreme nodes
@@ -416,11 +416,16 @@ public class Assessment {
 			edgesInRoute.put(e.getKey(), e);
 			edgesInRoute.put(e.getInverseEdge().getKey(), e.getInverseEdge());
 		}
+		// adding the connection which create the cycle
+		edgesInRoute.put(conection.getKey(), conection);
+		edgesInRoute.put(conection.getInverseEdge().getKey(), conection.getInverseEdge());
+
 		// finding path between boarding nodes
 		allposiblePaths.findingallPathsToVictimNode(edgesInRoute,inputs,nodeList, extremNodes[0].getId(),extremNodes[1].getId());
 		boolean visitedPath= true; // determine if a path between boarding points is visited
 		for(ArrayList<Integer> list: allposiblePaths.listOfpaths) {// here is the list of paths with victim  nodes
 			Route r= new Route(); // 1. creating a new route per path
+			visitedPath= true;
 			for(int i=0;i< list.size()-1;i++) { // list of elements in the path
 				String key= list.get(i)+","+list.get(i+1);
 				if(!this.visitedRoadConnections.containsKey(key)) {
@@ -451,7 +456,6 @@ public class Assessment {
 					if(!functionPath) { // el path contiene un eje disrupto ya no mi interesa la ruta
 						break;
 					}
-
 				}
 				if(functionPath) { // if yes, store the path
 					for(Edge e:r.getEdges()) {
@@ -465,7 +469,6 @@ public class Assessment {
 				functionalEdges.put(e.getOrigin().getId(), e.getOrigin());
 				functionalEdges.put(e.getEnd().getId(), e.getEnd());
 			}
-
 			// sort the list of visited paths (Paths With victim nodes)
 			Map<Integer, Node> victimsInSubNetwork= new HashMap<>();
 			for(Edge e:auxR.getEdges() ) {
