@@ -827,7 +827,7 @@ if(!visitedFunctionalRoutesStore.getRoutes().isEmpty()) {
 		for(int i=0;i<allposiblePaths.listOfpaths.size();i++) {
 			ArrayList<Integer> list=allposiblePaths.listOfpaths.get(i);
 			ArrayList<String> path=new ArrayList<>();
-			for(int j=0;j<list.size()-2;j++) { // checking if the edges have been already visited
+			for(int j=0;j<list.size()-1;j++) { // checking if the edges have been already visited
 				String key=list.get(j)+","+list.get(j+1);
 				// se asume que todos los caminos no son visitados
 				path.add(key);
@@ -839,17 +839,29 @@ if(!visitedFunctionalRoutesStore.getRoutes().isEmpty()) {
 			ArrayList<String> list=nonVisitedandPaths.get(i);
 			// searching for visited edges and working
 			ArrayList<String> path=new ArrayList<>();
-			int visitedPath=0;
+			boolean visited=false;
 			for(int j=0;j<list.size();j++) {
-				if(this.visitedRoadConnections.containsKey(list.get(j)) && !this.revealedDisruptedEdges.containsKey(list.get(j))) {
-					visitedPath++;
+				System.out.println(this.visitedRoadConnections.containsKey(list.get(j)));
+				if(this.visitedRoadConnections.containsKey(list.get(j))) {
+					if(this.revealedDisruptedEdges.containsKey(list.get(j))) {
+
+					visited=false;
 				}
+					else {
+						visited=true;
+					}
+				}
+				if(!visited) {
+
+					break;}
+
 			}
-			if(list.size()==visitedPath) {
+			if(visited) {
 				for(int j=0;j<list.size();j++) {
 					path.add(list.get(j));
 				}
 				VisitedandPaths.add(path);
+				visited=true;
 			}
 
 		}
@@ -857,10 +869,11 @@ if(!visitedFunctionalRoutesStore.getRoutes().isEmpty()) {
 		// all visited edges
 		Map<String,Edge> visitedEdges=new HashMap<>();
 		for(int i=0;i<VisitedandPaths.size();i++) { // searching for visited paths
-			ArrayList<String> list=nonVisitedandPaths.get(i);
+			ArrayList<String> list=VisitedandPaths.get(i);
 			for(int j=0;j<list.size();j++) {
 				Edge e=new Edge(this.directoryEdges.get(list.get(j)));
 				visitedEdges.put(e.getKey(), e);
+				visitedEdges.put(e.getInverseEdge().getKey(), e.getInverseEdge());
 			}
 		}
 		if(!visitedEdges.isEmpty()) {
@@ -871,13 +884,15 @@ if(!visitedFunctionalRoutesStore.getRoutes().isEmpty()) {
 				for(int j=0;j<list.size();j++) {
 					if(!visitedEdges.containsKey(list.get(j))) {
 						Edge e=new Edge(this.directoryEdges.get(list.get(j)));
-						nonvisitedEdges.put(e.getKey(), e);}
+						nonvisitedEdges.put(e.getKey(), e);
+						nonvisitedEdges.put(e.getInverseEdge().getKey(), e.getInverseEdge());
+						}
 				}
 			}
 
 			ArrayList<Edge> copytree= new ArrayList<>();
 			for(Edge e:revealedDisruptedRoadConnections.values()) {
-				if(!nonvisitedEdges.containsKey(e.getKey()) && nonvisitedEdges.containsKey(e.getInverseEdge().getKey()) ) {
+				if(!nonvisitedEdges.containsKey(e.getKey()) && !nonvisitedEdges.containsKey(e.getInverseEdge().getKey()) ) {
 					copytree.add( e);
 				}
 			}
@@ -899,8 +914,9 @@ if(!visitedFunctionalRoutesStore.getRoutes().isEmpty()) {
 
 			if(victiminThestree.equals(checkingVictims)) { // if the accessibility does not change
 				for(Edge e:nonvisitedEdges.values()) {
-					this.removedNode.put(e.getOrigin().getId(), e.getOrigin());
-					this.removedNode.put(e.getEnd().getId(), e.getEnd());
+					this.removedEdge.put(e.getKey(), e);
+					this.removedEdge.put(e.getInverseEdge().getKey(), e.getInverseEdge());
+
 				}
 			}}
 	}

@@ -14,9 +14,9 @@ public class PrintingReveleadNetwork {
 
 	public void printingInformationsofar(Test aTest,int totalDetectedDisruption,
 			Map<String, Edge> visitedRoadConnections   , Map<String, Edge> originialEdgeRoadConnection,
-			Map<String, Edge> revealedDisruptedEdges, Map<Integer, Node> checkedAccesibiliyVictims, Map<Integer, Node> connectedNodestoRevealedRoadNetwork)  {
+			Map<String, Edge> revealedDisruptedEdges, Map<Integer, Node> checkedAccesibiliyVictims, Map<Integer, Node> connectedNodestoRevealedRoadNetwork, String string)  {
 		// writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadNetwork,false);
-		String name= "Instance_"+aTest.getInstanceName()+"seed_"+aTest.getseed()+"disruption_"+aTest.getpercentangeDisruption()+"_OPTCriterion_"+aTest.getOptcriterion()+"_Alpha_"+aTest.getpercentageDistance()+"_Jumping.txt";
+		String name= "Instance_"+aTest.getInstanceName()+"seed_"+aTest.getseed()+"disruption_"+aTest.getpercentangeDisruption()+"_OPTCriterion_"+aTest.getOptcriterion()+"_Alpha_"+aTest.getpercentageDistance()+"_"+string+"_.txt";
 
 		FileWriter fileWriter ;
 		try {

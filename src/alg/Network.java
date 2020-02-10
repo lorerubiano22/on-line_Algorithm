@@ -115,6 +115,8 @@ public class Network {
 			directoryRoadEdgesNetwork.put(result[i].getKey(), result[i]);
 			directoryRoadEdgesNetwork.put(result[i].getInverseEdge().getKey(), result[i].getInverseEdge());
 		}
+
+
 		for (Edge e : directoryRoadEdgesNetwork.values()) { // setting the road network connections
 			this.edgeRoadConnections.add(e);
 		}
@@ -898,6 +900,15 @@ public class Network {
 
 			}
 		}
+
+		for (Edge e : edgeRoadConnections) {
+			if (e.getInflexionEdge()==null) {
+				e.setInflextionNodes(e.getInverseEdge().getInflexionEdge());
+				e.setDistanceRoad(e.getInverseEdge().getDistanceRoad());
+				e.setTimeRoad(e.getInverseEdge().getTimeRoad());
+
+			}}
+		System.out.println("Stop");
 	}
 
 	/*** GETTERS ***/

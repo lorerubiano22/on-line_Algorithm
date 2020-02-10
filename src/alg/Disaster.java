@@ -51,6 +51,9 @@ public class Disaster {
 				}
 			}
 			else {
+				if(e.getOrigin().getId()==26 && e.getEnd().getId()==19) {
+					System.out.print("Strop");
+				}
 				int IndexdisruptedNonodes=rn.nextInt(e.getroadInflexionNode().size()-1);
 				e.setDisruptionIndex(IndexdisruptedNonodes); // setting the disrupted node in direction 1
 				e.getInverseEdge().setDisruptionIndex(IndexdisruptedNonodes); // setting the disrupted node in direction 2
@@ -60,6 +63,15 @@ public class Disaster {
 				DisruptedRoadNetwork.add(radomE);
 			}
 		}}
+
+		for (Edge e: edgeRoadConnection) {
+			if(DisruptedEdges.containsKey(e.getKey())) {
+				if(e.getDisruptionIndex()==-1) {
+					e.setDisruptionIndex(e.getInverseEdge().getDisruptionIndex());
+				}
+			}
+		}
+		System.out.println("Stop");
 	}
 
 
