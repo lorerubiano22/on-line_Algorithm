@@ -185,14 +185,19 @@ public class Assessment {
 		for(Edge e:this.directoryEdges.values()) {
 			directoryNodes.put(e.getOrigin().getId(), e.getOrigin());
 			directoryNodes.put(e.getEnd().getId(), e.getEnd());
+			if(e.getOrigin().getId()==18 && e.getEnd().getId()==19){
+				System.out.print("stopr");
+			}
 		}
-		System.out.println("Contains_25_"+directoryNodes.containsKey(25));
-		System.out.println("Contains_26_"+directoryNodes.containsKey(26));
+
 		for (Node i : this.directoryNodes.values()) {
 			i.getAdjEdgesList().clear();
 		}
 
 		for (Node i : this.directoryNodes.values()) {
+			if(i.getId()==18 ){
+				System.out.print("stopr");
+			}
 			ArrayList<Edge> adj = new ArrayList<>();
 			for (Node j : this.directoryNodes.values()) {
 				String key = i.getId() + "," + j.getId();
@@ -202,6 +207,10 @@ public class Assessment {
 
 			}
 			i.setAdjedges(adj);
+		}
+		nodeList.clear();
+		for (Node i : this.directoryNodes.values()) {
+			nodeList.add(i);
 		}
 	}
 

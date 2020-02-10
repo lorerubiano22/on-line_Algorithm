@@ -25,6 +25,7 @@ public class InsertionProcedure {
 			outputsBack.setBack(backforwardStrategy);
 			outListBack.add(outputsBack);
 			Outputs.printSolSTB(outListBack);
+
 		}
 		if (aTest.getMovementStrategy().equals("J")) {// Jumping movement
 			start = ElapsedTime.systemTime();

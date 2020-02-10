@@ -43,6 +43,9 @@ public class Edge implements Serializable {
 		this.weight = e.weight;
 		this.distanceEuclidean = e.distanceEuclidean;
 		this.inverseEdge = e.inverseEdge;
+		if(e.disruptionIndex!=-1) {
+		this.disruptionIndex=e.disruptionIndex;
+		this.setInflextionNodes(e.getInflexionEdge()); }
 	}
 
 	/* SET METHODS */

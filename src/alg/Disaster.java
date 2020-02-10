@@ -65,6 +65,9 @@ public class Disaster {
 		}}
 
 		for (Edge e: edgeRoadConnection) {
+			if(e.getOrigin().getId()==18 && e.getEnd().getId()==19){
+				System.out.print("stopr");
+			}
 			if(DisruptedEdges.containsKey(e.getKey())) {
 				if(e.getDisruptionIndex()==-1) {
 					e.setDisruptionIndex(e.getInverseEdge().getDisruptionIndex());

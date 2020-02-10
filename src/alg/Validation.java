@@ -11,11 +11,12 @@ import java.util.Map;
 public class Validation {
 
 	// Solution data
-	private Solution jump_Sol;
+	private Solution sol;
 	private final Test aTest;
 	private final Inputs inputs;
 	private final Disaster Event;
 	private final Network informationRoadNetwork;
+	private Outputs outputValidation;
 	// Input data: network information
 	private Node[] nodes; // List of all nodes in the problem/sub-problem
 	private final ArrayList<Edge> edgeRoadConnections = new ArrayList<>();
@@ -28,12 +29,14 @@ public class Validation {
 
 	/// comparison Criteria
 	private final Map<Integer, Node> recheablevictims= new HashMap<>();
-	private boolean victimStateValidation=false;
+	private boolean victimStateValidation=false; // the correct solution have to provide a true
+	private boolean RepeatedEdgesValidation=false; // the correct solution have to provide a true
+	private boolean[] criteria= new boolean[2]; // List of criteria to evaluate - victim accessibility and repeated edges
 
 
 	public Validation(Test t, Inputs inp, InsertionProcedure insertion, Network network, Disaster event2, Assessment labelledInformation) {
 		// Solution data
-		jump_Sol=insertion.getSol_exploration();
+		sol=insertion.getSol_exploration();
 		// Input data: network information
 		aTest=t;
 		Event=event2;
@@ -42,9 +45,12 @@ public class Validation {
 
 		// 1. validation victim accessibility
 		VictimStateValidation();
-
+		criteria[0]=victimStateValidation;
 		//2. Validation if there is road connections repeated
-
+		repeatedEdges();
+		criteria[1]=RepeatedEdgesValidation;
+		outputValidation=new Outputs(Event, inputs, aTest,criteria);
+		//outputValidation.setCriteria(criteria);
 
 	}
 
@@ -53,6 +59,28 @@ public class Validation {
 
 
 	// Accessibility to data
+
+	private void repeatedEdges() {
+		ArrayList<Edge> listEdge= new ArrayList<>();
+		for(Edge e:sol.getExplorationRoute().getEdges()) {
+
+			if(listEdge.contains(e)) {
+				RepeatedEdgesValidation=false;
+				break;
+			}
+			else {
+				listEdge.add(e);
+			}
+		}
+		if(sol.getExplorationRoute().getEdges().equals(listEdge)) {
+			RepeatedEdgesValidation=true;
+		}
+
+	}
+
+
+
+
 
 	private void VictimStateValidation() {
 		FindingPath tree = new FindingPath();
@@ -76,7 +104,7 @@ public class Validation {
 				recheablevictims.put(victim.getId(), victim);
 			}
 		}
-		if(recheablevictims.equals(jump_Sol.getrecheablevictims())) {
+		if(recheablevictims.equals(sol.getrecheablevictims())) {
 			victimStateValidation=true;
 		}
 
@@ -86,9 +114,14 @@ public class Validation {
 
 
 
-	public Solution getJump_Sol() {
-		return jump_Sol;
+	public Solution getsolution() {
+		return sol;
 	}
+	public boolean[] getCriteria() {
+		return criteria;
+	}
+
+
 	public Test getaTest() {
 		return aTest;
 	}

@@ -14,7 +14,8 @@ public class Outputs {
 	private BackandForwardMovement Back_Strategy;
 	private ArrayList<Outputs> list = null;
 	private Inputs inputs;
-
+	private Test test;
+	private boolean[] criteria= new boolean[2];; // List of criteria to evaluate - victim accessibility and repeated edges
 	public void setList() {
 		list.add(this);
 	}
@@ -22,14 +23,16 @@ public class Outputs {
 	/* SET METHODS */
 
 	public Outputs(Inputs inp, Test t, BackandForwardMovement obSol) {
-		inp = inputs;
+		test=t;
+		inputs=inp;
 		this.setBack(obSol);
 
 	}
 
 	public Outputs(Inputs inp, Test t, JumpingMovement obSol) {
 		this.setJumping(obSol);
-		inp = inputs;
+		test=t;
+		inputs=inp;
 
 	}
 
@@ -43,6 +46,48 @@ public class Outputs {
 		writeLinkedList2(Disrup_file, Event.getedgeRoadConnection(), Event.getDisruptedEdges(), Event.getDisruptedRoadConnections(),
 				false);
 
+	}
+
+	public Outputs(Disaster event, Inputs inp, Test t, boolean[] criteria2) {
+		test=t;
+		inputs=inp;
+		this.setCriteria(criteria2);
+	}
+
+	public void setCriteria(boolean[] criteria) {
+		this.criteria = criteria;
+		printvalidationfile();
+	}
+
+
+	private void printvalidationfile() {
+		// TODO Auto-generated method stub
+		try {
+			String filevalidation= "C:/Users/Lorena/Documents/wokspace_Java_BOKU/on-line_Algorithm/Outputs/movement_"+test.getMovementStrategy()+"validationFile.txt";
+			FileWriter fileWriter = new FileWriter(filevalidation,true);
+
+			PrintWriter out = new PrintWriter(fileWriter);
+
+				out.println();
+				out.printf("%s   %s ", test.getInstanceName(), test.getMovementStrategy());
+				Locale.setDefault(Locale.US);
+				double alpha = 0;
+				if (test.getOptcriterion() == 1001) {
+					alpha = test.getpercentageDistance();
+				}
+
+				out.printf(
+						" %.0f         %.1f           %.1f           %.0f             ",
+						test.getOptcriterion(),
+						test.getpercentangeDisruption(), alpha,
+						(float) test.getseed());
+				out.printf("%s   %s ", this.criteria[0], this.criteria[1]);
+
+			out.close();
+
+		} catch (IOException exception) {
+			System.out.println("Error processing output file: " + exception);
+		}
 	}
 
 	public void setJumping(JumpingMovement obSol) {
@@ -150,6 +195,27 @@ public class Outputs {
 						out.println("\n");
 					}
 				}
+
+
+				out.println("\n");
+				out.printf("*********************************\n");
+				out.printf("      Exploration Route     \n");
+				out.println("\n");
+				String s = "";
+					s = s.concat("Travel time = " + Jumping_Strategy.getJump_Sol().getExplorationRoute().getTime() + " || ");
+					s = s.concat("Travel distance = " + Jumping_Strategy.getJump_Sol().getExplorationRoute().getDistance() + " || ");
+					s = s.concat(System.lineSeparator());
+					s = s.concat("\n");
+					s = s.concat("Nodes = ");
+					int last = -1;
+					for (Edge e : Jumping_Strategy.getJump_Sol().getExplorationRoute().getEdges()) { // obtengo edges
+						s = s.concat(e.getOrigin().getId() + "  - ");
+						last = e.getEnd().getId();
+					}
+					s = s.concat(last + "\n");
+					out.printf(s);
+
+
 				out.close();
 			}
 
@@ -199,6 +265,25 @@ public class Outputs {
 							out.println("\n");
 						}
 					}
+
+				out.println("\n");
+				out.printf("*********************************\n");
+				out.printf("      Exploration Route     \n");
+				out.println("\n");
+				String s = "";
+					s = s.concat("Travel time = " + Back_Strategy.getBack_Sol().getExplorationRoute().getTime() + " || ");
+					s = s.concat("Travel distance = " + Back_Strategy.getBack_Sol().getExplorationRoute().getDistance() + " || ");
+					s = s.concat(System.lineSeparator());
+					s = s.concat("\n");
+					s = s.concat("Nodes = ");
+					int last = -1;
+					for (Edge e : Back_Strategy.getBack_Sol().getExplorationRoute().getEdges()) { // obtengo edges
+						s = s.concat(e.getOrigin().getId() + "  - ");
+						last = e.getEnd().getId();
+					}
+					s = s.concat(last + "\n");
+					out.printf(s);
+
 				out.close();
 			}
 
@@ -230,8 +315,10 @@ public class Outputs {
 						o.Jumping_Strategy.getaTest().getOptcriterion(),
 						o.Jumping_Strategy.getaTest().getpercentangeDisruption(), alpha,
 						(float) o.Jumping_Strategy.getaTest().getseed(),
-						o.Jumping_Strategy.getJump_Sol().getTotalDistance(),
-						o.Jumping_Strategy.getJump_Sol().getTotalTime(), o.Jumping_Strategy.getJump_Sol().getPCTime());
+						o.Jumping_Strategy.getJump_Sol().getExplorationRoute().getDistance(),
+						o.Jumping_Strategy.getJump_Sol().getExplorationRoute().getTime(), o.Jumping_Strategy.getJump_Sol().getPCTime());
+
+
 
 			}
 			out.close();
@@ -260,8 +347,8 @@ public class Outputs {
 						" %.0f         %.1f           %.1f           %.0f             %.3f           %.3f           %.3f           ",
 						o.Back_Strategy.getaTest().getOptcriterion(),
 						o.Back_Strategy.getaTest().getpercentangeDisruption(), alpha,
-						(float) o.Back_Strategy.getaTest().getseed(), o.Back_Strategy.getBack_Sol().getTotalDistance(),
-						o.Back_Strategy.getBack_Sol().getTotalTime(),
+						(float) o.Back_Strategy.getaTest().getseed(), o.Back_Strategy.getBack_Sol().getExplorationRoute().getDistance(),
+						o.Back_Strategy.getBack_Sol().getExplorationRoute().getTime(),
 						(float) o.Back_Strategy.getBack_Sol().getPCTime());
 			}
 			out.close();

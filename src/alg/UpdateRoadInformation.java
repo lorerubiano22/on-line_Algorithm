@@ -31,10 +31,16 @@ public class UpdateRoadInformation {
 		for (Edge e : network.getEdgeConnections()) {// the road connections are created
 			edgeRoadConnection.add(e);
 			originalEdgeRoadConnection.put(e.getKey(), e);
+			if(e.getOrigin().getId()==18 && e.getEnd().getId()==19){
+				System.out.print("stopr");
+			}
 		}
 		for (Edge e : edgeRoadConnection) {// the road connections are created
 			revealedDisruptedRoadConnections.put(e.getKey(), e);
 			directoryroadConnections.put(e.getKey(), e);
+			if(e.getOrigin().getId()==18 && e.getEnd().getId()==19){
+				System.out.print("stopr");
+			}
 		}
 		// TO DO
 		nodeList = new ArrayList<>();

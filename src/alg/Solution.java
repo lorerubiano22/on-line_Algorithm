@@ -13,7 +13,7 @@ public class Solution implements Cloneable {
 	private double totalDistance; // solution travel distance
 	private LinkedList<Route> routes; // list of routes in this solution - keep for the extension
 	private double timePC; // elapsed computational time (in seconds)
-
+private  Route explorationRoute;
 	public Solution() {
 		totalTime = 0.0; // solution total travel time
 		totalDistance = 0.0; // solution travel distance
@@ -35,6 +35,21 @@ public class Solution implements Cloneable {
 	/* GET METHODS */
 	public LinkedList<Route> getRoutes() {
 		return routes;
+	}
+
+
+	public Route setExplorationRoute(Route r) {
+		explorationRoute= new Route();
+		for(Edge e:r.getEdges()) {
+			explorationRoute.getEdges().add(e);
+		}
+		explorationRoute.calcTime();
+		explorationRoute.calcDistance();
+		return explorationRoute;
+	}
+
+	public Route getExplorationRoute() {
+		return explorationRoute;
 	}
 
 	public double getTotalTime() {
