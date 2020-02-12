@@ -444,7 +444,16 @@ public class BackandForwardMovement {
 			if (auxRoute.getEdges().get(auxRoute.getEdges().size() - 1).getEnd().getId() == e.getEnd().getId()) {
 				auxRoute.getEdges().add(e.getInverseEdge());
 				boolean isDisruptedEdge=disruptedEdge2(e.getInverseEdge());
-				parallelrouting.updatingparallelRoute(originialEdgeRoadConnection, visitedRoadConnections,revealedDisruptedEdges,auxRoute,parallelRoute,e.getInverseEdge(),isDisruptedEdge);
+
+				Edge auxEdge;
+				if(this.directoryRoadEdges.containsKey(e.getInverseEdge().getKey())) {
+					auxEdge=new Edge(directoryRoadEdges.get(e.getInverseEdge().getKey()));
+				}
+				else {
+					auxEdge=new Edge(e.getInverseEdge());
+				}
+				parallelrouting.updatingparallelRoute(originialEdgeRoadConnection, visitedRoadConnections,revealedDisruptedEdges,auxRoute,parallelRoute,auxEdge,isDisruptedEdge);
+
 
 			}
 			else {
@@ -466,15 +475,28 @@ public class BackandForwardMovement {
 				if(auxRoute.getEdges().get(auxRoute.getEdges().size() - 1).getEnd().getId()==e.getOrigin().getId()) {
 					auxRoute.getEdges().add(e);
 					boolean isDisruptedEdge=disruptedEdge2(e);
-					parallelrouting.updatingparallelRoute(originialEdgeRoadConnection, visitedRoadConnections,revealedDisruptedEdges,auxRoute,parallelRoute,e,isDisruptedEdge);
+					Edge auxEdge;
+					if(this.directoryRoadEdges.containsKey(e.getKey())) {
+						auxEdge=new Edge(directoryRoadEdges.get(e.getKey()));
+					}
+					else {
+						auxEdge=new Edge(e);
+					}
+					parallelrouting.updatingparallelRoute(originialEdgeRoadConnection, visitedRoadConnections,revealedDisruptedEdges,auxRoute,parallelRoute,auxEdge,isDisruptedEdge);
 
 				}
 				else {
 					if(auxRoute.getEdges().get(auxRoute.getEdges().size() - 1).getEnd().getId()==e.getEnd().getId()) {
 						auxRoute.getEdges().add(e.getInverseEdge());
 						boolean isDisruptedEdge=disruptedEdge2(e.getInverseEdge());
-						parallelrouting.updatingparallelRoute(originialEdgeRoadConnection, visitedRoadConnections,revealedDisruptedEdges,auxRoute,parallelRoute,e.getInverseEdge(),isDisruptedEdge);
-
+						Edge auxEdge;
+						if(this.directoryRoadEdges.containsKey(e.getInverseEdge().getKey())) {
+							auxEdge=new Edge(directoryRoadEdges.get(e.getInverseEdge().getKey()));
+						}
+						else {
+							auxEdge=new Edge(e.getInverseEdge());
+						}
+						parallelrouting.updatingparallelRoute(originialEdgeRoadConnection, visitedRoadConnections,revealedDisruptedEdges,auxRoute,parallelRoute,auxEdge,isDisruptedEdge);
 					}
 				}
 			}
@@ -483,8 +505,15 @@ public class BackandForwardMovement {
 		else {
 			auxRoute.getEdges().add(e);
 			boolean isDisruptedEdge=disruptedEdge2(e);
-			parallelrouting.updatingparallelRoute(originialEdgeRoadConnection, visitedRoadConnections,revealedDisruptedEdges,auxRoute,parallelRoute,e,isDisruptedEdge);
 
+			Edge auxEdge;
+			if(this.directoryRoadEdges.containsKey(e.getKey())) {
+				auxEdge=new Edge(directoryRoadEdges.get(e.getKey()));
+			}
+			else {
+				auxEdge=e;
+			}
+			parallelrouting.updatingparallelRoute(originialEdgeRoadConnection, visitedRoadConnections,revealedDisruptedEdges,auxRoute,parallelRoute,auxEdge,isDisruptedEdge);
 		}
 
 		for (Edge edge : auxRoute.getEdges()) { // update -> visited list of edges
@@ -564,9 +593,9 @@ public class BackandForwardMovement {
 			}
 		}
 
-//		if (toInsert != null) {
-//			this.updateVisitedNetwork();
-//		}
+		//		if (toInsert != null) {
+		//			this.updateVisitedNetwork();
+		//		}
 		return toInsert;
 	}
 
@@ -589,7 +618,17 @@ public class BackandForwardMovement {
 				toInsert = this.directoryAerialEdges.get(key);
 				auxRoute.getEdges().add(toInsert);
 				boolean isDisruptedEdge=disruptedEdge2(toInsert);
-				parallelrouting.updatingparallelRoute(originialEdgeRoadConnection, visitedRoadConnections,revealedDisruptedEdges,auxRoute,parallelRoute,toInsert,isDisruptedEdge);
+
+
+				Edge auxEdge;
+				if(this.directoryRoadEdges.containsKey(toInsert.getKey())) {
+					auxEdge=new Edge(directoryRoadEdges.get(toInsert.getKey()));
+				}
+				else {
+					auxEdge=new Edge(toInsert);
+				}
+				parallelrouting.updatingparallelRoute(originialEdgeRoadConnection, visitedRoadConnections,revealedDisruptedEdges,auxRoute,parallelRoute,auxEdge,isDisruptedEdge);
+
 
 			}
 			ArrayList<Edge> VictimAdjEdges = new ArrayList<>();
@@ -826,10 +865,10 @@ public class BackandForwardMovement {
 				}
 			}
 		}
-//		if (edgeToinsert != null) {
-//			this.updateVisitedNetwork(edgeToinsert);
-//		}
-//		updateVisitedNetwork();
+		//		if (edgeToinsert != null) {
+		//			this.updateVisitedNetwork(edgeToinsert);
+		//		}
+		//		updateVisitedNetwork();
 		return edgeToinsert;
 	}
 
