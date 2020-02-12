@@ -16,6 +16,8 @@ public class Assessment {
 	private final ArrayList<Node> nodeList;
 	private HashMap<Integer, Node> removedNode = new HashMap<>();
 	private HashMap<String, Edge> removedEdge = new HashMap<>();
+	private final Map<String, List<Integer>> directoryVictimsCycles= new HashMap<>();
+	private final Map<String, List<Integer>> directoryIntermediateCycles= new HashMap<>();
 	private final Map<Integer, Node> directoryNodes;
 	private final Map<String, Edge> directoryEdges;
 	private final Map<Integer, Node> checkedAccesibiliyVictims;
@@ -222,14 +224,17 @@ public class Assessment {
 			Edge newEdge = new Edge(e);
 			x.add(newEdge);
 		}
+		// selecting all connections which are not contained in the spanning tree
+		selectingCycles(map, inputs);
+		removingSubNetworksWithIntermediateNodes();
 		//new DrawingNetwork(x,aTest);
-		removingSubNetworksWithIntermediateNodes(map, inputs);// 2. Looking for non necessaries subnetworks
+		//removingSubNetworksWithIntermediateNodes(map, inputs);// 2. Looking for non necessaries subnetworks
 		x = new ArrayList<>();
 		for (Edge e : map.values()) { // 1. Compute the Spanning tree
 			Edge newEdge = new Edge(e);
 			x.add(newEdge);
 		}
-		//new DrawingNetwork(x,aTest);
+		new DrawingNetwork(x,aTest);
 		checkingNodesWithOneAdjacentEdge(map,depotConnected); // removing edges with just one adjacent edge
 		x = new ArrayList<>();
 		for (Edge e : map.values()) { // 1. Compute the Spanning tree
@@ -243,9 +248,111 @@ public class Assessment {
 			Edge newEdge = new Edge(e);
 			x.add(newEdge);
 		}
-		//new DrawingNetwork(x,aTest);
+		new DrawingNetwork(x,aTest);
 		checkingNodesWithOneAdjacentEdge(map,depotConnected); // removing edges with just one adjacent edge
 	}
+
+	private void selectingCycles(Map<String, Edge> map, Inputs inp) {
+		ArrayList<Edge> victimsansintermediateNetwork = new ArrayList<>();
+		for (Edge e : map.values()) { // 1. Compute the Spanning tree
+			Edge newEdge = new Edge(e);
+			if(!removedNode.containsKey(e.getOrigin().getId()) &&  !removedNode.containsKey(e.getEnd().getId())) {
+				victimsansintermediateNetwork.add(newEdge);}
+		}
+		//new DrawingNetwork(victimsansintermediateNetwork,aTest);
+		Map<String, Edge> edgesGenerateCycles = new HashMap<>();
+		ArrayList<Edge> xx = new ArrayList<>();
+		for (Edge e : tree.getTree().values()) { // 1. Compute the Spanning tree
+			Edge newEdge = new Edge(e);
+			xx.add(newEdge);
+		}
+		// original spanning tree from depot
+		new DrawingNetwork(xx,aTest);
+		for (Edge e : victimsansintermediateNetwork) { // 2. Select the edges which are not in the spanning tree from the depot (main spanning tree)
+			if(!tree.getTree().containsKey(e.getKey())) {
+				Edge newEdge = new Edge(e);
+				edgesGenerateCycles.put(newEdge.getKey(),newEdge);}
+		}
+		Map<Integer, Node> nodeListToSpannigtree= new HashMap<>();
+		for(Edge e:edgesGenerateCycles.values()) { // generates the list of nodes to create the spanning tree
+			nodeListToSpannigtree.put(e.getOrigin().getId(), e.getOrigin());
+			nodeListToSpannigtree.put(e.getEnd().getId(), e.getEnd());
+		}
+
+		// selecting the cycles from the main spanning tree from the depot
+		findingSubNetworks(edgesGenerateCycles, tree);
+
+		nodesToCtoCreateSpanningTree(map, inputs,nodeListToSpannigtree); // Searches the spanning tree for each node and detects possible cycles
+
+	}
+
+	private void findingSubNetworks(Map<String, Edge> edgesGenerateCycles, FindingPath spanningTree) {
+		Map<String, Edge> checkedCycles = new HashMap<>();// list to save connections which represents a cycle
+		for(Edge e: edgesGenerateCycles.values() ) {
+			Paths allposiblePaths= new Paths();
+			//		List<Integer> subnetwork=new ArrayList<>();
+			if(!checkedCycles.containsKey(e.getKey())) {
+				checkedCycles.put(e.getKey(),e);
+				checkedCycles.put(e.getInverseEdge().getKey(),e.getInverseEdge());
+				//subnetwork= allposiblePaths.findingallPathsToVictimNode(tree.getTree(),inputs,nodeList, e.getOrigin().getId(),e.getEnd().getId());
+				allposiblePaths.findingallPathsToVictimNode(spanningTree.getTree(),inputs,nodeList, e.getOrigin().getId(),e.getEnd().getId());
+
+				for(List<Integer> subnetwork :allposiblePaths.listOfpaths) {
+					if(subnetwork.size()>2) {
+						if(!hasVictimNode(subnetwork)) {
+							directoryIntermediateCycles.put(e.getKey(),subnetwork);
+						}
+						else {
+							directoryVictimsCycles.put(e.getKey(),subnetwork);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void nodesToCtoCreateSpanningTree(Map<String, Edge> map, Inputs inputs2, Map<Integer, Node> nodeListToSpannigtree) {
+		ArrayList<Edge> copytree= new ArrayList<>();
+		for(Edge e:map.values()) { // copies the current network without considering the items to be deleted
+			if(!removedNode.containsKey(e.getOrigin().getId()) &&  !removedNode.containsKey(e.getEnd().getId())) {
+				copytree.add(new Edge(e));
+			}
+		}
+
+		for(Node node:nodeListToSpannigtree.values()) {
+			// 1. create the spanning tree
+			FindingPath treeConncetions = new FindingPath();
+			treeConncetions.spanningTreePath(copytree, node.getId()); // compute the spanning tree for each node
+			// 2. Select all edges that are not contained in the spanning tree
+			Map<String, Edge> edgesGenerateCycles = new HashMap<>();
+			for (Edge e : copytree) { // 2. Select the edges which are not in the spanning tree
+				if(!treeConncetions.getTree().containsKey(e.getKey())) { // it excludes the edges list in the spanning tree
+					Edge newEdge = new Edge(e);
+					edgesGenerateCycles.put(newEdge.getKey(),newEdge);}
+			}
+
+			// to remove
+			ArrayList<Edge> xx= new ArrayList<>();
+			for (Edge e : map.values()) { // 1. network
+				Edge newEdge = new Edge(e);
+				xx.add(newEdge);
+			}
+
+			//new DrawingNetwork(xx,aTest);
+			xx= new ArrayList<>();
+
+			for (Edge e : treeConncetions.getTree().values()) { // 1. Compute the Spanning tree
+				Edge newEdge = new Edge(e);
+				xx.add(newEdge);
+			}
+			//new DrawingNetwork(xx,aTest);
+			// 3. Find the cycles
+			findingSubNetworks(edgesGenerateCycles, treeConncetions);
+		}
+
+	}
+
+
 
 	private void removingSubNetworksWithVictimNodes(Map<String, Edge> map, Inputs inputs2) {
 		ArrayList<Edge> victimsansintermediateNetwork = new ArrayList<>();
@@ -256,7 +363,6 @@ public class Assessment {
 		}
 		//new DrawingNetwork(victimsansintermediateNetwork,aTest);
 		Map<String, Edge> edgesGenerateCycles = new HashMap<>();
-		Map<String, Edge> checkedCycles = new HashMap<>();
 		ArrayList<Edge> xx = new ArrayList<>();
 		for (Edge e : map.values()) { // 1. Compute the Spanning tree
 			Edge newEdge = new Edge(e);
@@ -276,63 +382,59 @@ public class Assessment {
 		Solution routesList= new Solution();
 		// 3. For each edge which are not in the spanning tree
 		// find a path in the spanning tree
-		Paths allposiblePaths= new Paths();
-		List<Integer> subnetwork=new ArrayList<>();
-		for(Edge e: edgesGenerateCycles.values() ) {
-			if(!checkedCycles.containsKey(e.getKey())) {
-				checkedCycles.put(e.getKey(),e);
-				checkedCycles.put(e.getInverseEdge().getKey(),e.getInverseEdge());
-				allposiblePaths.findingallPathsToVictimNode(net,inputs,nodeList, e.getOrigin().getId(),e.getEnd().getId());
-				storingAllpaths(allposiblePaths,routesList); // store all
-				findingunnecesaryNodesandEdges(routesList,e);
-			}
+
+		storingAllpaths(directoryVictimsCycles,routesList); // store all
+		for(Route  r: routesList.getRoutes()) {
+			String key=r.getEdges().get(0).getOrigin().getId()+","+r.getEdges().get(r.getEdges().size()-1).getEnd().getId();
+			findingunnecesaryNodesandEdges(routesList,directoryEdges.get(key));
 		}
 		setCleanedRoadConnection(true); // leave all functional edges
 		// 5. Set the list of adjacent edges
 		setAdjEdges();
-
-
 	}
 
-	private void storingAllpaths(Paths allposiblePaths, Solution routesList) {
+	private void storingAllpaths(Map<String, List<Integer>> directoryVictimsCycles, Solution routesList) {
 		// searching for sub-networks with only victim nodes
-		List<ArrayList<Integer>> pathswithVictimNodes= selectingNetworkswithVictimNodes(allposiblePaths);
-		if(!pathswithVictimNodes.isEmpty()) {
 
-			for(ArrayList<Integer> list: pathswithVictimNodes) {// here is the list of paths with victim  nodes
-				Route aux= new Route(); // 1. creating a new route per path
-				for(int i=0;i< list.size()-1;i++) {
-					if(list.size()>2) {// list of elements in the path
+		for(List<Integer> list: directoryVictimsCycles.values()) {
+			// here is the list of paths with victim  nodes
+			Route aux= new Route(); // 1. creating a new route per path
+			boolean areThereEdges=checkEdgesRemoved(list);
+			if(areThereEdges) {
+			for(int i=0;i< list.size()-1;i++) {
+				if(list.size()>2) {// list of elements in the path
 					String keyEdge=list.get(i)+","+list.get(i+1);
 					Edge e= this.directoryEdges.get(keyEdge);
 					aux.getEdges().add(e);}
-				}
-				if(!aux.getEdges().isEmpty()) {
+			}
+			if(!aux.getEdges().isEmpty()) {
 				aux.calcDistance();
 				aux.calcTime();
-				routesList.getRoutes().add(aux);}// 2. inserting the route in the solution
-			}
-			routesList.sorting(); // 3. sorting the routes into the solutions
-
+				routesList.getRoutes().add(aux);}}// 2. inserting the route in the solution
 		}
+		routesList.sorting(); // 3. sorting the routes into the solutions
+
 	}
 
-	private List<ArrayList<Integer>> selectingNetworkswithVictimNodes(Paths allposiblePaths) {
-		List<ArrayList<Integer>> pathswithVictimNodes= new ArrayList<>();
-		for(ArrayList<Integer> list: allposiblePaths.listOfpaths) {// looking for the victim nodes
-			if(this.hasVictimNode(list)) {// checking if the sub-network contains victim nodes
-				ArrayList<Integer> auxList= new ArrayList<>();
-				for(int i=0;i< list.size();i++) { // list of elements in the path
-					auxList.add(list.get(i));
+
+
+
+
+	private boolean checkEdgesRemoved(List<Integer> list) {
+		boolean thereAreEdges= true;
+		for(int i=0;i< list.size()-1;i++) {
+			if(list.size()>2) {// list of elements in the path
+				String keyEdge=list.get(i)+","+list.get(i+1);
+				if(!directoryEdges.containsKey(keyEdge)) {
+					thereAreEdges= false;
 				}
-				pathswithVictimNodes.add(auxList);
-			}
+				if(!thereAreEdges) {
+					break;
+				}
+				}
 		}
-		return pathswithVictimNodes;
+		return thereAreEdges;
 	}
-
-
-
 
 	private void findingunnecesaryNodesandEdges(Solution routesList, Edge conection) {
 		//  1. Identify the visited and functional networks
@@ -357,23 +459,14 @@ public class Assessment {
 				computingTheAccesiblitytoVictims(edgesToRemove);
 			}
 			else {
-				auxR= new Route(routesList.getRoutes().get(0)); // Select the smallest sub-network (with the shortest distance)
+				for(int i=0;i<routesList.getRoutes().size();i++) {
+				auxR= new Route(routesList.getRoutes().get(i)); // Select the smallest sub-network (with the shortest distance)
 				// Identify the boarding points of the sub-networks
 				ArrayList<Node> boardingNodes= new ArrayList<>();// Create the pathBoardingPoints list
 				searchingBoardingNodes(auxR,boardingNodes);
-				findingFunctionalEdges(boardingNodes,auxR,conection);
+				findingFunctionalEdges(boardingNodes,auxR,conection);}
 			}
 		}
-
-		// if there is 1 boarding point
-
-
-		// if any edge in the subnetwork has not been visited, then nothing can be removed
-
-
-
-
-
 
 	}
 
@@ -381,7 +474,7 @@ public class Assessment {
 		ArrayList<Edge> copytree= new ArrayList<>();
 		for(Edge e:revealedDisruptedRoadConnections.values()) {
 			if(!listEdgesToKeep.containsKey(e.getKey()) && !listEdgesToKeep.containsKey(e.getInverseEdge().getKey()) ) {
-				copytree.add( e);
+				copytree.add(new Edge(e));
 			}
 		}
 
@@ -496,14 +589,14 @@ public class Assessment {
 					if(victim.getId()!=functional.getId()) {
 						String key= victim.getId()+","+functional.getId();
 						if(this.directoryEdges.containsKey(key)) {
-						Edge e= new Edge(this.directoryEdges.get(key));
-						if(this.visitedRoadConnections.containsKey(e.getKey())) {
-							if(this.revealedDisruptedRoadConnections.containsKey(e.getKey())) {
-								connectedVictims.add(victim);
-								EdgestoKeep.put(e.getKey(), e);
-								EdgestoKeep.put(e.getInverseEdge().getKey(), e.getInverseEdge());
+							Edge e= new Edge(this.directoryEdges.get(key));
+							if(this.visitedRoadConnections.containsKey(e.getKey())) {
+								if(this.revealedDisruptedRoadConnections.containsKey(e.getKey())) {
+									connectedVictims.add(victim);
+									EdgestoKeep.put(e.getKey(), e);
+									EdgestoKeep.put(e.getInverseEdge().getKey(), e.getInverseEdge());
+								}
 							}
-						}
 						}
 					}
 				}
@@ -567,34 +660,34 @@ public class Assessment {
 		// funtional edges
 		Route smallestNetwork= new Route();
 		if(!visitedRoutesStore.getRoutes().isEmpty()) {
-		boolean disruptedEdge= false;
-		Solution visitedFunctionalRoutesStore= new Solution();
-		for(Route r:visitedRoutesStore.getRoutes() ) { // looking in all the routes
-			for(Edge e: r.getEdges()) {
-				if(!this.revealedDisruptedEdges.containsKey(e.getKey())) {
-					disruptedEdge=true;
-				}
-				if(disruptedEdge) {
-					break;
-				}
-			}
-			if(!disruptedEdge) {
-				Route auxR= new Route();
+			boolean disruptedEdge= false;
+			Solution visitedFunctionalRoutesStore= new Solution();
+			for(Route r:visitedRoutesStore.getRoutes() ) { // looking in all the routes
 				for(Edge e: r.getEdges()) {
-					auxR.getEdges().add(e);
+					if(!this.revealedDisruptedEdges.containsKey(e.getKey())) {
+						disruptedEdge=true;
+					}
+					if(disruptedEdge) {
+						break;
+					}
 				}
-				visitedFunctionalRoutesStore.getRoutes().add(auxR);
+				if(!disruptedEdge) {
+					Route auxR= new Route();
+					for(Edge e: r.getEdges()) {
+						auxR.getEdges().add(e);
+					}
+					visitedFunctionalRoutesStore.getRoutes().add(auxR);
+				}
 			}
-		}
-if(!visitedFunctionalRoutesStore.getRoutes().isEmpty()) {
-	smallestNetwork=new Route(visitedFunctionalRoutesStore.getRoutes().get(0));
-}
+			if(!visitedFunctionalRoutesStore.getRoutes().isEmpty()) {
+				smallestNetwork=new Route(visitedFunctionalRoutesStore.getRoutes().get(0));
+			}
 
 
 		}
-//		if(smallestNetwork.getEdges().isEmpty()) {
-//			smallestNetwork=new Route(routesList.getRoutes().get(0));
-//		}
+		//		if(smallestNetwork.getEdges().isEmpty()) {
+		//			smallestNetwork=new Route(routesList.getRoutes().get(0));
+		//		}
 		return smallestNetwork;
 	}
 
@@ -658,44 +751,11 @@ if(!visitedFunctionalRoutesStore.getRoutes().isEmpty()) {
 		}
 	}
 
-	private void removingSubNetworksWithIntermediateNodes(Map<String, Edge> map, Inputs inputs) {
+	private void removingSubNetworksWithIntermediateNodes() {
 
-		ArrayList<Edge> victimsansintermediateNetwork = new ArrayList<>();
-		for (Edge e : map.values()) { // 1. Compute the Spanning tree
-			Edge newEdge = new Edge(e);
-			if(!removedNode.containsKey(e.getOrigin().getId()) &&  !removedNode.containsKey(e.getEnd().getId())) {
-				victimsansintermediateNetwork.add(newEdge);}
-		}
-		//new DrawingNetwork(victimsansintermediateNetwork,aTest);
-		Map<String, Edge> edgesGenerateCycles = new HashMap<>();
-		Map<String, Edge> checkedCycles = new HashMap<>();
-		ArrayList<Edge> xx = new ArrayList<>();
-		for (Edge e : map.values()) { // 1. Compute the Spanning tree
-			Edge newEdge = new Edge(e);
-			xx.add(newEdge);
-		}
-		//new DrawingNetwork(xx,aTest);
-		for (Edge e : victimsansintermediateNetwork) { // 2. Select the edges which are not in the spanning tree
-			if(!tree.getTree().containsKey(e.getKey())) {
-				Edge newEdge = new Edge(e);
-				edgesGenerateCycles.put(newEdge.getKey(),newEdge);}
-		}
-
-		// 3. For each edge which are not in the spanning tree
-		// find a path in the spanning tree
-		Paths allposiblePaths= new Paths();
-		List<Integer> subnetwork=new ArrayList<>();
-		for(Edge e: edgesGenerateCycles.values() ) {
-			if(!checkedCycles.containsKey(e.getKey())) {
-				checkedCycles.put(e.getKey(),e);
-				checkedCycles.put(e.getInverseEdge().getKey(),e.getInverseEdge());
-				subnetwork= allposiblePaths.findingallPathsToVictimNode(tree.getTree(),inputs,nodeList, e.getOrigin().getId(),e.getEnd().getId());
-				if(subnetwork.size()>2) {
-					if(!hasVictimNode(subnetwork)) {
-						findingAdditionalConnections(subnetwork);
-					}
-				}
-			}
+		//List<Integer> subnetwork=new ArrayList<>();
+		for(List<Integer> subnetwork: directoryIntermediateCycles.values()) {
+			findingAdditionalConnections(subnetwork);
 		}
 		setCleanedRoadConnection(true); // leave all functional edges
 		// 5. Set the list of adjacent edges
@@ -817,15 +877,6 @@ if(!visitedFunctionalRoutesStore.getRoutes().isEmpty()) {
 
 
 
-
-		// si existe un camino con esas condiciones. hacer una copia de la red actual sin los arcos
-		// contenidos en el camino
-
-		// verificar si con la nueva versión de la red la accesibilidad a las victimas cambia
-		// sino cambia los nodos se eliminan completamente
-
-		// si cambia los arcos no se eliminara
-
 	}
 
 	private void checkingtheVisitedPaths(Paths allposiblePaths, Map<Integer, Node> victiminThestree, String key2, String key1) {
@@ -854,8 +905,8 @@ if(!visitedFunctionalRoutesStore.getRoutes().isEmpty()) {
 				if(this.visitedRoadConnections.containsKey(list.get(j))) {
 					if(this.revealedDisruptedEdges.containsKey(list.get(j))) {
 
-					visited=false;
-				}
+						visited=false;
+					}
 					else {
 						visited=true;
 					}
@@ -895,7 +946,7 @@ if(!visitedFunctionalRoutesStore.getRoutes().isEmpty()) {
 						Edge e=new Edge(this.directoryEdges.get(list.get(j)));
 						nonvisitedEdges.put(e.getKey(), e);
 						nonvisitedEdges.put(e.getInverseEdge().getKey(), e.getInverseEdge());
-						}
+					}
 				}
 			}
 

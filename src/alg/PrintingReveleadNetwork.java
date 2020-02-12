@@ -31,7 +31,9 @@ public class PrintingReveleadNetwork {
 				if(visitedRoadConnections.containsKey(e.getKey())) {
 					if(!revealedDisruptedEdges.containsKey(e.getKey())) {
 						if(e.getOrigin().getId()>e.getEnd().getId()) {
-							bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_Distance_"+e.getDistance()+"_road_Distance_"+e.getDistanceRoad()+ "_Connectivity_"+e.getConnectivity()+"_weight_"+e.getWeight());
+							//bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId()+"_Distance_"+e.getDistance()+"_road_Distance_"+e.getDistanceRoad()+ "_Connectivity_"+e.getConnectivity()+"_weight_"+e.getWeight());
+							bw.println(+e.getOrigin().getId()+"  "+e.getEnd().getId());
+
 						}
 					}
 				}

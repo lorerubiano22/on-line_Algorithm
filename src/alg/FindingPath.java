@@ -1,6 +1,7 @@
 package alg;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -150,7 +151,8 @@ public class FindingPath {
 
 		}
 		int maxIndex = max + 1;
-		copyAerialNetwork.sort(Edge.minDistance);
+		//copyAerialNetwork.sort(Edge.minDistance);
+		Collections.shuffle(copyAerialNetwork);
 
 		Edge result[] = new Edge[copyAerialNetwork.size()]; // Tnis will store the resultant MST
 		int e = 0; // An index variable, used for result[]

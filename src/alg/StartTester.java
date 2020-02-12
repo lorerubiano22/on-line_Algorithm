@@ -17,7 +17,7 @@ public class StartTester {
 
 	public static void main(String[] args)  {
 
-	System.out.println("****  WELCOME TO THIS PROGRAM  ****");
+ 	System.out.println("****  WELCOME TO THIS PROGRAM  ****");
 		long programStart = ElapsedTime.systemTime();
 
 		/* 1. GET THE LIST OF TESTS TO RUN FORM "test2run.txt" */
