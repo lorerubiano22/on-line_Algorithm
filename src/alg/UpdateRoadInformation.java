@@ -16,7 +16,9 @@ public class UpdateRoadInformation {
 	private final Map<String, Edge> directoryroadConnections; // It contains all edges of the network
 	private final Map<String, Edge> directoryAerialConnections; // It contains all edges of the network
 	private final HashMap<Integer, Node> checkedAccesibiliyVictims = new HashMap<>();
-	private final Map<String, Edge>visitedRoadConnections= new HashMap<>();;
+	private final Map<String, Edge>visitedRoadConnections= new HashMap<>();
+	private final HashMap<String, Edge> connectedEdgestoRevealedRoadNetwork= new HashMap<>(); // storage the edges that belong to a route to
+	private final Map<Integer, Node> connectedNodestoRevealedRoadNetwork= new HashMap<>();
 
 	public UpdateRoadInformation(Network network) {
 		revealedDisruptedRoadConnections = new HashMap<>();
@@ -112,6 +114,15 @@ public class UpdateRoadInformation {
 	public Map<String, Edge> getoriginalEdgeRoadConnection() {
 		return originalEdgeRoadConnection;
 	}
+
+	public HashMap<String, Edge> getconnectedEdgestoRevealedRoadNetwork() {
+		return connectedEdgestoRevealedRoadNetwork;
+	}
+
+	public  Map<Integer, Node> getconnectedNodestoRevealedRoadNetwork() {
+		return connectedNodestoRevealedRoadNetwork;
+	}
+
 
 
 }

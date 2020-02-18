@@ -315,8 +315,11 @@ public class Outputs {
 						o.Jumping_Strategy.getaTest().getOptcriterion(),
 						o.Jumping_Strategy.getaTest().getpercentangeDisruption(), alpha,
 						(float) o.Jumping_Strategy.getaTest().getseed(),
-						o.Jumping_Strategy.getJump_Sol().getExplorationRoute().getDistance(),
-						o.Jumping_Strategy.getJump_Sol().getExplorationRoute().getTime(), o.Jumping_Strategy.getJump_Sol().getPCTime());
+						o.Jumping_Strategy.getJump_Sol().getTotalDistance(),
+						o.Jumping_Strategy.getJump_Sol().getTotalTime(), o.Jumping_Strategy.getJump_Sol().getPCTime());
+
+//						o.Jumping_Strategy.getJump_Sol().getExplorationRoute().getDistance(),
+//						o.Jumping_Strategy.getJump_Sol().getExplorationRoute().getTime(), o.Jumping_Strategy.getJump_Sol().getPCTime());
 
 
 
@@ -347,8 +350,11 @@ public class Outputs {
 						" %.0f         %.1f           %.1f           %.0f             %.3f           %.3f           %.3f           ",
 						o.Back_Strategy.getaTest().getOptcriterion(),
 						o.Back_Strategy.getaTest().getpercentangeDisruption(), alpha,
-						(float) o.Back_Strategy.getaTest().getseed(), o.Back_Strategy.getBack_Sol().getExplorationRoute().getDistance(),
-						o.Back_Strategy.getBack_Sol().getExplorationRoute().getTime(),
+						(float) o.Back_Strategy.getaTest().getseed(),
+//						o.Back_Strategy.getBack_Sol().getExplorationRoute().getDistance(),
+//						o.Back_Strategy.getBack_Sol().getExplorationRoute().getTime(),
+						o.Back_Strategy.getBack_Sol().getTotalDistance(),
+						o.Back_Strategy.getBack_Sol().getTotalTime(),
 						(float) o.Back_Strategy.getBack_Sol().getPCTime());
 			}
 			out.close();

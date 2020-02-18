@@ -10,13 +10,14 @@ public class StartTester {
 	final static String inputFolder = "inputs";
 	final static String outputFolder = "outputs";
 	final static String testFolder = "tests";
-	 static String fileNameTest ;
+	final static String fileNameTest = "test2Run.txt";
+	 //static String fileNameTest ;
 	final static String sufixFileNodes = ".txt";
 	final static String sufixFileVehicules = "_input_vehicles.txt";
 	final static String sufixFileOutput = "_outputs.txt";
 
 	public static void main(String[] args)  {
-	fileNameTest =args[0] ;
+//	fileNameTest =args[0] ;
 
  	System.out.println("****  WELCOME TO THIS PROGRAM  ****");
 		long programStart = ElapsedTime.systemTime();

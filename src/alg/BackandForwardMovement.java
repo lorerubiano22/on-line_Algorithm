@@ -32,8 +32,8 @@ public class BackandForwardMovement {
 	private int totalDetectedDisruption=0;
 	private final Map<String, Edge> originialEdgeRoadConnection;
 	private Map<String, Edge> revealedDisruptedEdges = new HashMap<>(); ; // list of revealed disrupted edges
-	private final HashMap<String, Edge> connectedEdgestoRevealedRoadNetwork= new HashMap<>(); // storage the edges that belong to a route to
-	private final Map<Integer, Node> connectedNodestoRevealedRoadNetwork= new HashMap<>();
+	private final HashMap<String, Edge> connectedEdgestoRevealedRoadNetwork; // storage the edges that belong to a route to
+	private final Map<Integer, Node> connectedNodestoRevealedRoadNetwork;
 	private final HashMap<Integer, Node> visitedVictims = new HashMap<>(); // list of visited victims
 	private final Map<Integer, Node> checkedAccesibiliyVictims ;
 	private final HashMap<Integer, Node> connectedNodesNotoVisit = new HashMap<>(); // consider the nodes that are connected
@@ -48,6 +48,8 @@ public class BackandForwardMovement {
 		this.Event = Event;
 		this.inputs = inp;
 		// Road information - online
+		connectedEdgestoRevealedRoadNetwork= reveledNetwork.getconnectedEdgestoRevealedRoadNetwork(); // storage the edges that belong to a route to
+		connectedNodestoRevealedRoadNetwork= reveledNetwork.getconnectedNodestoRevealedRoadNetwork();
 		originialEdgeRoadConnection=reveledNetwork.getoriginalEdgeRoadConnection();
 		visitedRoadConnections=reveledNetwork.getvisitedRoadConnections();
 		revealedDisruptedEdges=reveledNetwork.getrevealedDisruptedEdges();
@@ -214,16 +216,18 @@ public class BackandForwardMovement {
 
 		while(iteration<4) {
 
-			for (Edge e : this.auxRoute.getEdges()) { // Los elementos conectados en la red
+			for (Edge e : auxRoute.getEdges()) { // Los elementos conectados en la red
 				if (!revealedDisruptedEdges.containsKey(e.getKey())) {// No esta dentro de la lista de los elementos
 					if (revealedDisruptedRoadConnections.containsKey(e.getKey())) {// Si pertenece a la red de carreteras
 						if (e.getOrigin().getId() == 0 || e.getEnd().getId() == 0) {
 							this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+							this.connectedEdgestoRevealedRoadNetwork.put(e.getInverseEdge().getKey(), e.getInverseEdge()); // edges
 							this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes
 							this.connectedNodestoRevealedRoadNetwork.put(e.getEnd().getId(), e.getEnd()); // nodes
 						} else {
 							if (connectedNodestoRevealedRoadNetwork.containsKey(e.getOrigin().getId())) {
 								this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+								this.connectedEdgestoRevealedRoadNetwork.put(e.getInverseEdge().getKey(), e.getInverseEdge()); // edges
 								this.connectedNodestoRevealedRoadNetwork.put(e.getEnd().getId(), e.getEnd());
 								this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes
 
@@ -231,6 +235,7 @@ public class BackandForwardMovement {
 							else {
 								if (connectedNodestoRevealedRoadNetwork.containsKey(e.getEnd().getId())) {
 									this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+									this.connectedEdgestoRevealedRoadNetwork.put(e.getInverseEdge().getKey(), e.getInverseEdge()); // edges
 									this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes// nodes
 								}
 							}
@@ -249,11 +254,13 @@ public class BackandForwardMovement {
 					if (revealedDisruptedRoadConnections.containsKey(e.getKey())) {// Si pertenece a la red de carreteras
 						if (e.getOrigin().getId() == 0 || e.getEnd().getId() == 0) {
 							this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+							this.connectedEdgestoRevealedRoadNetwork.put(e.getInverseEdge().getKey(), e.getInverseEdge()); // edges
 							this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes
 							this.connectedNodestoRevealedRoadNetwork.put(e.getEnd().getId(), e.getEnd()); // nodes
 						} else {
 							if (connectedNodestoRevealedRoadNetwork.containsKey(e.getOrigin().getId())) {
 								this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+								this.connectedEdgestoRevealedRoadNetwork.put(e.getInverseEdge().getKey(), e.getInverseEdge()); // edges
 								this.connectedNodestoRevealedRoadNetwork.put(e.getEnd().getId(), e.getEnd());
 								this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes
 
@@ -261,6 +268,7 @@ public class BackandForwardMovement {
 							else {
 								if (connectedNodestoRevealedRoadNetwork.containsKey(e.getEnd().getId())) {
 									this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+									this.connectedEdgestoRevealedRoadNetwork.put(e.getInverseEdge().getKey(), e.getInverseEdge()); // edges
 									this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes// nodes
 								}
 							}
@@ -297,6 +305,8 @@ public class BackandForwardMovement {
 		elementsNotToVisit();// Nodes not to visit
 		visitedVictims();
 	}
+
+
 	private void elementsNotToVisit() {
 		for (Edge e : revealedDisruptedRoadConnections.values()) {
 			HashMap<String, Edge> check = new HashMap<String, Edge>();

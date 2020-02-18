@@ -1,5 +1,7 @@
 package alg;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,10 +13,24 @@ public class Network {
 	private final ArrayList<Edge> edgeRoadConnections = new ArrayList<>();
 	private ArrayList<Edge> edgeRoadNetwork = new ArrayList<>();
 	private final ArrayList<Edge> edgeAerialNetwork = new ArrayList<>();
+	private final Map<String, Edge> spanningTree = new HashMap<String, Edge>();
 	private final Map<String, Edge> directoryRoadEdgesNetwork = new HashMap<String, Edge>();
 	private final Map<String, Edge> directoryAerialEdgesNetwork = new HashMap<String, Edge>();
 	private final Map<Integer, Node> directoryNode=new HashMap<>();
 	private final Map<Integer, Node> VictimList=new HashMap<>(); // list of all victim nodes
+
+	// information instance
+	private double maxDistanceFromDepot=Double.MIN_VALUE;
+	private double minDistanceFromDepot=Double.MAX_VALUE;
+	private double maxDistance=Double.MIN_VALUE;
+	private double minDistance=Double.MAX_VALUE;
+	private double averageDistance=0;
+
+	private double averageAdjEdges=0;
+	private double cycles=0;
+
+
+
 
 	public Network(Inputs inp) {
 		nodes = new Node[inp.getNodes().length];
@@ -30,7 +46,83 @@ public class Network {
 		setAdjEdges(); // it set the adjacent edges for each node
 		genarateRoads(t); // generating break points
 		generatingVictimNodes(t, inp); // set the victim nodes
+		statisticsInstance(t, inp); // set the victim nodes
 		return this;
+	}
+
+	private void statisticsInstance(Test t, Inputs inp) {
+		String file = new String(t.getInstanceName() + "_inf_Instance.txt");
+		maxDistance();
+		averageAdjEdges();
+		totalCycles();
+
+		printingInformation(file);
+
+	}
+
+	private void printingInformation(String file) {
+
+		try {
+			PrintWriter bw = new PrintWriter(file);
+
+			bw.println("_Total_nodes_"+this.nodes.length);
+			bw.println("_Total_edges_"+this.edgeRoadConnections.size());
+			bw.println("_Total_victims_"+this.VictimList.size());
+			bw.println("_max_Distance_From_Depot_"+maxDistanceFromDepot);
+			bw.println("_min_Distance_From_Depot_"+minDistanceFromDepot);
+			bw.println("_max_Distance_"+maxDistance);
+			bw.println("_minDistance_"+minDistance);
+			bw.println("_averageDistance_"+averageDistance);
+			bw.println("_average_Adj_Edges_"+averageAdjEdges);
+			bw.println("_edges_added_to_the_spanning_tree_"+cycles);
+			bw.flush();
+			bw.close();
+		} catch (IOException e) {
+			// why does the catch need its own curly?
+		}
+
+
+
+	}
+
+	private void totalCycles() {
+		cycles=edgeRoadConnections.size()-spanningTree.size();
+
+	}
+
+	private void averageAdjEdges() {
+		int[] adjEdges= new int[this.nodes.length];
+		double adjAmount=0;
+		for(Node n:this.nodes) {
+			adjEdges[n.getId()]=n.getAdjEdgesList().size();
+			adjAmount+=n.getAdjEdgesList().size();
+		}
+		averageAdjEdges=adjAmount/this.nodes.length;
+
+
+	}
+
+	private void maxDistance() {
+		double dist=0;
+		for(Edge e:this.edgeRoadConnections) {
+			if(e.getEnd().getId()==0 || e.getOrigin().getId()==0 ) {
+				if(e.getDistance()>maxDistanceFromDepot) {
+					maxDistanceFromDepot=e.getDistance();
+				}
+				if(e.getDistance()<minDistanceFromDepot) {
+					maxDistanceFromDepot=e.getDistance();
+				}
+			}
+			// max and min distance
+			if(e.getDistance()>maxDistance) {
+				maxDistance=e.getDistance();
+			}
+			if(e.getDistance()<minDistance) {
+				minDistance=e.getDistance();
+			}
+			dist+=e.getDistance();
+		}
+		averageDistance=dist/edgeRoadConnections.size();
 	}
 
 	private void generatingVictimNodes(Test t, Inputs inp) {
@@ -80,7 +172,7 @@ public class Network {
 
 
 	private void setNodes() {
-				for (Node n : nodes) {
+		for (Node n : nodes) {
 			directoryNode.put(n.getId(), nodes[n.getId()]);
 		}
 	}
@@ -114,11 +206,13 @@ public class Network {
 		for (int i = 0; i < result.length - 1; i++) { // setting the directory of the road network
 			directoryRoadEdgesNetwork.put(result[i].getKey(), result[i]);
 			directoryRoadEdgesNetwork.put(result[i].getInverseEdge().getKey(), result[i].getInverseEdge());
+
 		}
 
 
 		for (Edge e : directoryRoadEdgesNetwork.values()) { // setting the road network connections
 			this.edgeRoadConnections.add(e);
+			spanningTree.put(e.getKey(), e);
 		}
 
 		new DrawingNetwork(edgeRoadConnections,inp);
@@ -548,6 +642,7 @@ public class Network {
 		for (Edge e : directoryRoadEdgesNetwork.values()) {
 			this.edgeRoadConnections.add(e);
 		}
+		System.out.println(edgeRoadConnections.size());
 	}
 
 	private boolean setAdditionalConnections(Edge e2, Test inp) {

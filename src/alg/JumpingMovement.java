@@ -32,8 +32,8 @@ public class JumpingMovement {
 
 	// local information
 	private int totalDetectedDisruption=0;
-	private final HashMap<String, Edge> connectedEdgestoRevealedRoadNetwork= new HashMap<>(); // storage the edges that belong to a route to
-	private final Map<Integer, Node> connectedNodestoRevealedRoadNetwork= new HashMap<>();
+	private final HashMap<String, Edge> connectedEdgestoRevealedRoadNetwork; // storage the edges that belong to a route to
+	private final Map<Integer, Node> connectedNodestoRevealedRoadNetwork;
 	private final HashMap<Integer, Node> visitedVictims= new HashMap<>(); // list of visited victims
 	private final Map<Integer, Node> checkedAccesibiliyVictims;
 	private final HashMap<Integer, Node> connectedNodesNotoVisit = new HashMap<>(); // consider the nodes that are connected
@@ -48,6 +48,8 @@ public class JumpingMovement {
 		this.Event = Event;
 		this.inputs = inp;
 		// Road information - online
+		connectedEdgestoRevealedRoadNetwork= reveledNetwork.getconnectedEdgestoRevealedRoadNetwork(); // storage the edges that belong to a route to
+		connectedNodestoRevealedRoadNetwork= reveledNetwork.getconnectedNodestoRevealedRoadNetwork();
 		originialEdgeRoadConnection=reveledNetwork.getoriginalEdgeRoadConnection();
 		visitedRoadConnections=reveledNetwork.getvisitedRoadConnections();
 		revealedDisruptedEdges=reveledNetwork.getrevealedDisruptedEdges();
@@ -79,7 +81,7 @@ public class JumpingMovement {
 			Edge edgeToinsert = selectBestEdge(currentPostion, aTest.getOptcriterion(), reveledNetwork,inputs);
 
 
-			if(edgeToinsert.getOrigin().getId()==27 && edgeToinsert.getEnd().getId()==16) {
+			if(edgeToinsert.getOrigin().getId()==5 && edgeToinsert.getEnd().getId()==12) {
 				System.out.print(this.auxRoute.toString());
 			}
 			if(edgeToinsert.getOrigin().getId()==31 && edgeToinsert.getEnd().getId()==17) {
@@ -165,6 +167,9 @@ public class JumpingMovement {
 		System.out.println(reveledNetwork.getvisitedRoadConnections().containsKey(s));
 
 		new Assessment(reveledNetwork, inputs, this.aTest);
+		String file = new String(aTest.getInstanceName()+"AfterDisrution_"+edgeToinsert.getKey()+"_Seed_"+aTest.getseed()+"_alpha_"+aTest.getpercentageDistance()+"_"+"ValidateConnectivityWeight.txt");
+		printingInformation(file);
+
 		String Disrup_file= new String(aTest.getInstanceName()+"AfterDisrution_"+edgeToinsert.getKey()+"_Road_Network_Distances"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
 		writeLinkedList2(Disrup_file, this.revealedDisruptedRoadConnections , false);
 		aux.clear();
@@ -173,7 +178,7 @@ public class JumpingMovement {
 		}
 		if(!aux.isEmpty()) {
 			new DrawingNetwork(aux,aTest);
-			}
+		}
 		else {
 			for(Edge e:auxRoute.getEdges()) {
 				if(this.originialEdgeRoadConnection.containsKey(e.getKey()) &&this.visitedRoadConnections.containsKey(e.getKey())) {
@@ -197,6 +202,8 @@ public class JumpingMovement {
 		if(!aux.isEmpty()) {
 			new DrawingNetwork(aux,aTest);}
 		new Assessment(reveledNetwork, inputs, this.aTest);
+		String file = new String(aTest.getInstanceName()+"AfterDisrution_"+edgeToinsert.getKey()+"_Seed_"+aTest.getseed()+"_alpha_"+aTest.getpercentageDistance()+"_"+"ValidateConnectivityWeight.txt");
+		printingInformation(file);
 		String Disrup_file= new String(aTest.getInstanceName()+"AfterDisrution_"+edgeToinsert.getKey()+"_Road_Network_Distances"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
 		writeLinkedList2(Disrup_file, this.revealedDisruptedRoadConnections , false);
 		aux.clear();
@@ -220,6 +227,24 @@ public class JumpingMovement {
 	}
 
 
+
+	private void printingInformation(String file) {
+
+		try {
+			PrintWriter bw = new PrintWriter(file);
+			for(Edge e:revealedDisruptedRoadConnections.values()) {
+				bw.println(e.getOrigin().getId()+" "+e.getEnd().getId()+" "+e.getOrigin().getProfit()+" "+e.getEnd().getProfit()+" "+e.getTime()+" "+e.getConnectivity()+" "+e.getWeight());
+			}
+
+			bw.flush();
+			bw.close();
+		} catch (IOException e) {
+			// why does the catch need its own curly?
+		}
+
+
+
+	}
 
 	private void updatingReveleadedNetwork(Edge disruptedEdge) {
 
@@ -245,11 +270,13 @@ public class JumpingMovement {
 					if (revealedDisruptedRoadConnections.containsKey(e.getKey())) {// Si pertenece a la red de carreteras
 						if (e.getOrigin().getId() == 0 || e.getEnd().getId() == 0) {
 							this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+							this.connectedEdgestoRevealedRoadNetwork.put(e.getInverseEdge().getKey(), e.getInverseEdge()); // edges
 							this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes
 							this.connectedNodestoRevealedRoadNetwork.put(e.getEnd().getId(), e.getEnd()); // nodes
 						} else {
 							if (connectedNodestoRevealedRoadNetwork.containsKey(e.getOrigin().getId())) {
 								this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+								this.connectedEdgestoRevealedRoadNetwork.put(e.getInverseEdge().getKey(), e.getInverseEdge()); // edges
 								this.connectedNodestoRevealedRoadNetwork.put(e.getEnd().getId(), e.getEnd());
 								this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes
 
@@ -257,6 +284,7 @@ public class JumpingMovement {
 							else {
 								if (connectedNodestoRevealedRoadNetwork.containsKey(e.getEnd().getId())) {
 									this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+									this.connectedEdgestoRevealedRoadNetwork.put(e.getInverseEdge().getKey(), e.getInverseEdge()); // edges
 									this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes// nodes
 								}
 							}
@@ -275,11 +303,13 @@ public class JumpingMovement {
 					if (revealedDisruptedRoadConnections.containsKey(e.getKey())) {// Si pertenece a la red de carreteras
 						if (e.getOrigin().getId() == 0 || e.getEnd().getId() == 0) {
 							this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+							this.connectedEdgestoRevealedRoadNetwork.put(e.getInverseEdge().getKey(), e.getInverseEdge()); // edges
 							this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes
 							this.connectedNodestoRevealedRoadNetwork.put(e.getEnd().getId(), e.getEnd()); // nodes
 						} else {
 							if (connectedNodestoRevealedRoadNetwork.containsKey(e.getOrigin().getId())) {
 								this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+								this.connectedEdgestoRevealedRoadNetwork.put(e.getInverseEdge().getKey(), e.getInverseEdge()); // edges
 								this.connectedNodestoRevealedRoadNetwork.put(e.getEnd().getId(), e.getEnd());
 								this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes
 
@@ -287,6 +317,7 @@ public class JumpingMovement {
 							else {
 								if (connectedNodestoRevealedRoadNetwork.containsKey(e.getEnd().getId())) {
 									this.connectedEdgestoRevealedRoadNetwork.put(e.getKey(), e); // edges
+									this.connectedEdgestoRevealedRoadNetwork.put(e.getInverseEdge().getKey(), e.getInverseEdge()); // edges
 									this.connectedNodestoRevealedRoadNetwork.put(e.getOrigin().getId(), e.getOrigin()); // nodes// nodes
 								}
 							}
@@ -779,7 +810,7 @@ public class JumpingMovement {
 				Edge insert=edges.get(0);
 				auxRoute.getEdges().add(insert);
 				boolean isDisruptedEdge=disruptedEdge2(insert);
-					Edge auxEdge;
+				Edge auxEdge;
 				if(this.directoryRoadEdges.containsKey(insert.getKey())) {
 					auxEdge=new Edge(directoryRoadEdges.get(insert.getKey()));
 				}

@@ -27,6 +27,8 @@ public class Assessment {
 	private final Map<String, Edge> revealedDisruptedRoadConnections; // revealed disrupted connections
 	private final Map<String, Edge>revealedDisruptedEdges; // revealed disrupted edges
 	private final ArrayList<Node> revealednodesDisruption = null; // revealed disrupted node
+	private final HashMap<String, Edge> connectedEdgestoRevealedRoadNetwork; // storage the edges that belong to a route to
+	private final Map<Integer, Node> connectedNodestoRevealedRoadNetwork;
 	private FindingPath tree = new FindingPath();
 	private Test aTest;
 	private Inputs inputs;
@@ -35,6 +37,8 @@ public class Assessment {
 	public Assessment(UpdateRoadInformation RoadInformations, Inputs inp, Test test) {
 		aTest=test;
 		inputs=inp;
+		connectedNodestoRevealedRoadNetwork=RoadInformations.getconnectedNodestoRevealedRoadNetwork();
+		connectedEdgestoRevealedRoadNetwork=RoadInformations.getconnectedEdgestoRevealedRoadNetwork();
 		victimList = RoadInformations.getVictimList();
 		checkedAccesibiliyVictims = RoadInformations.getcheckedAccesibiliyVictims();
 		nodeList = RoadInformations.getNodeList(); // the list of nodes is copied
@@ -46,6 +50,21 @@ public class Assessment {
 		revealedDisruptedEdges=RoadInformations.getrevealedDisruptedEdges();
 		setAdjEdges(); // in case that the edges in the network change because a disruption
 		cleanningNetwork(RoadInformations.getRevealedDisruptedRoadConnections(), inputs);
+		if(revealedDisruptedRoadConnections.isEmpty()) {
+			for(Edge e:connectedEdgestoRevealedRoadNetwork.values()) {
+				revealedDisruptedRoadConnections.put(e.getKey(), e);
+				directoryEdges.put(e.getKey(), e);
+				directoryNodes.put(e.getOrigin().getId(), e.getOrigin());
+				directoryNodes.put(e.getEnd().getId(), e.getEnd());
+			}
+			for(Node n:directoryNodes.values()) {
+				nodeList.add(n);
+			}
+			setAdjEdges();
+			//			private final HashMap<String, Edge> connectedEdgestoRevealedRoadNetwork; // storage the edges that belong to a route to
+			//			private final Map<Integer, Node> connectedNodestoRevealedRoadNetwork;
+			System.out.println("revealedDisruptedRoadConnections_is_Empty()"+revealedDisruptedRoadConnections.isEmpty());
+		}
 		computingCriteria(aTest.getpercentageDistance());
 		setAdjEdges();
 
@@ -73,7 +92,7 @@ public class Assessment {
 			double maxAdjConnectivity = e.getConnectivity();
 			double minAdjTime = e.getTime();
 			double maxAdjTime = e.getTime();
-			for (Edge adjEdge : e.getOrigin().getAdjEdgesList()) {
+			for (Edge adjEdge : directoryNodes.get(e.getOrigin().getId()).getAdjEdgesList()) {
 				if (this.directoryEdges.containsKey(adjEdge.getKey())) {
 					if (adjEdge.getConnectivity() > maxAdjConnectivity) {
 						maxAdjConnectivity = adjEdge.getConnectivity();
@@ -150,24 +169,32 @@ public class Assessment {
 		for (int t = 0; t <= testing; t++) { // test security
 			for (Node n : nodeList) {
 				double counterDynamicScore = 0;
-				if (n.getImportance() == 0) {
+				if (n.getProfit() == 1) {
 					for (Edge edgeAdj : n.getAdjEdgesList()) {
 						if (this.directoryEdges.containsKey(edgeAdj.getKey())) {
-							counterDynamicScore += edgeAdj.getEnd().getImportance();
+							counterDynamicScore += directoryNodes.get(edgeAdj.getEnd().getId()).getImportance();
 						}
 					}
 					if (n.getAdjEdgesList().size() != 0) {
 						n.setImportance(counterDynamicScore / n.getAdjEdgesList().size());
+						System.out.println(counterDynamicScore / n.getAdjEdgesList().size());
 					} else {
 						n.setImportance(counterDynamicScore);
+						System.out.println(counterDynamicScore);
 					}
 				}
 			}
 		}
 		for(Node n : nodeList) {
-			System.out.println("importance_"+n.getExpDemand()+"__"+ n.getImportance() );
+			System.out.println("importance_"+n.getId()+"__"+ n.getImportance() );
 		}
 		System.out.println("importance_");
+
+		for (Edge e : this.revealedDisruptedRoadConnections.values()) {
+			e.getOrigin().setImportance(directoryNodes.get(e.getOrigin().getId()).getImportance());
+			e.getEnd().setImportance(directoryNodes.get(e.getEnd().getId()).getImportance());
+
+		}
 	}
 
 	private void cleanningNetwork(Map<String, Edge> map, Inputs inputs) {
@@ -401,16 +428,16 @@ public class Assessment {
 			Route aux= new Route(); // 1. creating a new route per path
 			boolean areThereEdges=checkEdgesRemoved(list);
 			if(areThereEdges) {
-			for(int i=0;i< list.size()-1;i++) {
-				if(list.size()>2) {// list of elements in the path
-					String keyEdge=list.get(i)+","+list.get(i+1);
-					Edge e= this.directoryEdges.get(keyEdge);
-					aux.getEdges().add(e);}
-			}
-			if(!aux.getEdges().isEmpty()) {
-				aux.calcDistance();
-				aux.calcTime();
-				routesList.getRoutes().add(aux);}}// 2. inserting the route in the solution
+				for(int i=0;i< list.size()-1;i++) {
+					if(list.size()>2) {// list of elements in the path
+						String keyEdge=list.get(i)+","+list.get(i+1);
+						Edge e= this.directoryEdges.get(keyEdge);
+						aux.getEdges().add(e);}
+				}
+				if(!aux.getEdges().isEmpty()) {
+					aux.calcDistance();
+					aux.calcTime();
+					routesList.getRoutes().add(aux);}}// 2. inserting the route in the solution
 		}
 		routesList.sorting(); // 3. sorting the routes into the solutions
 
@@ -431,7 +458,7 @@ public class Assessment {
 				if(!thereAreEdges) {
 					break;
 				}
-				}
+			}
 		}
 		return thereAreEdges;
 	}
@@ -460,11 +487,11 @@ public class Assessment {
 			}
 			else {
 				for(int i=0;i<routesList.getRoutes().size();i++) {
-				auxR= new Route(routesList.getRoutes().get(i)); // Select the smallest sub-network (with the shortest distance)
-				// Identify the boarding points of the sub-networks
-				ArrayList<Node> boardingNodes= new ArrayList<>();// Create the pathBoardingPoints list
-				searchingBoardingNodes(auxR,boardingNodes);
-				findingFunctionalEdges(boardingNodes,auxR,conection);}
+					auxR= new Route(routesList.getRoutes().get(i)); // Select the smallest sub-network (with the shortest distance)
+					// Identify the boarding points of the sub-networks
+					ArrayList<Node> boardingNodes= new ArrayList<>();// Create the pathBoardingPoints list
+					searchingBoardingNodes(auxR,boardingNodes);
+					findingFunctionalEdges(boardingNodes,auxR,conection);}
 			}
 		}
 
@@ -914,6 +941,7 @@ public class Assessment {
 				if(!visited) {
 
 					break;}
+				visited=false;
 
 			}
 			if(visited) {
