@@ -45,6 +45,12 @@ public class Edge implements Serializable {
 		this.inverseEdge = e.inverseEdge;
 		if(e.disruptionIndex!=-1) {
 		this.disruptionIndex=e.disruptionIndex;
+		if(e.getOrigin().getId()==29 && e.getOrigin().getId()==30) {
+			System.out.println("sotp");
+		}
+		if(e.getInflexionEdge()==null) {
+			System.out.println("sotp");
+		}
 		this.setInflextionNodes(e.getInflexionEdge()); }
 	}
 

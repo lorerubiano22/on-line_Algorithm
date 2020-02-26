@@ -19,14 +19,6 @@ public class BackandForwardMovement {
 	private final Map<Integer, Node> recheablevictims= new HashMap<>();
 	private PrintingReveleadNetwork informationSOFAR= new PrintingReveleadNetwork();
 	private ExplorationRoute parallelrouting = new ExplorationRoute();
-	// update information
-	private final Map<String, Edge> revealedDisruptedRoadConnections; // revealed disrupted connections
-	private final Map<String, Edge> directoryAerialEdges; // It contains all edges of the network
-	private final Map<String, Edge> directoryRoadEdges; // It contains all edges of the network
-	private final Map<Integer, Node> directoryNodes;// It contains all nodes of the network
-	private final ArrayList<Node> nodeList; // list of nodes
-	private final Map<Integer, Node> VictimList; // list of all victim nodes
-
 
 	// local information
 	private int totalDetectedDisruption=0;
@@ -41,6 +33,17 @@ public class BackandForwardMovement {
 	private final HashMap<String, Edge> EdgesNotoVisit = new HashMap<>(); // consider the nodes that are connected and their
 	private final Map<String, Edge> visitedRoadConnections ; // it considers the ground route
 	private final HashMap<Integer, Node> visitedNodeConnections = new HashMap<>(); // it considers the ground route
+
+
+	// update information
+	private final Map<String, Edge> revealedDisruptedRoadConnections; // revealed disrupted connections
+	private final Map<String, Edge> directoryAerialEdges; // It contains all edges of the network
+	private final Map<String, Edge> directoryRoadEdges; // It contains all edges of the network
+	private final Map<Integer, Node> directoryNodes;// It contains all nodes of the network
+	private final ArrayList<Node> nodeList; // list of nodes
+	private final Map<Integer, Node> VictimList; // list of all victim nodes
+	//private Assessment labelledNetwork= new Assessment(reveledNetwork, inputs, this.aTest);
+
 
 	public BackandForwardMovement(Test aTest, Disaster Event, UpdateRoadInformation reveledNetwork, Inputs inp) {
 		// Inputs
@@ -61,6 +64,15 @@ public class BackandForwardMovement {
 		directoryNodes = reveledNetwork.getdirectoryNodes();// It contains all nodes of the network
 		nodeList = reveledNetwork.getNodeList(); // list of nodes
 		VictimList = reveledNetwork.getVictimList(); // list of nodes
+
+		for(Edge e:revealedDisruptedRoadConnections.values()) {
+		if(e.getOrigin().getId()==29 && e.getEnd().getId()==30) {
+			System.out.println("sotp");
+		}
+		if(e.getOrigin().getId()==30 && e.getEnd().getId()==29) {
+			System.out.println("sotp");
+		}}
+
 		backforwardMovement(reveledNetwork, inputs);
 		back_Sol.updatingSolutionAttributes();
 		udateStateVictims(back_Sol);
@@ -128,6 +140,10 @@ public class BackandForwardMovement {
 		if(!aux.isEmpty()) {
 			new DrawingNetwork(aux,aTest);}
 		new Assessment(reveledNetwork, inputs, this.aTest);
+		String file = new String(aTest.getInstanceName()+"AfterDisrution_"+auxRoute.getEdges().get(auxRoute.getEdges().size()-1).getKey()+"_Seed_"+aTest.getseed()+"_alpha_"+aTest.getpercentageDistance()+"_"+"ValidateConnectivityWeight.txt");
+		printingInformation(file);
+
+
 		String Disrup_file= new String(aTest.getInstanceName()+"AfterDisrution_"+edgeToinsert.getKey()+"_Road_Network_Distances"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
 		writeLinkedList2(Disrup_file, this.revealedDisruptedRoadConnections , false);
 		aux.clear();
@@ -159,7 +175,8 @@ public class BackandForwardMovement {
 		if(!aux.isEmpty()) {
 			new DrawingNetwork(aux,aTest);}
 		new Assessment(reveledNetwork, inputs, this.aTest);
-
+		String file = new String(aTest.getInstanceName()+"AfterDisrution_"+auxRoute.getEdges().get(auxRoute.getEdges().size()-1).getKey()+"_Seed_"+aTest.getseed()+"_alpha_"+aTest.getpercentageDistance()+"_"+"ValidateConnectivityWeight.txt");
+		printingInformation(file);
 		String Disrup_file= new String(aTest.getInstanceName()+"AfterDisrution_"+edgeToinsert.getKey()+"_Road_Network_Distances"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
 		writeLinkedList2(Disrup_file, this.revealedDisruptedRoadConnections , false);
 		aux.clear();
@@ -170,6 +187,23 @@ public class BackandForwardMovement {
 			new DrawingNetwork(aux,aTest);}
 	}
 
+		private void printingInformation(String file) {
+
+		try {
+			PrintWriter bw = new PrintWriter(file);
+			for(Edge e:revealedDisruptedRoadConnections.values()) {
+				bw.println(e.getOrigin().getId()+" "+e.getEnd().getId()+" "+e.getOrigin().getTypeNode()+" "+e.getEnd().getTypeNode()+" "+e.getTime()+" "+e.getConnectivity()+" "+e.getWeight());
+			}
+
+			bw.flush();
+			bw.close();
+		} catch (IOException e) {
+			// why does the catch need its own curly?
+		}
+
+
+
+	}
 	private static void writeLinkedList2(String tV_file, Map<String, Edge> revealedDisruptedRoadConnections2, boolean b) {
 
 		// writeLinkedList(TV_file, Event.edgeRoadConnection,Event.DisruptedEdges,Event.DisruptedRoadNetwork,false);
@@ -983,8 +1017,8 @@ public class BackandForwardMovement {
 		boolean disruption = false;
 
 		if (Event.getDisruptedEdges().containsKey(edgeToinsert.getKey())) {
-			revealedDisruptedEdges.put(edgeToinsert.getInverseEdge().getKey(), edgeToinsert.getInverseEdge()); /// La
 			revealedDisruptedEdges.put(edgeToinsert.getKey(), edgeToinsert);
+			revealedDisruptedEdges.put(edgeToinsert.getInverseEdge().getKey(), edgeToinsert.getInverseEdge());
 			disruption = true;
 		}
 		return disruption;

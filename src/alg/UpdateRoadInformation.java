@@ -50,7 +50,7 @@ public class UpdateRoadInformation {
 		for (Node n : network.getNodes()) {// list of nodes and victim list
 			nodeList.add(n);
 			directoryNodes.put(n.getId(), n);
-			if (n.getProfit() > 1 && n.getId() != 0) {
+			if (n.getTypeNode() > 1 && n.getId() != 0) {
 				VictimList.put(n.getId(), n);
 			}
 		}

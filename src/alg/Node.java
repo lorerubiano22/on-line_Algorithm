@@ -16,17 +16,18 @@ public class Node implements Comparable<Node> {
 	private boolean isEndAdjacent = false; // adjacent to end in a route
 	private Edge diEdge = null; // edge from depot to node
 	private Edge idEdge = null; // edge from node to depot
-	private double profit = 0.0;
+	private double typeofNode = 0.0;  // 1= road crossing  1.1= DMC or victim nodes
+	private float staticScore = 0.0f;  // 1= road crossing  1.1= DMC or victim nodes
 	private double importance = 0.0;
 	private boolean connection = false;
 	private ArrayList<Edge> Adjedges = new ArrayList<>();
 
-	public Node(int nodeId, float nodeX, float nodeY, double profit) {
+	public Node(int nodeId, float nodeX, float nodeY, double type) {
 		id = nodeId;
 		x = nodeX;
 		y = nodeY;
 		expDemand = 0;
-		this.profit = profit; // Profit to visit a node
+		this.typeofNode = type; // Profit to visit a node
 	}
 
 	public Node(Node n) {
@@ -40,13 +41,13 @@ public class Node implements Comparable<Node> {
 		this.isInterior = n.isInterior;
 		this.isOriginAdjacent = n.isOriginAdjacent;
 		this.isEndAdjacent = n.isEndAdjacent;
-		this.profit = n.profit;
+		this.typeofNode = n.typeofNode;
 		Adjedges = new ArrayList<>();
 		for (Edge e : n.getAdjEdgesList()) {
 			Edge newEdge = new Edge(e);
 			newEdge.setOrigin(new Node(e.getOrigin().getId(), e.getOrigin().getX(), e.getOrigin().getY(),
-					e.getOrigin().getProfit()));
-			newEdge.setEnd(new Node(e.getEnd().getId(), e.getEnd().getX(), e.getEnd().getY(), e.getEnd().getProfit()));
+					e.getOrigin().getTypeNode()));
+			newEdge.setEnd(new Node(e.getEnd().getId(), e.getEnd().getX(), e.getEnd().getY(), e.getEnd().getTypeNode()));
 
 			this.Adjedges.add(newEdge);
 		}
@@ -66,6 +67,10 @@ public class Node implements Comparable<Node> {
 		importance = i;
 	}
 
+	public void setStaticScore(float i) {
+		staticScore = i;
+	}
+
 	public void setInRoute(Route r) {
 		inRoute = r;
 	}
@@ -83,7 +88,7 @@ public class Node implements Comparable<Node> {
 	}
 
 	public void setProfit(double profit) {
-		this.profit = profit;
+		this.typeofNode = profit;
 	}
 
 	public void setAdjedges(ArrayList<Edge> sList) {
@@ -111,8 +116,12 @@ public class Node implements Comparable<Node> {
 		return connection;
 	}
 
-	public double getProfit() {
-		return profit;
+	public double getTypeNode() {
+		return typeofNode;
+	}
+
+	public double getStaticScore() {
+		return staticScore;
 	}
 
 	// public double getPolicyCost(int index){return PolicyCost[index];}
@@ -159,15 +168,15 @@ public class Node implements Comparable<Node> {
 		s = s.concat(this.getId() + " ");
 		s = s.concat(this.getX() + " ");
 		s = s.concat(this.getY() + " ");
-		s = s.concat(this.getProfit() + " ");
+		s = s.concat(this.getTypeNode() + " ");
 		return s;
 	}
 
 	@Override
 	public int compareTo(Node comparestu) {
-		if (comparestu.profit > profit)
+		if (comparestu.typeofNode > typeofNode)
 			return 1;
-		if (comparestu.profit < profit)
+		if (comparestu.typeofNode < typeofNode)
 			return -1;
 		else
 			return 0;

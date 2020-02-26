@@ -92,8 +92,8 @@ public class GFG {
 
 	private void addEdge(int id, int id2, ArrayList<Node> nodeList ) {
 		g[id].add(id2);
-		deg[id]=nodeList.get(id).getProfit();
-		deg[id2]=nodeList.get(id2).getProfit();
+		deg[id]=nodeList.get(id).getTypeNode();
+		deg[id2]=nodeList.get(id2).getTypeNode();
 	}
 
 	private void initAdjList() {

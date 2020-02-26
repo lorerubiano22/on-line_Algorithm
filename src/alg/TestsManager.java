@@ -30,8 +30,11 @@ public class TestsManager {
 						Long seed = in.nextLong();// seed
 						double drivingRange = in.nextDouble();// driving range
 						float victimNodes = in.nextFloat();// victims
+						float staticScoreDMC = in.nextFloat();// static score DMC
+						float staticScorev = in.nextFloat();// static score Victim
+						float staticScoreR = in.nextFloat();// static score Road crossing
 						Test aTest = new Test(instanceName, movementStrategy, percentageDistance, prob, criterion, seed,
-								drivingRange, victimNodes);
+								drivingRange, victimNodes,staticScoreDMC,staticScorev,staticScoreR);
 						list.add(aTest);
 					}
 				} else

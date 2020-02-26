@@ -22,13 +22,13 @@ public class Manti_Instance {
 		float Y5=0;
 		boolean reverse=false;
 		if(a.getId()>b.getId()) {
-			origin = new Node(b.getId(),b.getX(),b.getY(),b.getProfit());
-			end= new Node(a.getId(),a.getX(),a.getY(),a.getProfit());
+			origin = new Node(b.getId(),b.getX(),b.getY(),b.getTypeNode());
+			end= new Node(a.getId(),a.getX(),a.getY(),a.getTypeNode());
 			reverse=true;
 		}
 		else {
-			origin = new Node(a.getId(),a.getX(),a.getY(),a.getProfit());
-			end= new Node(b.getId(),b.getX(),b.getY(),b.getProfit());
+			origin = new Node(a.getId(),a.getX(),a.getY(),a.getTypeNode());
+			end= new Node(b.getId(),b.getX(),b.getY(),b.getTypeNode());
 		}
 		/*Zero*/
 		/* (0,16)*/

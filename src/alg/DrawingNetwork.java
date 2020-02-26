@@ -90,7 +90,7 @@ public class DrawingNetwork extends JPanel {
 		this.setBackground(Color.WHITE);
 		if(aTest.getInstanceName().equals("p7.2.a") ) {
 			for (Edge e : Network) {
-				if (e.getOrigin().getId() == 0 && e.getOrigin().getProfit() > 1) {
+				if (e.getOrigin().getId() == 0 && e.getOrigin().getTypeNode() > 1) {
 					g.setColor(Color.BLACK);
 					g.fillRect((int) e.getOrigin().getX() * 5 + 300, (int) e.getOrigin().getY() * 5 + 170, 3, 3);
 					g.setColor(Color.BLACK);
@@ -106,7 +106,7 @@ public class DrawingNetwork extends JPanel {
 				}
 
 				else {
-					if (e.getOrigin().getProfit() > 1 && e.getOrigin().getId() != 0) {
+					if (e.getOrigin().getTypeNode() > 1 && e.getOrigin().getId() != 0) {
 						g.setColor(Color.RED);
 						g.fillOval((int) e.getOrigin().getX() * 5 + 300, (int) e.getOrigin().getY() * 5 + 170, 3, 3);
 						g.setColor(Color.BLACK);
@@ -120,7 +120,7 @@ public class DrawingNetwork extends JPanel {
 						g.drawLine((int) e.getOrigin().getX() * 5 + 300, (int) e.getOrigin().getY() * 5 + 170,
 								(int) e.getEnd().getX() * 5 + 300, (int) e.getEnd().getY() * 5 + 170);
 					} else {
-						if (e.getOrigin().getProfit() == 1 && e.getOrigin().getId() != 0) {
+						if (e.getOrigin().getTypeNode() == 1 && e.getOrigin().getId() != 0) {
 							g.setColor(Color.YELLOW);
 							g.fillOval((int) e.getOrigin().getX() * 5 + 300, (int) e.getOrigin().getY() * 5 + 170, 3, 3);
 							g.setColor(Color.BLACK);
@@ -147,7 +147,7 @@ public class DrawingNetwork extends JPanel {
 			}
 			Edge last = Network.getLast();
 
-			if (last.getOrigin().getId() == 0 && last.getOrigin().getProfit() > 1) {
+			if (last.getOrigin().getId() == 0 && last.getOrigin().getTypeNode() > 1) {
 				g.setColor(Color.BLACK);
 				g.fillRect((int) last.getOrigin().getX() * 5 + 300, (int) last.getOrigin().getY() * 5 + 170, 3, 3);
 				g.setColor(Color.BLACK);
@@ -156,7 +156,7 @@ public class DrawingNetwork extends JPanel {
 				g.drawString("" + last.getOrigin().getId(), (int) last.getOrigin().getX() * 5 + 300,
 						(int) last.getOrigin().getY() * 5 + 170 + 6);
 			} else {
-				if (last.getOrigin().getProfit() > 1 && last.getOrigin().getId() != 0) {
+				if (last.getOrigin().getTypeNode() > 1 && last.getOrigin().getId() != 0) {
 					g.setColor(Color.RED);
 					g.fillOval((int) last.getOrigin().getX() * 5 + 300, (int) last.getOrigin().getY() * 5 + 170, 3, 3);
 					g.setColor(Color.BLACK);
@@ -170,7 +170,7 @@ public class DrawingNetwork extends JPanel {
 					g.drawLine((int) last.getOrigin().getX() * 5 + 300, (int) last.getOrigin().getY() * 5 + 170,
 							(int) last.getEnd().getX() * 5 + 300, (int) last.getEnd().getY() * 5 + 170);
 				} else {
-					if (last.getOrigin().getProfit() == 1 && last.getOrigin().getId() != 0) {
+					if (last.getOrigin().getTypeNode() == 1 && last.getOrigin().getId() != 0) {
 						g.setColor(Color.YELLOW);
 						g.fillOval((int) last.getOrigin().getX() * 5 + 300, (int) last.getOrigin().getY() * 5 + 170, 3, 3);
 						g.setColor(Color.BLACK);
@@ -203,7 +203,7 @@ public class DrawingNetwork extends JPanel {
 
 		if(aTest.getInstanceName().equals("p5.2.a") ) {
 			for (Edge e : Network) {
-				if (e.getOrigin().getId() == 0 && e.getOrigin().getProfit() > 1) {
+				if (e.getOrigin().getId() == 0 && e.getOrigin().getTypeNode() > 1) {
 					g.setColor(Color.BLACK);
 					g.fillRect((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 + 170, 3, 3);
 					g.setColor(Color.BLACK);
@@ -219,7 +219,7 @@ public class DrawingNetwork extends JPanel {
 				}
 
 				else {
-					if (e.getOrigin().getProfit() > 1 && e.getOrigin().getId() != 0) {
+					if (e.getOrigin().getTypeNode() > 1 && e.getOrigin().getId() != 0) {
 						g.setColor(Color.RED);
 						g.fillOval((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 + 170, 3, 3);
 						g.setColor(Color.BLACK);
@@ -233,7 +233,7 @@ public class DrawingNetwork extends JPanel {
 						g.drawLine((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 + 170,
 								(int) e.getEnd().getX() * 2 + 300, (int) e.getEnd().getY() * 2 + 170);
 					} else {
-						if (e.getOrigin().getProfit() == 1 && e.getOrigin().getId() != 0) {
+						if (e.getOrigin().getTypeNode() == 1 && e.getOrigin().getId() != 0) {
 							g.setColor(Color.YELLOW);
 							g.fillOval((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 + 170, 3, 3);
 							g.setColor(Color.BLACK);
@@ -260,7 +260,7 @@ public class DrawingNetwork extends JPanel {
 			}
 			Edge last = Network.getLast();
 
-			if (last.getOrigin().getId() == 0 && last.getOrigin().getProfit() > 1) {
+			if (last.getOrigin().getId() == 0 && last.getOrigin().getTypeNode() > 1) {
 				g.setColor(Color.BLACK);
 				g.fillRect((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 + 170, 3, 3);
 				g.setColor(Color.BLACK);
@@ -269,7 +269,7 @@ public class DrawingNetwork extends JPanel {
 				g.drawString("" + last.getOrigin().getId(), (int) last.getOrigin().getX() * 2 + 300,
 						(int) last.getOrigin().getY() * 2 + 170 + 6);
 			} else {
-				if (last.getOrigin().getProfit() > 1 && last.getOrigin().getId() != 0) {
+				if (last.getOrigin().getTypeNode() > 1 && last.getOrigin().getId() != 0) {
 					g.setColor(Color.RED);
 					g.fillOval((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 + 170, 3, 3);
 					g.setColor(Color.BLACK);
@@ -283,7 +283,7 @@ public class DrawingNetwork extends JPanel {
 					g.drawLine((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 + 170,
 							(int) last.getEnd().getX() * 2 + 300, (int) last.getEnd().getY() * 2 + 170);
 				} else {
-					if (last.getOrigin().getProfit() == 1 && last.getOrigin().getId() != 0) {
+					if (last.getOrigin().getTypeNode() == 1 && last.getOrigin().getId() != 0) {
 						g.setColor(Color.YELLOW);
 						g.fillOval((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 + 170, 3, 3);
 						g.setColor(Color.BLACK);
@@ -312,7 +312,7 @@ public class DrawingNetwork extends JPanel {
 
 		if(!aTest.getInstanceName().equals("p7.2.a") && !aTest.getInstanceName().equals("p6.2.a") && !aTest.getInstanceName().equals("p3.2.a") && !aTest.getInstanceName().equals("p4.2.a") && !aTest.getInstanceName().equals("p5.2.a")) {
 			for (Edge e : Network) {
-				if (e.getOrigin().getId() == 0 && e.getOrigin().getProfit() > 1) {
+				if (e.getOrigin().getId() == 0 && e.getOrigin().getTypeNode() > 1) {
 					g.setColor(Color.BLACK);
 					g.fillRect((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 + 100, 3, 3);
 					g.setColor(Color.BLACK);
@@ -328,7 +328,7 @@ public class DrawingNetwork extends JPanel {
 				}
 
 				else {
-					if (e.getOrigin().getProfit() > 1 && e.getOrigin().getId() != 0) {
+					if (e.getOrigin().getTypeNode() > 1 && e.getOrigin().getId() != 0) {
 						g.setColor(Color.RED);
 						g.fillOval((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 + 100, 3, 3);
 						g.setColor(Color.BLACK);
@@ -342,7 +342,7 @@ public class DrawingNetwork extends JPanel {
 						g.drawLine((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 + 100,
 								(int) e.getEnd().getX() * 2 + 300, (int) e.getEnd().getY() * 2 + 100);
 					} else {
-						if (e.getOrigin().getProfit() == 1 && e.getOrigin().getId() != 0) {
+						if (e.getOrigin().getTypeNode() == 1 && e.getOrigin().getId() != 0) {
 							g.setColor(Color.YELLOW);
 							g.fillOval((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 + 100, 3, 3);
 							g.setColor(Color.BLACK);
@@ -369,7 +369,7 @@ public class DrawingNetwork extends JPanel {
 			}
 			Edge last = Network.getLast();
 
-			if (last.getOrigin().getId() == 0 && last.getOrigin().getProfit() > 1) {
+			if (last.getOrigin().getId() == 0 && last.getOrigin().getTypeNode() > 1) {
 				g.setColor(Color.BLACK);
 				g.fillRect((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 + 100, 3, 3);
 				g.setColor(Color.BLACK);
@@ -378,7 +378,7 @@ public class DrawingNetwork extends JPanel {
 				g.drawString("" + last.getOrigin().getId(), (int) last.getOrigin().getX() * 2 + 300,
 						(int) last.getOrigin().getY() * 2 + 100 + 6);
 			} else {
-				if (last.getOrigin().getProfit() > 1 && last.getOrigin().getId() != 0) {
+				if (last.getOrigin().getTypeNode() > 1 && last.getOrigin().getId() != 0) {
 					g.setColor(Color.RED);
 					g.fillOval((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 + 100, 3, 3);
 					g.setColor(Color.BLACK);
@@ -392,7 +392,7 @@ public class DrawingNetwork extends JPanel {
 					g.drawLine((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 + 100,
 							(int) last.getEnd().getX() * 2 + 300, (int) last.getEnd().getY() * 2 + 100);
 				} else {
-					if (last.getOrigin().getProfit() == 1 && last.getOrigin().getId() != 0) {
+					if (last.getOrigin().getTypeNode() == 1 && last.getOrigin().getId() != 0) {
 						g.setColor(Color.YELLOW);
 						g.fillOval((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 + 100, 3, 3);
 						g.setColor(Color.BLACK);
@@ -420,7 +420,7 @@ public class DrawingNetwork extends JPanel {
 		}
 		if(aTest.getInstanceName().equals("p6.2.a")) {
 			for (Edge e : Network) {
-				if (e.getOrigin().getId() == 0 && e.getOrigin().getProfit() > 1) {
+				if (e.getOrigin().getId() == 0 && e.getOrigin().getTypeNode() > 1) {
 					g.setColor(Color.BLACK);
 					g.fillRect((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 +170, 3, 3);
 					g.setColor(Color.BLACK);
@@ -436,7 +436,7 @@ public class DrawingNetwork extends JPanel {
 				}
 
 				else {
-					if (e.getOrigin().getProfit() > 1 && e.getOrigin().getId() != 0) {
+					if (e.getOrigin().getTypeNode() > 1 && e.getOrigin().getId() != 0) {
 						g.setColor(Color.RED);
 						g.fillOval((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 +170, 3, 3);
 						g.setColor(Color.BLACK);
@@ -450,7 +450,7 @@ public class DrawingNetwork extends JPanel {
 						g.drawLine((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 +170,
 								(int) e.getEnd().getX() * 2 + 300, (int) e.getEnd().getY() * 2 +170);
 					} else {
-						if (e.getOrigin().getProfit() == 1 && e.getOrigin().getId() != 0) {
+						if (e.getOrigin().getTypeNode() == 1 && e.getOrigin().getId() != 0) {
 							g.setColor(Color.YELLOW);
 							g.fillOval((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 +170, 3, 3);
 							g.setColor(Color.BLACK);
@@ -477,7 +477,7 @@ public class DrawingNetwork extends JPanel {
 			}
 			Edge last = Network.getLast();
 
-			if (last.getOrigin().getId() == 0 && last.getOrigin().getProfit() > 1) {
+			if (last.getOrigin().getId() == 0 && last.getOrigin().getTypeNode() > 1) {
 				g.setColor(Color.BLACK);
 				g.fillRect((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 +170, 3, 3);
 				g.setColor(Color.BLACK);
@@ -486,7 +486,7 @@ public class DrawingNetwork extends JPanel {
 				g.drawString("" + last.getOrigin().getId(), (int) last.getOrigin().getX() * 2 + 300,
 						(int) last.getOrigin().getY() * 2 +170 + 6);
 			} else {
-				if (last.getOrigin().getProfit() > 1 && last.getOrigin().getId() != 0) {
+				if (last.getOrigin().getTypeNode() > 1 && last.getOrigin().getId() != 0) {
 					g.setColor(Color.RED);
 					g.fillOval((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 +170, 3, 3);
 					g.setColor(Color.BLACK);
@@ -500,7 +500,7 @@ public class DrawingNetwork extends JPanel {
 					g.drawLine((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 +170,
 							(int) last.getEnd().getX() * 2 + 300, (int) last.getEnd().getY() * 2 +170);
 				} else {
-					if (last.getOrigin().getProfit() == 1 && last.getOrigin().getId() != 0) {
+					if (last.getOrigin().getTypeNode() == 1 && last.getOrigin().getId() != 0) {
 						g.setColor(Color.YELLOW);
 						g.fillOval((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 +170, 3, 3);
 						g.setColor(Color.BLACK);
@@ -532,7 +532,7 @@ public class DrawingNetwork extends JPanel {
 		if(aTest.getInstanceName().equals("p3.2.a")) {
 
 			for (Edge e : Network) {
-				if (e.getOrigin().getId() == 0 && e.getOrigin().getProfit() > 1) {
+				if (e.getOrigin().getId() == 0 && e.getOrigin().getTypeNode() > 1) {
 					g.setColor(Color.BLACK);
 					g.fillRect((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 -100, 3, 3);
 					g.setColor(Color.BLACK);
@@ -548,7 +548,7 @@ public class DrawingNetwork extends JPanel {
 				}
 
 				else {
-					if (e.getOrigin().getProfit() > 1 && e.getOrigin().getId() != 0) {
+					if (e.getOrigin().getTypeNode() > 1 && e.getOrigin().getId() != 0) {
 						g.setColor(Color.RED);
 						g.fillOval((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 -100, 3, 3);
 						g.setColor(Color.BLACK);
@@ -562,7 +562,7 @@ public class DrawingNetwork extends JPanel {
 						g.drawLine((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 -100,
 								(int) e.getEnd().getX() * 2 + 300, (int) e.getEnd().getY() * 2 -100);
 					} else {
-						if (e.getOrigin().getProfit() == 1 && e.getOrigin().getId() != 0) {
+						if (e.getOrigin().getTypeNode() == 1 && e.getOrigin().getId() != 0) {
 							g.setColor(Color.YELLOW);
 							g.fillOval((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 -100, 3, 3);
 							g.setColor(Color.BLACK);
@@ -589,7 +589,7 @@ public class DrawingNetwork extends JPanel {
 			}
 			Edge last = Network.getLast();
 
-			if (last.getOrigin().getId() == 0 && last.getOrigin().getProfit() > 1) {
+			if (last.getOrigin().getId() == 0 && last.getOrigin().getTypeNode() > 1) {
 				g.setColor(Color.BLACK);
 				g.fillRect((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 -100, 3, 3);
 				g.setColor(Color.BLACK);
@@ -598,7 +598,7 @@ public class DrawingNetwork extends JPanel {
 				g.drawString("" + last.getOrigin().getId(), (int) last.getOrigin().getX() * 2 + 300,
 						(int) last.getOrigin().getY() * 2 -100 + 6);
 			} else {
-				if (last.getOrigin().getProfit() > 1 && last.getOrigin().getId() != 0) {
+				if (last.getOrigin().getTypeNode() > 1 && last.getOrigin().getId() != 0) {
 					g.setColor(Color.RED);
 					g.fillOval((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 -100, 3, 3);
 					g.setColor(Color.BLACK);
@@ -612,7 +612,7 @@ public class DrawingNetwork extends JPanel {
 					g.drawLine((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 -100,
 							(int) last.getEnd().getX() * 2 + 300, (int) last.getEnd().getY() * 2 -100);
 				} else {
-					if (last.getOrigin().getProfit() == 1 && last.getOrigin().getId() != 0) {
+					if (last.getOrigin().getTypeNode() == 1 && last.getOrigin().getId() != 0) {
 						g.setColor(Color.YELLOW);
 						g.fillOval((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 -100, 3, 3);
 						g.setColor(Color.BLACK);
@@ -639,7 +639,7 @@ public class DrawingNetwork extends JPanel {
 			}}
 		if(aTest.getInstanceName().equals("p4.2.a") ) {
 			for (Edge e : Network) {
-				if (e.getOrigin().getId() == 0 && e.getOrigin().getProfit() > 1) {
+				if (e.getOrigin().getId() == 0 && e.getOrigin().getTypeNode() > 1) {
 					g.setColor(Color.BLACK);
 					g.fillRect((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 -20, 3, 3);
 					g.setColor(Color.BLACK);
@@ -655,7 +655,7 @@ public class DrawingNetwork extends JPanel {
 				}
 
 				else {
-					if (e.getOrigin().getProfit() > 1 && e.getOrigin().getId() != 0) {
+					if (e.getOrigin().getTypeNode() > 1 && e.getOrigin().getId() != 0) {
 						g.setColor(Color.RED);
 						g.fillOval((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 -20, 3, 3);
 						g.setColor(Color.BLACK);
@@ -669,7 +669,7 @@ public class DrawingNetwork extends JPanel {
 						g.drawLine((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 -20,
 								(int) e.getEnd().getX() * 2 + 300, (int) e.getEnd().getY() * 2 -20);
 					} else {
-						if (e.getOrigin().getProfit() == 1 && e.getOrigin().getId() != 0) {
+						if (e.getOrigin().getTypeNode() == 1 && e.getOrigin().getId() != 0) {
 							g.setColor(Color.YELLOW);
 							g.fillOval((int) e.getOrigin().getX() * 2 + 300, (int) e.getOrigin().getY() * 2 -20, 3, 3);
 							g.setColor(Color.BLACK);
@@ -696,7 +696,7 @@ public class DrawingNetwork extends JPanel {
 			}
 			Edge last = Network.getLast();
 
-			if (last.getOrigin().getId() == 0 && last.getOrigin().getProfit() > 1) {
+			if (last.getOrigin().getId() == 0 && last.getOrigin().getTypeNode() > 1) {
 				g.setColor(Color.BLACK);
 				g.fillRect((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 -20, 3, 3);
 				g.setColor(Color.BLACK);
@@ -705,7 +705,7 @@ public class DrawingNetwork extends JPanel {
 				g.drawString("" + last.getOrigin().getId(), (int) last.getOrigin().getX() * 2 + 300,
 						(int) last.getOrigin().getY() * 2 -20 + 6);
 			} else {
-				if (last.getOrigin().getProfit() > 1 && last.getOrigin().getId() != 0) {
+				if (last.getOrigin().getTypeNode() > 1 && last.getOrigin().getId() != 0) {
 					g.setColor(Color.RED);
 					g.fillOval((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 -20, 3, 3);
 					g.setColor(Color.BLACK);
@@ -719,7 +719,7 @@ public class DrawingNetwork extends JPanel {
 					g.drawLine((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 -20,
 							(int) last.getEnd().getX() * 2 + 300, (int) last.getEnd().getY() * 2 -20);
 				} else {
-					if (last.getOrigin().getProfit() == 1 && last.getOrigin().getId() != 0) {
+					if (last.getOrigin().getTypeNode() == 1 && last.getOrigin().getId() != 0) {
 						g.setColor(Color.YELLOW);
 						g.fillOval((int) last.getOrigin().getX() * 2 + 300, (int) last.getOrigin().getY() * 2 -20, 3, 3);
 						g.setColor(Color.BLACK);

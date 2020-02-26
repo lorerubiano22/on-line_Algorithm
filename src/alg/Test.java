@@ -10,9 +10,13 @@ public class Test {
 	private double criterion;// 1100 connectivity // 1010 dist // 1001 weighted criterion
 	private double drivingRange; // driving Range of the UAV Distance
 	private float victimNodes; // driving Range of the UAV Distance
+	private float staticScoreVictims; // static score- victim nodes
+	private float staticScoreDMC; // static score- DMC node
+	private float staticScoreRoadCrossing; // static score- DMC node
+
 
 	public Test(String name, String m, float t, float disrup, double criterion, long s, double drivingRange,
-			float vicitm) {
+			float vicitm,float ssdmc, float ssv, float ssr ) {
 		instanceName = name;
 		movement = m;
 		percentageDistance = t; // weight for the distance criterion
@@ -21,6 +25,9 @@ public class Test {
 		victimNodes = vicitm;
 		this.criterion = criterion;
 		this.drivingRange = drivingRange;
+		staticScoreVictims=ssv; // static score- victim nodes
+		staticScoreDMC=ssdmc; // static score- DMC node
+		staticScoreRoadCrossing=ssr; // static score- DMC node
 	}
 
 	/* GET METHODS */
@@ -55,6 +62,17 @@ public class Test {
 
 	public double getOptcriterion() {
 		return criterion;
+	}
+
+	public float getSSDMC() {
+		return staticScoreDMC;
+	}
+
+	public float getSSV() {
+		return staticScoreVictims;
+	}
+	public float getRC() {
+		return staticScoreRoadCrossing;
 	}
 
 }

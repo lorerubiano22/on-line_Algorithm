@@ -1,25 +1,29 @@
 package alg;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class StartTester {
+	final static boolean DEBUG=false;
 	final static String inputFolder = "inputs";
 	final static String outputFolder = "outputs";
 	final static String testFolder = "tests";
 	final static String fileNameTest = "test2Run.txt";
-	 //static String fileNameTest ;
+	//static String fileNameTest ;
 	final static String sufixFileNodes = ".txt";
 	final static String sufixFileVehicules = "_input_vehicles.txt";
 	final static String sufixFileOutput = "_outputs.txt";
 
-	public static void main(String[] args)  {
-//	fileNameTest =args[0] ;
 
- 	System.out.println("****  WELCOME TO THIS PROGRAM  ****");
+	// generating of files
+	static String file= "";
+
+
+
+	public static void main(String[] args)  {
+		//	fileNameTest =args[0] ;
+
+		System.out.println("****  WELCOME TO THIS PROGRAM  ****");
 		long programStart = ElapsedTime.systemTime();
 
 		/* 1. GET THE LIST OF TESTS TO RUN FORM "test2run.txt" */
@@ -48,15 +52,20 @@ public class StartTester {
 			Network = Network.generateroadNetwork(aTest, inputs);// The information of the network have to be full. This
 			// knowledge is a static one
 
-			String Disrup_file = new String(aTest.getInstanceName() + "_Road_Network_Distances" + "_Seed"
+			file = new String(aTest.getInstanceName() + "_Road_Network_Distances" + "_Seed"
 					+ aTest.getseed() + "_P(disruption)_" + aTest.getpercentangeDisruption() + "_" + "Disruptions.txt");
-			writeLinkedList2(Disrup_file, Network.getEdgeConnections(), false);
-			new DrawingNetwork(Network.getEdgeConnections(),aTest);
+			PrintingFiles.printingNetworkElements(file, Network.getEdgeConnections(), false);
 
+			//DrawingNetwork
+			DrawingNetwork networkPicture= new DrawingNetwork(Network.getEdgeConnections(),aTest);
+
+		//	networkPicture.depictingNetwork(Network.getEdgeConnections());
 			Disaster Event = new Disaster(Network, aTest); // set the disaster conditions and the disrupted road
 			UpdateRoadInformation revealedRoadInformation = new UpdateRoadInformation(Network);
 			Assessment labelledInformation =new Assessment(revealedRoadInformation, inputs, aTest);// computing labelled network for the initial network
-			new Outputs(Event, inputs, aTest); // printing the initial conditions
+			file =aTest.getInstanceName()+"_Initial_"+"_Seed_"+aTest.getseed()+"_alpha_"+aTest.getpercentageDistance()+"_"+"ValidateConnectivityWeight.txt";
+						PrintingFiles.printingRoadInformation(file,labelledInformation.getRevealedDisruptedRoadConnections());
+			PrintingFiles.printingDisruptedRoadNetworkSimulation(Event, inputs, aTest);
 			InsertionProcedure insertion=new InsertionProcedure(aTest, Event, revealedRoadInformation, inputs);
 			new Validation(aTest,inputs,insertion,Network,Event,labelledInformation);
 
@@ -70,38 +79,8 @@ public class StartTester {
 		System.out.println("Total elapsed time = " + ElapsedTime.calcElapsedHMS(programStart, programEnd));
 	}
 
-	private static void writeLinkedList2(String tV_file, ArrayList<Edge> arrayList, boolean b) {
-		try {
-			PrintWriter bw = new PrintWriter(tV_file);
-			HashMap<Integer, Node> nodes = new HashMap<Integer, Node>();// It contains all nodes of the network
-			bw.println("Road_Connections");
-			for (Edge e : arrayList) {
-				nodes.put(e.getOrigin().getId(), e.getOrigin());
-				nodes.put(e.getEnd().getId(), e.getEnd());
-				if (e.getOrigin().getId() > e.getEnd().getId()) {
-					bw.println(+e.getOrigin().getId() + "  " + e.getEnd().getId() + "_Distance_" + e.getDistance()
-							+ "_road_Distance_" + e.getDistanceRoad());
-				}
-			}
-			bw.println("Node");
-			for (Node nn : nodes.values()) {
-				if (nn.getProfit() > 1 && nn.getId() != 0) {
-					bw.println(+nn.getId() + "  " + "_Victim_");
-				}
-				if (nn.getProfit() > 1 && nn.getId() == 0) {
-					bw.println(+nn.getId() + "  " + "_Depot_");
-				}
-				if (nn.getProfit() == 1) {
-					bw.println(+nn.getId() + "  " + "_road_Crossing_");
-				}
-			}
 
-			bw.flush();
-			bw.close();
-		} catch (IOException e) {
-			// why does the catch need its own curly?
-		}
 
-	}
+
 
 }

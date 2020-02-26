@@ -10,9 +10,9 @@ public class Assessment {
 
 	private final ArrayList<Edge> edgeRoadConnection;
 	private double averageConnectivity = 0;
-	private double maxConnectivityValue = 0;
-	private double maxDistance = Double.MIN_VALUE;
-	private double minDistance = Double.MAX_VALUE;
+	private double maxConnectivityValue = 0; // maximum connectivity value of all network
+	private double maxDistance = Double.MIN_VALUE; // maximum connectivity value of all network
+	private double minDistance = Double.MAX_VALUE; // minimum connectivity value of all network
 	private final ArrayList<Node> nodeList;
 	private HashMap<Integer, Node> removedNode = new HashMap<>();
 	private HashMap<String, Edge> removedEdge = new HashMap<>();
@@ -77,7 +77,6 @@ public class Assessment {
 		generatingNodeAverageConnectivity();
 		connectivityEdges();
 		weightEdges(a);
-
 	}
 
 	private void removingPreviousConnectivityValues() {
@@ -87,6 +86,34 @@ public class Assessment {
 		}
 	}
 
+//	private void weightEdges(float a) {
+//		for (Edge e : this.revealedDisruptedRoadConnections.values()) { // set the importance for each edge
+//			double maxAdjConnectivity = e.getConnectivity();
+//			double minAdjTime = e.getTime();
+//			double maxAdjTime = e.getTime();
+//			for (Edge adjEdge : directoryNodes.get(e.getOrigin().getId()).getAdjEdgesList()) {
+//				if (this.directoryEdges.containsKey(adjEdge.getKey())) {
+//					if (adjEdge.getConnectivity() > maxAdjConnectivity) {
+//						maxAdjConnectivity = adjEdge.getConnectivity();
+//					}
+//					if (adjEdge.getTime() < minAdjTime) {
+//						minAdjTime = adjEdge.getTime();
+//					}
+//					if (adjEdge.getTime() > maxAdjTime) {
+//						maxAdjTime = adjEdge.getTime();
+//					}
+//					e.maxAdjConnectivity = maxAdjConnectivity;
+//					e.maxAdjTime = maxAdjTime;
+//					e.minAdjTime = minAdjTime;
+//				}
+//			}
+//			//double firstPartweight = (a) * ((e.getTime() / e.minAdjTime));
+//			double firstPartweight = (a) * (e.getTime()/minDistance);
+//			double secondPartweight = (1 - a) * (e.getConnectivity() / maxConnectivityValue);
+//			e.setWeight(firstPartweight + secondPartweight);
+//		}
+//	}
+//
 	private void weightEdges(float a) {
 		for (Edge e : this.revealedDisruptedRoadConnections.values()) { // set the importance for each edge
 			double maxAdjConnectivity = e.getConnectivity();
@@ -116,12 +143,13 @@ public class Assessment {
 
 	private void connectivityEdges() {
 		for (Edge e : this.revealedDisruptedRoadConnections.values()) { // set the importance for each edge
-			double firstPart = Math.max(e.getOrigin().getProfit(), e.getEnd().getProfit())
-					* (e.getOrigin().getImportance() + e.getEnd().getImportance());
-			double conectivityEdge = firstPart / (this.averageConnectivity * e.getTime());
+			double connectiviyEdge = e.getOrigin().getImportance() + e.getEnd().getImportance();
+			e.setConnectivity(connectiviyEdge);
 			System.out.println("conectivityEdge_"+e.getOrigin().getId()+","+e.getEnd().getId()+"__"+e.getConnectivity());
-			e.setConnectivity(conectivityEdge);
-			System.out.println("conectivityEdge_"+e.getOrigin().getId()+","+e.getEnd().getId()+"__"+e.getConnectivity());
+
+		}
+
+		for (Edge e : this.revealedDisruptedRoadConnections.values()) { // set the importance for each edge
 
 			if (e.getConnectivity() > this.maxConnectivityValue) {
 				this.maxConnectivityValue = e.getConnectivity();
@@ -133,6 +161,7 @@ public class Assessment {
 				}
 			}
 		}
+		System.out.println("Done_conectivityEdge_");
 	}
 
 	private void generatingNodeAverageConnectivity() {
@@ -153,40 +182,24 @@ public class Assessment {
 	}
 
 	private void importanceNodes() {
-		for (Node e : this.nodeList) {
-			if (e.getProfit() > 1) {
-				e.setImportance(e.getProfit() / e.getAdjEdgesList().size());
-			} else {
-				e.setImportance(0.0);
-			}
-		}
+		assignmentStaticScore();
 		nodeList.clear();
 		for (Node n : directoryNodes.values()) {
 			nodeList.add(n);
 		}
-
-		int testing = 10;
-		for (int t = 0; t <= testing; t++) { // test security
-			for (Node n : nodeList) {
-				double counterDynamicScore = 0;
-				if (n.getProfit() == 1) {
-					for (Edge edgeAdj : n.getAdjEdgesList()) {
-						if (this.directoryEdges.containsKey(edgeAdj.getKey())) {
-							counterDynamicScore += directoryNodes.get(edgeAdj.getEnd().getId()).getImportance();
-						}
-					}
-					if (n.getAdjEdgesList().size() != 0) {
-						n.setImportance(counterDynamicScore / n.getAdjEdgesList().size());
-						System.out.println(counterDynamicScore / n.getAdjEdgesList().size());
-					} else {
-						n.setImportance(counterDynamicScore);
-						System.out.println(counterDynamicScore);
+		for (Node n : directoryNodes.values()) {
+			double counterDynamicScore=n.getStaticScore();
+				for (Edge edgeAdj : n.getAdjEdgesList()) {
+					if (this.directoryEdges.containsKey(edgeAdj.getKey())) {
+						counterDynamicScore += directoryNodes.get(edgeAdj.getEnd().getId()).getStaticScore();
 					}
 				}
-			}
+				n.setImportance(counterDynamicScore);
+
 		}
+
 		for(Node n : nodeList) {
-			System.out.println("importance_"+n.getId()+"__"+ n.getImportance() );
+			System.out.println("importance_"+n.getId()+"__"+n.getAdjEdgesList().size()+"__"+ n.getImportance() );
 		}
 		System.out.println("importance_");
 
@@ -195,6 +208,70 @@ public class Assessment {
 			e.getEnd().setImportance(directoryNodes.get(e.getEnd().getId()).getImportance());
 
 		}
+		for (Node e : directoryNodes.values()) {
+			System.out.println("Node_"+e.getId()+"_type_Node_"+e.getTypeNode()+"_connectivity_"+e.getImportance());
+		}
+		System.out.println("DONE");
+	}
+
+	private void assignmentStaticScore() {
+		// No edges have been visited
+		if(visitedRoadConnections.isEmpty()) {
+			for (Node e : directoryNodes.values()) {
+				if (e.getTypeNode() > 1 && e.getId()!=0) { // road crossings
+					e.setStaticScore(aTest.getSSV());
+				} else {
+					if (e.getTypeNode() > 1 && e.getId()==0) { // road crossings
+						e.setStaticScore(aTest.getSSDMC());
+					}
+					else {e.setStaticScore(aTest.getRC());}
+				}
+				System.out.println("Node_"+e.getId()+"_type_Node_"+e.getTypeNode()+"_staticScore_"+e.getStaticScore());
+			}
+
+		}
+		// Some edges have been visited
+		else {
+			// Select the road crossings contained in the list of visited edges
+			for(Edge e: visitedRoadConnections.values()) {
+				if(revealedDisruptedRoadConnections.containsKey(e.getKey())) { // it is a functional edge
+					if(!revealedDisruptedEdges.containsKey(e.getKey())) { // it is a functional edge
+						if(e.getOrigin().getTypeNode()>aTest.getRC() || e.getEnd().getTypeNode()>aTest.getRC()) { // check if the edge e contains a victim node or DMC node
+							if(e.getOrigin().getId()!=0 && e.getEnd().getId()!=0) {
+								if(directoryNodes.containsKey(e.getOrigin().getId())) { // Could happen that some visited nodes now are removed from the road network
+									directoryNodes.get(e.getOrigin().getId()).setStaticScore(aTest.getSSV()); // se asigna el score como si fuera un nodo victima
+								}
+								if(directoryNodes.containsKey(e.getEnd().getId())) {// // Could happen that some visited nodes now are removed from the road network
+									directoryNodes.get(e.getEnd().getId()).setStaticScore(aTest.getSSV()); // se asigna el score como si fuera un nodo victima
+								}
+							}
+							else {
+								if(directoryNodes.containsKey(e.getOrigin().getId())) {
+									directoryNodes.get(e.getOrigin().getId()).setStaticScore(aTest.getSSDMC()); // se asigna el score como si fuera el DMC
+								}
+								if(directoryNodes.containsKey(e.getEnd().getId())) {
+									directoryNodes.get(e.getEnd().getId()).setStaticScore(aTest.getSSDMC()); // se asigna el score como si fuera el DMC
+								}
+							}
+
+						}
+					}}
+				if(directoryNodes.containsKey(e.getOrigin().getId())) {
+					System.out.println("Node_"+directoryNodes.get(e.getOrigin().getId()).getId()+"_type_Node_"+directoryNodes.get(e.getOrigin().getId()).getTypeNode()+"_staticScore_"+directoryNodes.get(e.getOrigin().getId()).getStaticScore());
+				}
+				if(directoryNodes.containsKey(e.getEnd().getId())) {
+					System.out.println("Node_"+directoryNodes.get(e.getEnd().getId()).getId()+"_type_Node_"+directoryNodes.get(e.getEnd().getId()).getTypeNode()+"_staticScore_"+directoryNodes.get(e.getEnd().getId()).getStaticScore());
+
+				}
+
+
+			}
+
+		}
+		for (Node e : directoryNodes.values()) {
+			System.out.println("Node_"+e.getId()+"_type_Node_"+e.getTypeNode()+"_staticScore_"+e.getStaticScore());
+		}
+		System.out.println("DONE");
 	}
 
 	private void cleanningNetwork(Map<String, Edge> map, Inputs inputs) {
@@ -759,7 +836,7 @@ public class Assessment {
 			for (Edge e : map.values()) { //Check the remaining nodes, if the node has just an adjacent edge remove from the network
 				if (e.getOrigin().getId() != 0) { // it looks for road crossings connected with a victim node
 					if (e.getOrigin().getAdjEdgesList().size() < 2 && !removedNode.containsKey(e.getOrigin().getId()) ) { // if the origin node has only an edge
-						if (e.getOrigin().getProfit() == 1) {
+						if (e.getOrigin().getTypeNode() == 1) {
 							removedNodes++; // counter of removed nodes
 							removedNode.put(e.getOrigin().getId(), e.getOrigin());
 						}
@@ -1127,7 +1204,7 @@ public class Assessment {
 
 		for (Node n : this.nodeList) { // intermediate node
 			Boolean intermediateNodeConnected = true;
-			if (n.getId() != 0 && n.getProfit() == 1 && !removedNode.containsKey(n.getId())) { // searching road crossing to remove
+			if (n.getId() != 0 && n.getTypeNode() == 1 && !removedNode.containsKey(n.getId())) { // searching road crossing to remove
 				intermediateNodeConnected = false;
 				FindingPath treeintermediate = new FindingPath();
 				// Spanning tree for each intermediate node

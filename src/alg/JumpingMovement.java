@@ -61,6 +61,17 @@ public class JumpingMovement {
 		directoryNodes = reveledNetwork.getdirectoryNodes();// It contains all nodes of the network
 		nodeList = reveledNetwork.getNodeList(); // list of nodes
 		VictimList = reveledNetwork.getVictimList(); // list of nodes
+		for(Edge e:revealedDisruptedRoadConnections.values()) {
+			if(e.getInflexionEdge()==null) {
+				System.out.println("sotp");
+			}
+			if(e.getOrigin().getId()==29 && e.getEnd().getId()==30) {
+				System.out.println("sotp");
+			}
+			if(e.getOrigin().getId()==30 && e.getEnd().getId()==29) {
+				System.out.println("sotp");
+			}}
+
 		jumpMovement(reveledNetwork, inputs);
 
 		jump_Sol.updatingSolutionAttributes();
@@ -80,14 +91,20 @@ public class JumpingMovement {
 		while (checkedAccesibiliyVictims.size() < VictimList.size()	&& !this.revealedDisruptedRoadConnections.isEmpty()) {
 			Edge edgeToinsert = selectBestEdge(currentPostion, aTest.getOptcriterion(), reveledNetwork,inputs);
 
-
+			if(edgeToinsert.getOrigin().getId()==18 && edgeToinsert.getEnd().getId()==19) {
+				System.out.print(this.auxRoute.toString());
+			}
 			if(edgeToinsert.getOrigin().getId()==5 && edgeToinsert.getEnd().getId()==12) {
 				System.out.print(this.auxRoute.toString());
 			}
-			if(edgeToinsert.getOrigin().getId()==31 && edgeToinsert.getEnd().getId()==17) {
+
+			if(edgeToinsert.getOrigin().getId()==30 && edgeToinsert.getEnd().getId()==25) {
 				System.out.print(this.auxRoute.toString());
 			}
 
+			if(edgeToinsert.getOrigin().getId()==7 && edgeToinsert.getEnd().getId()==1) {
+				System.out.print(this.auxRoute.toString());
+			}
 			boolean isDisruptedEdge=disruptedEdge2(edgeToinsert);
 			Edge auxEdge;
 			if(this.directoryRoadEdges.containsKey(edgeToinsert.getKey())) {
@@ -111,6 +128,7 @@ public class JumpingMovement {
 					System.out.print(this.auxRoute.toString());
 				}
 				currentPostion = new Node(directoryNodes.get(auxRoute.getEdges().get(auxRoute.getEdges().size() - 1).getEnd().getId()));
+				System.out.print(this.auxRoute.toString());
 				updateDisruption(edgeToinsert, reveledNetwork, inputs);
 				if (!checkedAccesibiliyVictims.equals(VictimList)) {
 					redirectRoute(edgeToinsert, reveledNetwork, inputs);
@@ -124,9 +142,7 @@ public class JumpingMovement {
 				}
 			}
 			updatingReveleadedNetwork(edgeToinsert);
-			String s="22,21";
-			System.out.println(this.visitedRoadConnections.containsKey(s));
-
+			System.out.print(this.auxRoute.toString());
 			cleaningProcess(edgeToinsert,reveledNetwork, inputs);
 			//updatingReveleadedNetwork(edgeToinsert, auxRoute);
 			informationSOFAR.printingInformationsofar(this.aTest,totalDetectedDisruption,this.visitedRoadConnections,originialEdgeRoadConnection,revealedDisruptedEdges,checkedAccesibiliyVictims,connectedNodestoRevealedRoadNetwork,"Jumping");
@@ -167,7 +183,7 @@ public class JumpingMovement {
 		System.out.println(reveledNetwork.getvisitedRoadConnections().containsKey(s));
 
 		new Assessment(reveledNetwork, inputs, this.aTest);
-		String file = new String(aTest.getInstanceName()+"AfterDisrution_"+edgeToinsert.getKey()+"_Seed_"+aTest.getseed()+"_alpha_"+aTest.getpercentageDistance()+"_"+"ValidateConnectivityWeight.txt");
+		String file = new String(aTest.getInstanceName()+"AfterDisrution_"+auxRoute.getEdges().get(auxRoute.getEdges().size()-1).getKey()+"_Seed_"+aTest.getseed()+"_alpha_"+aTest.getpercentageDistance()+"_"+"ValidateConnectivityWeight.txt");
 		printingInformation(file);
 
 		String Disrup_file= new String(aTest.getInstanceName()+"AfterDisrution_"+edgeToinsert.getKey()+"_Road_Network_Distances"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
@@ -202,7 +218,7 @@ public class JumpingMovement {
 		if(!aux.isEmpty()) {
 			new DrawingNetwork(aux,aTest);}
 		new Assessment(reveledNetwork, inputs, this.aTest);
-		String file = new String(aTest.getInstanceName()+"AfterDisrution_"+edgeToinsert.getKey()+"_Seed_"+aTest.getseed()+"_alpha_"+aTest.getpercentageDistance()+"_"+"ValidateConnectivityWeight.txt");
+		String file = new String(aTest.getInstanceName()+"_jumping_AfterDisrution_"+edgeToinsert.getKey()+"_Seed_"+aTest.getseed()+"_alpha_"+aTest.getpercentageDistance()+"_"+"ValidateConnectivityWeight.txt");
 		printingInformation(file);
 		String Disrup_file= new String(aTest.getInstanceName()+"AfterDisrution_"+edgeToinsert.getKey()+"_Road_Network_Distances"+"_Seed"+aTest.getseed()+"_P(disruption)_"+aTest.getpercentangeDisruption()+"_"+"Disruptions.txt");
 		writeLinkedList2(Disrup_file, this.revealedDisruptedRoadConnections , false);
@@ -233,7 +249,9 @@ public class JumpingMovement {
 		try {
 			PrintWriter bw = new PrintWriter(file);
 			for(Edge e:revealedDisruptedRoadConnections.values()) {
-				bw.println(e.getOrigin().getId()+" "+e.getEnd().getId()+" "+e.getOrigin().getProfit()+" "+e.getEnd().getProfit()+" "+e.getTime()+" "+e.getConnectivity()+" "+e.getWeight());
+				System.out.println(
+						e.getOrigin().getId()+" || "+e.getEnd().getId()+" || "+e.getOrigin().getTypeNode()+" || "+e.getEnd().getTypeNode()+" || "+e.getOrigin().getImportance()+" || "+e.getEnd().getImportance()+" || "+e.getConnectivity()+" || "+e.getTime());
+				bw.println(e.getOrigin().getId()+" || "+e.getEnd().getId()+" || "+e.getOrigin().getTypeNode()+" || "+e.getEnd().getTypeNode()+" || "+e.getOrigin().getImportance()+" || "+e.getEnd().getImportance()+" || "+e.getConnectivity()+" || "+e.getTime());
 			}
 
 			bw.flush();
@@ -577,7 +595,14 @@ public class JumpingMovement {
 				boolean isDisruptedEdge=disruptedEdge2(toInsert);
 				Edge auxEdge;
 				if(this.directoryRoadEdges.containsKey(toInsert.getKey())) {
+
 					auxEdge=new Edge(directoryRoadEdges.get(toInsert.getKey()));
+					if(auxEdge.getOrigin().getId()==29 && auxEdge.getEnd().getId()==30) {
+						System.out.println("sotp");
+					}
+					if(auxEdge.getOrigin().getId()==30 && auxEdge.getEnd().getId()==29) {
+						System.out.println("sotp");
+					}
 				}
 				else {
 					auxEdge=new Edge(toInsert);
@@ -812,6 +837,12 @@ public class JumpingMovement {
 				boolean isDisruptedEdge=disruptedEdge2(insert);
 				Edge auxEdge;
 				if(this.directoryRoadEdges.containsKey(insert.getKey())) {
+					if(insert.getOrigin().getId()==29 && insert.getEnd().getId()==30) {
+						System.out.println("sotp");
+					}
+					if(insert.getOrigin().getId()==30 && insert.getEnd().getId()==29) {
+						System.out.println("sotp");
+					}
 					auxEdge=new Edge(directoryRoadEdges.get(insert.getKey()));
 				}
 				else {
@@ -823,6 +854,12 @@ public class JumpingMovement {
 					auxRoute.getEdges().add(e);
 					isDisruptedEdge=disruptedEdge2(e);
 					if(this.directoryRoadEdges.containsKey(e.getKey())) {
+						if(insert.getOrigin().getId()==29 && insert.getEnd().getId()==30) {
+							System.out.println("sotp");
+						}
+						if(insert.getOrigin().getId()==30 && insert.getEnd().getId()==29) {
+							System.out.println("sotp");
+						}
 						auxEdge=new Edge(directoryRoadEdges.get(e.getKey()));
 					}
 					else {
@@ -837,12 +874,17 @@ public class JumpingMovement {
 						isDisruptedEdge=disruptedEdge2(e);
 						if(this.directoryRoadEdges.containsKey(e.getKey())) {
 							auxEdge=new Edge(directoryRoadEdges.get(e.getKey()));
+							if(auxEdge.getOrigin().getId()==29 && auxEdge.getEnd().getId()==30) {
+								System.out.println("sotp");
+							}
+							if(auxEdge.getOrigin().getId()==30 && auxEdge.getEnd().getId()==29) {
+								System.out.println("sotp");
+							}
 						}
 						else {
 							auxEdge=new Edge(e);
 						}
 						parallelrouting.updatingparallelRoute(originialEdgeRoadConnection, visitedRoadConnections,revealedDisruptedEdges,auxRoute,parallelRoute,auxEdge,isDisruptedEdge);
-
 					}
 				}
 			}
@@ -874,6 +916,7 @@ public class JumpingMovement {
 
 		if (Event.getDisruptedEdges().containsKey(edgeToinsert.getKey())) {
 			revealedDisruptedEdges.put(edgeToinsert.getKey(), edgeToinsert);
+			revealedDisruptedEdges.put(edgeToinsert.getInverseEdge().getKey(), edgeToinsert.getInverseEdge());
 			disruption = true;
 		}
 		return disruption;

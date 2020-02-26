@@ -95,11 +95,24 @@ public class Validation {
 		for(Node n:informationRoadNetwork.getdirectoryNode().values()) { // to pass the information to the method "findingallPathsToVictimNode"
 			nodeList.add(n);
 		}
+//
 
+		ArrayList<Edge> victimsansintermediateNetwork = new ArrayList<>();
+		for (Edge e : Event.getDisruptedRoadConnections()) {
+			Edge newEdge = new Edge(e);
+			victimsansintermediateNetwork.add(newEdge);
+		}
+///
 		for(Node victim:informationRoadNetwork.getVictimList().values()) {
 			// compute all the path
+			boolean paths=false;
 
-			boolean paths= tree.spanningTree(Event.getDisruptedRoadConnections(), 0, victim.getId());
+			Map<Integer, Node> paths1= tree.spanningTreePath(victimsansintermediateNetwork, victim.getId());
+			boolean additionalTest =tree.spanningTree(Event.getDisruptedRoadConnections(),0,victim.getId());
+			if(paths1.containsKey(0) || additionalTest) {
+				paths= true;
+			}
+
 			if(paths) { // there is one or more than one path to reach the victim
 				recheablevictims.put(victim.getId(), victim);
 			}

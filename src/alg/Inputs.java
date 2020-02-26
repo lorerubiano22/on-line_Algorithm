@@ -97,7 +97,7 @@ public class Inputs implements Serializable {
 
 	public void setTypeofNodes() {
 		for (int i = 1; i < nodes.length; i++) {
-			if (nodes[i].getProfit() > 1) {
+			if (nodes[i].getTypeNode() > 1) {
 				victimnodes.add(nodes[i]);
 			} else {
 				intermediatenodes.add(nodes[i]);

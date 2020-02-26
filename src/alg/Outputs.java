@@ -161,7 +161,7 @@ public class Outputs {
 			double alpha = 0;
 			if (this.Jumping_Strategy.getJump_Sol() != null) {
 				if (this.Jumping_Strategy.getaTest().getOptcriterion() == 1001) {
-					alpha = this.Jumping_Strategy.getaTest().getOptcriterion();
+					alpha = this.Jumping_Strategy.getaTest().getpercentageDistance();
 				}
 				String file_name = new String(this.Jumping_Strategy.getaTest().getInstanceName() + "_SOLUTION_"
 						+ "_p(disruption)_" + this.Jumping_Strategy.getaTest().getpercentangeDisruption() + "_seed_"
@@ -232,7 +232,7 @@ public class Outputs {
 			double alpha = 0;
 			if (this.Back_Strategy.getBack_Sol() != null) {
 				if (this.Back_Strategy.getaTest().getOptcriterion() == 1001) {
-					alpha = this.Back_Strategy.getaTest().getOptcriterion();
+					alpha = this.Back_Strategy.getaTest().getpercentageDistance();
 				}
 				String file_name = new String(this.Back_Strategy.getaTest().getInstanceName() + "_SOLUTION_"
 						+ "_p(disruption)_" + this.Back_Strategy.getaTest().getpercentangeDisruption() + "_seed_"
