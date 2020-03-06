@@ -16,7 +16,7 @@ public class Edge implements Serializable {
 	private double distanceRoad ; // edge costs (travel distance)
 	private Edge inverseEdge = null; // edge with inverse direction
 	private double nodesImportance;
-	private LinkedList<Edge> roadInflexion;
+	private LinkedList<Edge> roadInflexionEdge;
 	private LinkedList<Node> roadInflexionNode;
 	public double connectivity = 0.0;
 	public double weight = 0.0;
@@ -43,15 +43,12 @@ public class Edge implements Serializable {
 		this.weight = e.weight;
 		this.distanceEuclidean = e.distanceEuclidean;
 		this.inverseEdge = e.inverseEdge;
-		if(e.disruptionIndex!=-1) {
+		if(e.getInflexionEdge()!=null) {
+		//if(e.disruptionIndex!=-1) {
 		this.disruptionIndex=e.disruptionIndex;
-		if(e.getOrigin().getId()==29 && e.getOrigin().getId()==30) {
-			System.out.println("sotp");
+		this.setInflextionNodes(e.getInflexionEdge());
+
 		}
-		if(e.getInflexionEdge()==null) {
-			System.out.println("sotp");
-		}
-		this.setInflextionNodes(e.getInflexionEdge()); }
 	}
 
 	/* SET METHODS */
@@ -146,7 +143,7 @@ public class Edge implements Serializable {
 	}
 
 	public LinkedList<Edge> getInflexionEdge() {
-		return roadInflexion;
+		return roadInflexionEdge;
 	}
 
 	public LinkedList<Node> getroadInflexionNode() {
@@ -267,10 +264,10 @@ public class Edge implements Serializable {
 	}
 
 	public void setInflextionNodes(LinkedList<Edge> inflexionsEdge) {
-		roadInflexion = new LinkedList<Edge>();
+		roadInflexionEdge = new LinkedList<Edge>();
 		roadInflexionNode = new LinkedList<Node>();
 		for (int i = 0; i < inflexionsEdge.size(); i++) {
-			roadInflexion.add(new Edge(inflexionsEdge.get(i)));
+			roadInflexionEdge.add(new Edge(inflexionsEdge.get(i)));
 			roadInflexionNode.add(inflexionsEdge.get(i).end);
 		}
 		System.out.println("done");

@@ -44,12 +44,13 @@ public class Node implements Comparable<Node> {
 		this.typeofNode = n.typeofNode;
 		Adjedges = new ArrayList<>();
 		for (Edge e : n.getAdjEdgesList()) {
+			//1. Coping the list of adjacent edges
 			Edge newEdge = new Edge(e);
-			newEdge.setOrigin(new Node(e.getOrigin().getId(), e.getOrigin().getX(), e.getOrigin().getY(),
-					e.getOrigin().getTypeNode()));
+			newEdge.setOrigin(new Node(e.getOrigin().getId(), e.getOrigin().getX(), e.getOrigin().getY(),e.getOrigin().getTypeNode()));
 			newEdge.setEnd(new Node(e.getEnd().getId(), e.getEnd().getX(), e.getEnd().getY(), e.getEnd().getTypeNode()));
-
 			this.Adjedges.add(newEdge);
+			//2. Coping the list of inflection elements
+			newEdge.setInflextionNodes(e.getInflexionEdge());// setting the inflection edges
 		}
 		this.connection = n.connection;
 		this.importance = n.importance;

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Random;
 
 public class FindingPath {
 	// solution
@@ -13,6 +14,13 @@ public class FindingPath {
 
 		public boolean spanningTree(ArrayList<Edge> Network, int origin, int victima) {
 		boolean path = false;
+
+		Map<Integer, Node> listNodes= new HashMap<>();
+		for(Edge e:Network) {
+			listNodes.put(e.getOrigin().getId(), new Node(e.getOrigin()));
+			listNodes.put(e.getEnd().getId(), new Node(e.getEnd()));
+		}
+		HashMap<String,Edge> copyEdgesNetwork = new HashMap<>();
 		LinkedList<Edge> copyAerialNetwork = new LinkedList<Edge>();
 		HashMap<Integer, Node> edgesList = new HashMap<Integer, Node>();
 		int max = 0;
@@ -20,8 +28,29 @@ public class FindingPath {
 			if (max < Math.max(e.getOrigin().getId(), e.getEnd().getId())) {
 				max = Math.max(e.getOrigin().getId(), e.getEnd().getId());
 			}
-			copyAerialNetwork.add(e);
+			copyEdgesNetwork.put(e.getKey(), e);
+		}
 
+		// setting adjacent edges
+
+				Map<Integer,ArrayList<Edge>> adj= new HashMap<>();
+
+				for(Node n:listNodes.values()) {
+					ArrayList<Edge> ed= new ArrayList<>();
+					for(Node nd:listNodes.values()) {
+						String key=n.getId()+","+nd.getId();
+						if(copyEdgesNetwork.containsKey(key)) {
+						Edge e=copyEdgesNetwork.get(key);
+						ed.add(e);}
+					}
+					adj.put(n.getId(), ed);
+				}
+
+
+
+		for (Edge e : copyEdgesNetwork.values()) {
+			Edge ed= new Edge(listNodes.get(e.getOrigin().getId()),listNodes.get(e.getEnd().getId()));
+			copyAerialNetwork.add(ed);
 		}
 		int maxIndex = max + 1;
 		copyAerialNetwork.sort(Edge.minDistance);
@@ -68,7 +97,9 @@ public class FindingPath {
 		for (i = 0; i < result.length; i++) {
 			if (result[i] != null) {
 				connectedEdges.put(result[i].getKey(), result[i]);
-				connectedEdges.put(result[i].getInverseEdge().getKey(), result[i].getInverseEdge());
+				String key=result[i].getEnd().getId()+","+result[i].getOrigin().getId();
+				Edge ed= new Edge(result[i].getEnd(),result[i].getOrigin());
+				connectedEdges.put(key, ed);
 				Nodes.put(result[i].getOrigin().getId(), result[i].getOrigin());
 				Nodes.put(result[i].getEnd().getId(), result[i].getEnd());
 				// if(this.connectedNodestoRevealedRoadNetwork.containsKey(result[i].getOrigin().getId())
@@ -98,7 +129,7 @@ public class FindingPath {
 				iter++;
 
 				if (n != null) {
-					for (Edge ed : n.getAdjEdgesList()) {
+					for (Edge ed : adj.get(n.getId())) {
 						if (connectedEdges.containsKey(ed.getKey()) && !tree.containsKey(ed.getKey())) {
 							tree.put(ed.getKey(), ed);
 							treeNodes.put(ed.getOrigin().getId(), ed.getOrigin());
@@ -139,20 +170,49 @@ public class FindingPath {
 
 
 
-	public Map<Integer, Node> spanningTreePath(ArrayList<Edge> Network, int origin) {
-			LinkedList<Edge> copyAerialNetwork = new LinkedList<Edge>();
+	public Map<Integer, Node> spanningTreePath(Test test, ArrayList<Edge> nt, int origin) {
+
+		LinkedList<Edge> copyAerialNetwork = new LinkedList<Edge>();
 		HashMap<Integer, Node> edgesList = new HashMap<Integer, Node>();
+		Map<Integer, Node> listNodes= new HashMap<>();
+		for(Edge e:nt) {
+			listNodes.put(e.getOrigin().getId(), new Node(e.getOrigin()));
+			listNodes.put(e.getEnd().getId(), new Node(e.getEnd()));
+		}
+		HashMap<String,Edge> copyEdgesNetwork = new HashMap<>();
 		int max = 0;
-		for (Edge e : Network) {
+		for (Edge e : nt) {
 			if (max < Math.max(e.getOrigin().getId(), e.getEnd().getId())) {
 				max = Math.max(e.getOrigin().getId(), e.getEnd().getId());
 			}
-			copyAerialNetwork.add(e);
+			copyEdgesNetwork.put(e.getKey(), e);
+		}
+// setting adjacent edges
 
+		Map<Integer,ArrayList<Edge>> adj= new HashMap<>();
+
+		for(Node n:listNodes.values()) {
+			ArrayList<Edge> ed= new ArrayList<>();
+			for(Node nd:listNodes.values()) {
+				String key=n.getId()+","+nd.getId();
+				if(copyEdgesNetwork.containsKey(key)) {
+				Edge e=copyEdgesNetwork.get(key);
+				ed.add(e);}
+			}
+			adj.put(n.getId(), ed);
+		}
+
+
+
+
+
+		for (Edge e : copyEdgesNetwork.values()) {
+			Edge ed= new Edge(listNodes.get(e.getOrigin().getId()),listNodes.get(e.getEnd().getId()));
+			copyAerialNetwork.add(ed);
 		}
 		int maxIndex = max + 1;
 		//copyAerialNetwork.sort(Edge.minDistance);
-		Collections.shuffle(copyAerialNetwork);
+		Collections.shuffle(copyAerialNetwork,new Random(123));
 
 		Edge result[] = new Edge[copyAerialNetwork.size()]; // Tnis will store the resultant MST
 		int e = 0; // An index variable, used for result[]
@@ -169,6 +229,15 @@ public class FindingPath {
 		}
 
 		i = 0;
+
+		ArrayList<Edge> xx= new ArrayList<>();
+		for (Edge ex : nt) { // 1. network
+			Edge newEdge = new Edge(ex);
+			xx.add(newEdge);
+		}
+
+		//new DrawingNetwork(xx,test);
+
 
 		for (e = 0; e < copyAerialNetwork.size(); e++)
 		// while ( e< this.nodes.length - 1)
@@ -191,12 +260,24 @@ public class FindingPath {
 			// Else discard the next_edge
 		}
 
+		xx= new ArrayList<>();
+		for (Edge ex : nt) { // 1. network
+			Edge newEdge = new Edge(ex);
+			xx.add(newEdge);
+		}
+
+		//new DrawingNetwork(xx,test);
+
+
+
 		HashMap<String, Edge> connectedEdges = new HashMap<String, Edge>();
 		HashMap<Integer, Node> nodeInNetwork = new HashMap<Integer, Node>();
 		for (i = 0; i < result.length; i++) {
 			if (result[i] != null) {
 				connectedEdges.put(result[i].getKey(), result[i]);
-				connectedEdges.put(result[i].getInverseEdge().getKey(), result[i].getInverseEdge());
+				String key=result[i].getEnd().getId()+","+result[i].getOrigin().getId();
+				Edge ed= new Edge(result[i].getEnd(),result[i].getOrigin());
+				connectedEdges.put(key, ed);
 				nodeInNetwork.put(result[i].getOrigin().getId(), result[i].getOrigin());
 				nodeInNetwork.put(result[i].getEnd().getId(), result[i].getEnd());
 				// if(this.connectedNodestoRevealedRoadNetwork.containsKey(result[i].getOrigin().getId())
@@ -215,7 +296,7 @@ public class FindingPath {
 
 		LinkedList<Node> nodescon = new LinkedList<Node>();
 		tree = new HashMap<String, Edge>();
-	 treeNodes = new HashMap<Integer, Node>();
+	   treeNodes = new HashMap<Integer, Node>();
 		if(nodeInNetwork.containsKey(origin)) {
 		nodescon.add(new Node(nodeInNetwork.get(origin)));
 
@@ -227,7 +308,7 @@ public class FindingPath {
 			for (Node n : nodescon) { // the list nodescon is growing in each iteration
 				iter++;
 				if (n != null) {
-					for (Edge ed : n.getAdjEdgesList()) { // checking the adjacent edges which are contained in the list of connectedEdges
+					for (Edge ed : adj.get(n.getId())) { // checking the adjacent edges which are contained in the list of connectedEdges
 						if (connectedEdges.containsKey(ed.getKey()) && !tree.containsKey(ed.getKey())) {
 							tree.put(ed.getKey(), ed);
 							treeNodes.put(new Node(nodeInNetwork.get(ed.getOrigin().getId())).getId(), new Node(nodeInNetwork.get(ed.getOrigin().getId())));

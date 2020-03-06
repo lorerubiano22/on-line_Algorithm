@@ -44,6 +44,8 @@ public class UpdateRoadInformation {
 				System.out.print("stopr");
 			}
 		}
+
+
 		// TO DO
 		nodeList = new ArrayList<>();
 		directoryNodes = new HashMap<>();

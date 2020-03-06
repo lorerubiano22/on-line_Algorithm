@@ -21,7 +21,11 @@ public class Paths {
 				initAdjList();
 
 		for(Edge e:map.values()) {
-			addEdge(e.getOrigin().getId(),e.getEnd().getId());
+			Edge newEdge=new Edge(e);
+			newEdge.setOrigin(new Node(e.getOrigin().getId(), e.getOrigin().getX(), e.getOrigin().getY(),e.getOrigin().getTypeNode()));
+			newEdge.setEnd(new Node(e.getEnd().getId(), e.getEnd().getX(), e.getEnd().getY(), e.getEnd().getTypeNode()));
+
+			addEdge(newEdge.getOrigin().getId(),newEdge.getEnd().getId());
 		}
 
 		// para cada nodo victima se busca un camino

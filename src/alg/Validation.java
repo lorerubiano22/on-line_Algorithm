@@ -107,7 +107,7 @@ public class Validation {
 			// compute all the path
 			boolean paths=false;
 
-			Map<Integer, Node> paths1= tree.spanningTreePath(victimsansintermediateNetwork, victim.getId());
+			Map<Integer, Node> paths1= tree.spanningTreePath(aTest,victimsansintermediateNetwork, victim.getId());
 			boolean additionalTest =tree.spanningTree(Event.getDisruptedRoadConnections(),0,victim.getId());
 			if(paths1.containsKey(0) || additionalTest) {
 				paths= true;

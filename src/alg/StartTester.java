@@ -13,7 +13,7 @@ public class StartTester {
 	final static String sufixFileNodes = ".txt";
 	final static String sufixFileVehicules = "_input_vehicles.txt";
 	final static String sufixFileOutput = "_outputs.txt";
-
+	//static DrawingNetwork dr;
 
 	// generating of files
 	static String file= "";
@@ -51,23 +51,30 @@ public class StartTester {
 			Network Network = new Network(inputs);
 			Network = Network.generateroadNetwork(aTest, inputs);// The information of the network have to be full. This
 			// knowledge is a static one
+			//validationInformationRoad(Network, aTest);
 
 			file = new String(aTest.getInstanceName() + "_Road_Network_Distances" + "_Seed"
 					+ aTest.getseed() + "_P(disruption)_" + aTest.getpercentangeDisruption() + "_" + "Disruptions.txt");
 			PrintingFiles.printingNetworkElements(file, Network.getEdgeConnections(), false);
 
 			//DrawingNetwork
-			DrawingNetwork networkPicture= new DrawingNetwork(Network.getEdgeConnections(),aTest);
-
-		//	networkPicture.depictingNetwork(Network.getEdgeConnections());
+			//DrawingNetwork networkPicture= new DrawingNetwork(Network.getEdgeConnections(),aTest);
+			DrawingNetwork2.drawingNetwork(Network.getEdgeConnections(),aTest);
+			//	networkPicture.depictingNetwork(Network.getEdgeConnections());
 			Disaster Event = new Disaster(Network, aTest); // set the disaster conditions and the disrupted road
 			UpdateRoadInformation revealedRoadInformation = new UpdateRoadInformation(Network);
+			/// validation if the nodes contain all information of the network
+			new DrawingNetwork(revealedRoadInformation.getedgeRoadConnection(),aTest);
+			//dr=new DrawingNetwork(aTest);
+			//dr.drawingNetwork(revealedRoadInformation.getedgeRoadConnection());
 			Assessment labelledInformation =new Assessment(revealedRoadInformation, inputs, aTest);// computing labelled network for the initial network
+			// validation of the information
+			//validationInformationRoad(labelledInformation, aTest);
 			file =aTest.getInstanceName()+"_Initial_"+"_Seed_"+aTest.getseed()+"_alpha_"+aTest.getpercentageDistance()+"_"+"ValidateConnectivityWeight.txt";
-						PrintingFiles.printingRoadInformation(file,labelledInformation.getRevealedDisruptedRoadConnections());
+			PrintingFiles.printingRoadInformation(file,labelledInformation.getRevealedDisruptedRoadConnections());
 			PrintingFiles.printingDisruptedRoadNetworkSimulation(Event, inputs, aTest);
 			InsertionProcedure insertion=new InsertionProcedure(aTest, Event, revealedRoadInformation, inputs);
-			new Validation(aTest,inputs,insertion,Network,Event,labelledInformation);
+			//new Validation(aTest,inputs,insertion,Network,Event,labelledInformation);
 
 		}
 
@@ -80,7 +87,89 @@ public class StartTester {
 	}
 
 
+	// To Remove
 
-
+//	private static void validationInformationRoad(Network network, Test aTest) {
+//		// 1. Select the list of nodes
+//		ArrayList<Edge> inflexionEdges= new ArrayList<>();
+//		for(Node n:network.getNodes()) { //printing the list of adj edges
+//			// 1. imprimir los elementos contenidos en los nodos
+//			System.out.println("_total_Adj_"+n.getAdjEdgesList().size());
+//			for(Edge e:n.getAdjEdgesList()) { // selecting the connection
+//
+//				for(Edge ed:e.getInflexionEdge()) {// selecting the road network
+//					inflexionEdges.add(ed);
+//				}
+//				new DrawingNetwork(inflexionEdges,aTest);
+//			}
+//
+//			System.out.println(n.getId());
+//		}
+//
+//
+//		// // information of the road network
+//		inflexionEdges.clear();
+//		for(Edge e: network.getEdgeConnections()) {
+//			if(e.getOrigin().getId()<e.getEnd().getId()) {
+//
+//				for(Edge ed:e.getInflexionEdge()) {// selecting the road network
+//					inflexionEdges.add(ed);
+//				}
+//			}
+//		}
+//		new DrawingNetwork(inflexionEdges,aTest);
+//
+//
+//	}
+//
+//
+//	// To Remove
+//	private static void validationInformationRoad(Assessment labelledInformation, Test aTest) {
+//		// 1. Select the list of nodes
+//		//ArrayList<Edge> inflexionEdges= new ArrayList<>();
+//		ArrayList<Edge> inflexionEdges= new ArrayList<>();
+//		for(Node n:labelledInformation.getNodeList()) { //printing the list of adj edges
+//			// 1. imprimir los elementos contenidos en los nodos
+//			if(n.getId()==14) {
+//				System.out.println("Stop");
+//			}
+//			inflexionEdges.clear();
+//			System.out.println("_labelled_total_Adj_"+n.getAdjEdgesList().size());
+//			for(Edge e:n.getAdjEdgesList()) { // selecting the connection
+//				for(Edge ed:e.getInflexionEdge()) {// selecting the road network
+//					inflexionEdges.add(ed);
+//				}
+//			}
+//
+//			System.out.println(n.getId());
+//			new DrawingNetwork(inflexionEdges,aTest);
+//		}
+//		//new DrawingNetwork(inflexionEdges,aTest);
+//
+//		// information of the road network
+//		inflexionEdges.clear();
+//		for(Edge e: labelledInformation.getRevealedDisruptedRoadConnections().values()) {
+//			if(e.getOrigin().getId()>e.getEnd().getId()) {
+//
+//				for(Edge ed:e.getInflexionEdge()) {// selecting the road network
+//					inflexionEdges.add(ed);
+//				}
+//			}
+//		}
+//		new DrawingNetwork(inflexionEdges,aTest);
+//
+//		// // information of the road network
+//		inflexionEdges.clear();
+//		for(Edge e: labelledInformation.getEdgeRoadConnection()) {
+//			if(e.getOrigin().getId()<e.getEnd().getId()) {
+//
+//				for(Edge ed:e.getInflexionEdge()) {// selecting the road network
+//					inflexionEdges.add(ed);
+//				}
+//			}
+//		}
+//		new DrawingNetwork(inflexionEdges,aTest);
+//
+//	}
 
 }
