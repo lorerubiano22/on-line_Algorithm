@@ -182,6 +182,9 @@ public class FindingPath {
 		HashMap<String,Edge> copyEdgesNetwork = new HashMap<>();
 		int max = 0;
 		for (Edge e : nt) {
+			if(e.getOrigin().getId()==0 && e.getEnd().getId()==17) {
+				System.out.println("Stop");
+			}
 			if (max < Math.max(e.getOrigin().getId(), e.getEnd().getId())) {
 				max = Math.max(e.getOrigin().getId(), e.getEnd().getId());
 			}
@@ -207,6 +210,9 @@ public class FindingPath {
 
 
 		for (Edge e : copyEdgesNetwork.values()) {
+			if(e.getOrigin().getId()==0 && e.getEnd().getId()==17) {
+				System.out.println("Stop");
+			}
 			Edge ed= new Edge(listNodes.get(e.getOrigin().getId()),listNodes.get(e.getEnd().getId()));
 			copyAerialNetwork.add(ed);
 		}
@@ -244,6 +250,12 @@ public class FindingPath {
 		{
 			// Step 2: Pick the smallest edge. And increment
 			// the index for next iteration
+			if(copyAerialNetwork.get(e).getOrigin().getId()==0 && copyAerialNetwork.get(e).getEnd().getId()==17) {
+				System.out.println("Stop");
+			}
+			if(copyAerialNetwork.get(e).getOrigin().getId()==17 && copyAerialNetwork.get(e).getEnd().getId()==0) {
+				System.out.println("Stop");
+			}
 			Edge next_edge = copyAerialNetwork.get(e);
 
 			int x = -1;
@@ -275,6 +287,12 @@ public class FindingPath {
 		for (i = 0; i < result.length; i++) {
 			if (result[i] != null) {
 				connectedEdges.put(result[i].getKey(), result[i]);
+				if(result[i].getOrigin().getId()==0 && result[i].getEnd().getId()==17) {
+					System.out.println("Stop");
+				}
+				if(result[i].getOrigin().getId()==17 && result[i].getEnd().getId()==0) {
+					System.out.println("Stop");
+				}
 				String key=result[i].getEnd().getId()+","+result[i].getOrigin().getId();
 				Edge ed= new Edge(result[i].getEnd(),result[i].getOrigin());
 				connectedEdges.put(key, ed);

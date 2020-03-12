@@ -135,6 +135,13 @@ public class JumpingMovement {
 				updateDisruption(edgeToinsert, reveledNetwork, inputs);
 				if (!checkedAccesibiliyVictims.equals(VictimList)) {
 					redirectRoute(edgeToinsert, reveledNetwork, inputs);
+					ArrayList<Edge> xx= new ArrayList<>();
+					for (Edge e : revealedDisruptedRoadConnections.values()) { // 1. network
+						Edge newEdge = new Edge(e);
+						xx.add(newEdge);
+					}
+
+			new DrawingNetwork(xx,aTest);
 				} else {
 					if (auxRoute.getEdges().get(auxRoute.getEdges().size() - 1).getEnd().getId() != 0) {
 						String key = auxRoute.getEdges().get(auxRoute.getEdges().size() - 1).getEnd().getId() + "," + 0;
@@ -145,6 +152,13 @@ public class JumpingMovement {
 			}
 			updatingReveleadedNetwork(edgeToinsert);
 			cleaningProcess(edgeToinsert,reveledNetwork, inputs);
+			ArrayList<Edge> xx= new ArrayList<>();
+			for (Edge e : revealedDisruptedRoadConnections.values()) { // 1. network
+				Edge newEdge = new Edge(e);
+				xx.add(newEdge);
+			}
+
+	new DrawingNetwork(xx,aTest);
 			//updatingReveleadedNetwork(edgeToinsert, auxRoute);
 			informationSOFAR.printingInformationsofar(this.aTest,totalDetectedDisruption,this.visitedRoadConnections,originialEdgeRoadConnection,revealedDisruptedEdges,checkedAccesibiliyVictims,connectedNodestoRevealedRoadNetwork,"Jumping");
 			if (checkedAccesibiliyVictims.size() == VictimList.size()

@@ -285,59 +285,59 @@ public class Network {
 
 			/// sensitivity
 			//
-			key = 8 + "," + 0;
-			e3 = this.directoryAerialEdgesNetwork.get(key);
-			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-
-			key = 17 + "," + 0;
-			e3 = this.directoryAerialEdgesNetwork.get(key);
-			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-			//
-			//
-			//
-			/// sensitivity
-			key = 14 + "," + 3;
-			e3 = this.directoryAerialEdgesNetwork.get(key);
-			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-			//
-			key = 14 + "," + 4;
-			e3 = this.directoryAerialEdgesNetwork.get(key);
-			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-			//
-			key = 14 + "," + 17;
-			e3 = this.directoryAerialEdgesNetwork.get(key);
-			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-
-			key = 14 + "," + 27;
-			e3 = this.directoryAerialEdgesNetwork.get(key);
-			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-			//
-			key = 25 + "," + 24;
-			e3 = this.directoryAerialEdgesNetwork.get(key);
-			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-			//
-			key = 8 + "," + 11;
-			e3 = this.directoryAerialEdgesNetwork.get(key);
-			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-			//
-			//
-			key = 17 + "," + 5;
-			e3 = this.directoryAerialEdgesNetwork.get(key);
-			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-			//
-			key = 8 + "," + 18;
-			e3 = this.directoryAerialEdgesNetwork.get(key);
-			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+//			key = 8 + "," + 0;
+//			e3 = this.directoryAerialEdgesNetwork.get(key);
+//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+//
+//			key = 17 + "," + 0;
+//			e3 = this.directoryAerialEdgesNetwork.get(key);
+//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+//			//
+//			//
+//			//
+//			/// sensitivity
+//			key = 14 + "," + 3;
+//			e3 = this.directoryAerialEdgesNetwork.get(key);
+//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+//			//
+//			key = 14 + "," + 4;
+//			e3 = this.directoryAerialEdgesNetwork.get(key);
+//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+//			//
+//			key = 14 + "," + 17;
+//			e3 = this.directoryAerialEdgesNetwork.get(key);
+//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+//
+//			key = 14 + "," + 27;
+//			e3 = this.directoryAerialEdgesNetwork.get(key);
+//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+//			//
+//			key = 25 + "," + 24;
+//			e3 = this.directoryAerialEdgesNetwork.get(key);
+//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+//			//
+//			key = 8 + "," + 11;
+//			e3 = this.directoryAerialEdgesNetwork.get(key);
+//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+//			//
+//			//
+//			key = 17 + "," + 5;
+//			e3 = this.directoryAerialEdgesNetwork.get(key);
+//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+//			//
+//			key = 8 + "," + 18;
+//			e3 = this.directoryAerialEdgesNetwork.get(key);
+//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
 
 
 		}
