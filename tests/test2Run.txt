@@ -1,2 +1,2 @@
 # Instance	   Movement	Alpha	P(disruption)	OptCriterion	Seed	DR	P(victims) SS(DMC)	SS(victims)	SS(roadCrossings)
-p1.2.b	j	0.5	0.3	1001	93805	100000000	0.25	1  1	0.5
+p7.2.a	j	0.5	0.3	1001	93805	100000000	0.25	1  1	0.5

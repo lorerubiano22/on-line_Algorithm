@@ -25,7 +25,7 @@ public class Network {
 	private double maxDistance=Double.MIN_VALUE;
 	private double minDistance=Double.MAX_VALUE;
 	private double averageDistance=0;
-
+	private double totalDistance=0;
 	private double averageAdjEdges=0;
 	private double cycles=0;
 
@@ -45,12 +45,15 @@ public class Network {
 		generatesRoadConnections(t);// creating the road connection networks
 		//setAdjEdges(); // it set the adjacent edges for each node
 		genarateRoads(t); // generating break points
-		//new DrawingNetwork(edgeRoadNetwork,t);
+		new DrawingNetwork(edgeRoadNetwork,t);
 		setAdjEdges(); // it set the adjacent edges for each node
 		//new DrawingNetwork(edgeRoadNetwork,t);
 		generatingVictimNodes(t, inp); // set the victim nodes
+
+
 		//setAdjEdges(); // it set the adjacent edges for each node
 		statisticsInstance(t, inp); // set the victim nodes
+		new DrawingNetwork(edgeRoadNetwork,t);
 		return this;
 	}
 
@@ -62,7 +65,6 @@ public class Network {
 		maxDistance();
 		averageAdjEdges();
 		totalCycles();
-
 		printingInformation(file);
 
 	}
@@ -77,6 +79,7 @@ public class Network {
 			bw.println("_Total_victims_"+this.VictimList.size());
 			bw.println("_max_Distance_From_Depot_"+maxDistanceFromDepot);
 			bw.println("_min_Distance_From_Depot_"+minDistanceFromDepot);
+			bw.println("_total_Distance_"+totalDistance);
 			bw.println("_max_Distance_"+maxDistance);
 			bw.println("_minDistance_"+minDistance);
 			bw.println("_averageDistance_"+averageDistance);
@@ -112,6 +115,7 @@ public class Network {
 	private void maxDistance() {
 		double dist=0;
 		for(Edge e:this.edgeRoadConnections) {
+			totalDistance+=e.getDistance();
 			if(e.getEnd().getId()==0 || e.getOrigin().getId()==0 ) {
 				if(e.getDistance()>maxDistanceFromDepot) {
 					maxDistanceFromDepot=e.getDistance();
@@ -231,7 +235,7 @@ public class Network {
 			spanningTree.put(e.getKey(), e);
 		}
 
-		//new DrawingNetwork(edgeRoadConnections,inp);
+		new DrawingNetwork(edgeRoadConnections,inp);
 
 		for (int i = 0; i < this.nodes.length - 1; i++) { // setting the road network
 			for (int j = i + 1; j < this.nodes.length - 1; j++) {
@@ -282,69 +286,29 @@ public class Network {
 			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
 
+			key = 8 + "," + 0;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
 
-			/// sensitivity
-			//
-//			key = 8 + "," + 0;
-//			e3 = this.directoryAerialEdgesNetwork.get(key);
-//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-//
-//			key = 17 + "," + 0;
-//			e3 = this.directoryAerialEdgesNetwork.get(key);
-//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-//			//
-//			//
-//			//
-//			/// sensitivity
-//			key = 14 + "," + 3;
-//			e3 = this.directoryAerialEdgesNetwork.get(key);
-//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-//			//
-//			key = 14 + "," + 4;
-//			e3 = this.directoryAerialEdgesNetwork.get(key);
-//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-//			//
-//			key = 14 + "," + 17;
-//			e3 = this.directoryAerialEdgesNetwork.get(key);
-//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-//
-//			key = 14 + "," + 27;
-//			e3 = this.directoryAerialEdgesNetwork.get(key);
-//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-//			//
-//			key = 25 + "," + 24;
-//			e3 = this.directoryAerialEdgesNetwork.get(key);
-//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-//			//
-//			key = 8 + "," + 11;
-//			e3 = this.directoryAerialEdgesNetwork.get(key);
-//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-//			//
-//			//
-//			key = 17 + "," + 5;
-//			e3 = this.directoryAerialEdgesNetwork.get(key);
-//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-//			//
-//			key = 8 + "," + 18;
-//			e3 = this.directoryAerialEdgesNetwork.get(key);
-//			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-//			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-
+			key = 17 + "," + 0;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
 
 		}
 
 		if (inp.getInstanceName().equals("p2.2.a")) {
-			String key = 19 + "," + 18;
+
+
+			String key = 10 + "," + 0;
 			Edge e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+///
+			key = 19 + "," + 18;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
 			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
 
@@ -370,10 +334,30 @@ public class Network {
 		}
 
 		if (inp.getInstanceName().equals("p3.2.a")) {
-			String key = 20 + "," + 16;
+			String key = 30 + "," + 14;
 			Edge e3 = this.directoryAerialEdgesNetwork.get(key);
 			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+			key = 17 + "," + 8;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+			key = 29 + "," + 0;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+			//
+
+			key = 20 + "," + 16;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
 
 			key = 16 + "," + 15;
 			e3 = this.directoryAerialEdgesNetwork.get(key);
@@ -402,8 +386,95 @@ public class Network {
 		}
 
 		if (inp.getInstanceName().equals("p4.2.a")) {
-			String key = 33 + "," + 35;
+
+			String key = 52 + "," + 34;
 			Edge e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+
+			key = 97 + "," + 4;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+			key = 87 + "," + 52;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+			key = 52 + "," + 4;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+			key = 17 + "," + 4;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+			key = 14 + "," + 0;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+			key = 35 + "," + 21;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+			key = 52 + "," + 6;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+			key = 59 + "," + 10;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+			key = 57 + "," + 0;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+			key = 23 + "," + 0;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+			key = 41 + "," + 40;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+			key = 89 + "," + 24;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+			key = 72 + "," + 54;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+			key = 93 + "," + 59;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+			///
+
+			key = 33 + "," + 35;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
 			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
 
@@ -462,84 +533,177 @@ public class Network {
 			int range6 = 48;
 			int range7 = 56;
 			int range8 = 64;
-			for (int ii = 1; ii <= range1; ii++) {
-				for (int ij = ii + 1; ij <= range1; ij++) {
+			edgeRoadConnections.clear(); // creating road connections
+			for (Edge e : directoryRoadEdgesNetwork.values()) {
+				this.edgeRoadConnections.add(e);
+			}
+
+			new DrawingNetwork(edgeRoadConnections,inp);
+			int ii = range1+1;
+						for (int ij = ii + 1; ij <= range2; ij++) {
 					String key = ii + "," + ij;
 					Edge e3 = this.directoryAerialEdgesNetwork.get(key);
 					directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 					directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+					ii++;
 				}
+
+
+			edgeRoadConnections.clear(); // creating road connections
+			for (Edge e : directoryRoadEdgesNetwork.values()) {
+				this.edgeRoadConnections.add(e);
 			}
 
-			for (int ii = range1 + 1; ii <= range2; ii++) {
-				for (int ij = ii + 1; ij <= range2; ij++) {
-					String key = ii + "," + ij;
-					Edge e3 = this.directoryAerialEdgesNetwork.get(key);
-					directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-					directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-				}
-			}
+			new DrawingNetwork(edgeRoadConnections,inp);
 
-			for (int ii = range2 + 1; ii <= range3; ii++) {
+			ii = range2+1;
+
 				for (int ij = ii + 1; ij <= range3; ij++) {
 
 					String key = ii + "," + ij;
 					Edge e3 = this.directoryAerialEdgesNetwork.get(key);
 					directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 					directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+					ii++;
 				}
+
+			edgeRoadConnections.clear(); // creating road connections
+			for (Edge e : directoryRoadEdgesNetwork.values()) {
+				this.edgeRoadConnections.add(e);
 			}
 
-			for (int ii = range3 + 1; ii <= range4; ii++) {
+			new DrawingNetwork(edgeRoadConnections,inp);
+
+			ii = range3+1;
+
 				for (int ij = ii + 1; ij <= range4; ij++) {
 					String key = ii + "," + ij;
 					Edge e3 = this.directoryAerialEdgesNetwork.get(key);
 					directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 					directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+					ii++;
 				}
+
+
+			edgeRoadConnections.clear(); // creating road connections
+			for (Edge e : directoryRoadEdgesNetwork.values()) {
+				this.edgeRoadConnections.add(e);
 			}
 
-			for (int ii = range4 + 1; ii <= range5; ii++) {
+			new DrawingNetwork(edgeRoadConnections,inp);
+
+					ii = range4+1;
 				for (int ij = ii + 1; ij <= range5; ij++) {
 					String key = ii + "," + ij;
 					Edge e3 = this.directoryAerialEdgesNetwork.get(key);
 					directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 					directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+					ii++;
 				}
+
+			edgeRoadConnections.clear(); // creating road connections
+			for (Edge e : directoryRoadEdgesNetwork.values()) {
+				this.edgeRoadConnections.add(e);
 			}
 
-			for (int ii = range5 + 1; ii <= range6; ii++) {
+			new DrawingNetwork(edgeRoadConnections,inp);
+
+					ii = range5+1;
 				for (int ij = ii + 1; ij <= range6; ij++) {
 					String key = ii + "," + ij;
 					Edge e3 = this.directoryAerialEdgesNetwork.get(key);
 					directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 					directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+					ii++;
 				}
+
+			edgeRoadConnections.clear(); // creating road connections
+			for (Edge e : directoryRoadEdgesNetwork.values()) {
+				this.edgeRoadConnections.add(e);
 			}
 
-			for (int ii = range6 + 1; ii <= range7; ii++) {
+			new DrawingNetwork(edgeRoadConnections,inp);
+
+
+
+			ii = range6+1;
 				for (int ij = ii + 1; ij <= range7; ij++) {
 					String key = ii + "," + ij;
 					Edge e3 = this.directoryAerialEdgesNetwork.get(key);
 					directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 					directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+					ii++;
 				}
+
+
+			edgeRoadConnections.clear(); // creating road connections
+			for (Edge e : directoryRoadEdgesNetwork.values()) {
+				this.edgeRoadConnections.add(e);
 			}
 
-			for (int ii = range7 + 1; ii <= range8; ii++) {
+			new DrawingNetwork(edgeRoadConnections,inp);
+
+			ii = range7+1;
 				for (int ij = ii + 1; ij <= range8; ij++) {
 					String key = ii + "," + ij;
 					Edge e3 = this.directoryAerialEdgesNetwork.get(key);
 					directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 					directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+					ii++;
 				}
+
+
+
+			edgeRoadConnections.clear(); // creating road connections
+			for (Edge e : directoryRoadEdgesNetwork.values()) {
+				this.edgeRoadConnections.add(e);
 			}
+
+			new DrawingNetwork(edgeRoadConnections,inp);
 
 		}
 
 		if (inp.getInstanceName().equals("p6.2.a")) {
-			String key = 5 + "," + 8;
+			String key = 35 + "," + 34;
 			Edge e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+			key = 42 + "," + 41;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+			key = 48 + "," + 47;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+			key = 53 + "," + 52;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+			key = 57 + "," + 56;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+			key = 60 + "," + 59;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+			key = 62 + "," + 61;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+			//
+			key = 5 + "," + 8;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
 			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
 
@@ -615,17 +779,51 @@ public class Network {
 			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
 
+			key = 43 + "," + 19;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+
+			key = 55 + "," + 0;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+			key = 82 + "," + 16;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+
+			key = 97 + "," + 60;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+
+			key = 69 + "," + 40;
+			e3 = this.directoryAerialEdgesNetwork.get(key);
+			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+
+
+
 			key = 35 + "," + 12;
 			e3 = this.directoryAerialEdgesNetwork.get(key);
 			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
 
-			key = 45 + "," + 44;
+			key = 44 + "," + 72;
 			e3 = this.directoryAerialEdgesNetwork.get(key);
 			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
 
-			key = 32 + "," + 45;
+			key = 45 + "," + 32;
 			e3 = this.directoryAerialEdgesNetwork.get(key);
 			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
@@ -711,13 +909,16 @@ public class Network {
 			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
 		}
-				//
+		//
 		edgeRoadConnections.clear(); // creating road connections
 		for (Edge e : directoryRoadEdgesNetwork.values()) {
+			if(e.getOrigin().getId()==45 && e.getEnd().getId()==44) {
+				System.out.println("stop");
+			}
 			this.edgeRoadConnections.add(e);
 		}
 
-		//new DrawingNetwork(edgeRoadConnections,inp);
+		new DrawingNetwork(edgeRoadConnections,inp);
 		System.out.println(edgeRoadConnections.size());
 	}
 
@@ -953,6 +1154,12 @@ public class Network {
 	private void genarateRoads(Test aTest) {
 		Map<String, Edge> generatedRoadInflectoin = new HashMap<String, Edge>();
 		for (Edge e : edgeRoadConnections) {
+			if(e.getOrigin().getId()== 9 && e.getEnd().getId()== 1 ) {
+				System.out.println("stop");
+			}
+			if(e.getOrigin().getId()== 1 && e.getEnd().getId()== 9 ) {
+				System.out.println("stop");
+			}
 			if (e.getOrigin().getX() <= e.getEnd().getX()) { // taking just the diagonal matrix
 				if(!generatedRoadInflectoin.containsKey(e.getKey())) {
 					generatedRoadInflectoin.put(e.getKey(), e);// storing edges evaluated
@@ -989,7 +1196,7 @@ public class Network {
 						float m = (nodesEdge.getLast().getY() - nodesEdge.getFirst().getY())
 								/ (nodesEdge.getLast().getX() - nodesEdge.getFirst().getX());// se identifica si la
 						// negative slope
-						if(m!=Float.POSITIVE_INFINITY && m!=Float.NEGATIVE_INFINITY) { // the edge has a slope
+						if(m!=Float.POSITIVE_INFINITY && m!=Float.NEGATIVE_INFINITY && m!=0) { // the edge has a slope
 							computeCoordinatesInflection(inflexionsEdge,m,deltaX,deltaY,e);
 						}
 						//
@@ -1088,7 +1295,16 @@ public class Network {
 			e.setInverse(directoryRoadEdgesNetwork.get(e.getInverseEdge().getKey()));
 		}
 		for (Edge e : directoryRoadEdgesNetwork.values()) { // setting the information of inverse edges in the network
-			e.setInverse(directoryRoadEdgesNetwork.get(e.getInverseEdge().getKey()));
+
+			if(e.getOrigin().getId()==45 && e.getEnd().getId()==44) {
+				System.out.println("stop");
+			}
+
+			if(e.getOrigin().getId()==44 && e.getEnd().getId()==45) {
+				System.out.println("stop");
+			}
+
+				e.setInverse(directoryRoadEdgesNetwork.get(e.getInverseEdge().getKey()));
 		}
 
 	}
