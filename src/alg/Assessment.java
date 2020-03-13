@@ -12,10 +12,11 @@ public class Assessment {
 
 
 	private final ArrayList<Edge> edgeRoadConnection;
-	private double averageConnectivity = 0;
-	private double maxConnectivityValue = 0; // maximum connectivity value of all network
-	private double maxDistance = Double.MIN_VALUE; // maximum connectivity value of all network
-	private double minDistance = Double.MAX_VALUE; // minimum connectivity value of all network
+	private double maxConnectivity = Double.MIN_VALUE;
+	private double maxTime = Double.MIN_VALUE;// maximum Road time value of all network
+	private double minTime = Double.MAX_VALUE; // minimum Road time value of all network
+	private double maxDistance = Double.MIN_VALUE; // maximum Road distance value of all network
+	private double minDistance = Double.MAX_VALUE; // minimum Road distance value of all network
 	private final ArrayList<Node> nodeList;
 	private HashMap<Integer, Node> removedNode = new HashMap<>();
 	private HashMap<String, Edge> removedEdge = new HashMap<>();
@@ -91,7 +92,28 @@ public class Assessment {
 		/* Testing if all nodes are connected with the network */
 		generatingNodeAverageConnectivity();
 		connectivityEdges();
+		setMaxDistanceConnectivity();
 		weightEdges(a);
+	}
+
+	private void setMaxDistanceConnectivity() {
+		for (Edge e : this.revealedDisruptedRoadConnections.values()) { // set the importance for each edge
+			if (e.getConnectivity() > maxConnectivity) { // max connectivity
+				maxConnectivity = e.getConnectivity();
+			}
+			if (e.getDistanceRoad() > this.maxDistance) { // max distance
+				this.maxDistance = e.getDistanceRoad() ;
+			}
+			if (e.getDistanceRoad() < this.minDistance) { // min distance
+				this.minDistance = e.getDistanceRoad() ;
+			}
+			if(e.getTimeRoad()>maxTime) {
+				maxTime=e.getTimeRoad();
+			}
+			if(e.getTimeRoad()<minTime) {
+				minTime=e.getTimeRoad();
+			}
+		}
 	}
 
 	private void removingPreviousConnectivityValues() {
@@ -103,27 +125,8 @@ public class Assessment {
 
 	private void weightEdges(float a) {
 		for (Edge e : this.revealedDisruptedRoadConnections.values()) { // set the importance for each edge
-			double maxAdjConnectivity = e.getConnectivity();
-			double minAdjTime = e.getTime();
-			double maxAdjTime = e.getTime();
-			for (Edge adjEdge : directoryNodes.get(e.getOrigin().getId()).getAdjEdgesList()) {
-				if (this.directoryEdges.containsKey(adjEdge.getKey())) {
-					if (adjEdge.getConnectivity() > maxAdjConnectivity) {
-						maxAdjConnectivity = adjEdge.getConnectivity();
-					}
-					if (adjEdge.getTime() < minAdjTime) {
-						minAdjTime = adjEdge.getTime();
-					}
-					if (adjEdge.getTime() > maxAdjTime) {
-						maxAdjTime = adjEdge.getTime();
-					}
-					e.maxAdjConnectivity = maxAdjConnectivity;
-					e.maxAdjTime = maxAdjTime;
-					e.minAdjTime = minAdjTime;
-				}
-			}
-			double firstPartweight = (a) * (1 - (e.getTime() / e.maxAdjTime));
-			double secondPartweight = (1 - a) * (e.getConnectivity() / maxAdjConnectivity);
+			double firstPartweight = (a) * (1 - (e.getDistanceRoad() / maxDistance));
+			double secondPartweight = (1 - a) * (e.getConnectivity() / maxConnectivity);
 			e.setWeight(firstPartweight + secondPartweight);
 		}
 	}
@@ -133,22 +136,7 @@ public class Assessment {
 			double connectiviyEdge = e.getOrigin().getImportance() + e.getEnd().getImportance();
 			e.setConnectivity(connectiviyEdge);
 			System.out.println("conectivityEdge_"+e.getOrigin().getId()+","+e.getEnd().getId()+"__"+e.getConnectivity());
-
 		}
-
-		for (Edge e : this.revealedDisruptedRoadConnections.values()) { // set the importance for each edge
-
-			if (e.getConnectivity() > this.maxConnectivityValue) {
-				this.maxConnectivityValue = e.getConnectivity();
-				if (e.getDistance() > this.maxDistance) {
-					this.maxDistance = e.getTime();
-				}
-				if (e.getDistance() < this.minDistance) {
-					this.minDistance = e.getTime();
-				}
-			}
-		}
-
 	}
 
 	private void generatingNodeAverageConnectivity() {
@@ -163,7 +151,6 @@ public class Assessment {
 		}
 		double averageTime = sumAllTime / this.revealedDisruptedRoadConnections.size();
 		double averageImportances = sumAllImportances / nodeList.size();
-		averageConnectivity = averageImportances / averageTime;
 		System.out.println("Average_Time_"+ averageTime );
 		System.out.println("Average_averageImportances_"+ averageImportances );
 	}

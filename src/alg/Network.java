@@ -306,7 +306,7 @@ public class Network {
 			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
 			directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
 
-///
+			///
 			key = 19 + "," + 18;
 			e3 = this.directoryAerialEdgesNetwork.get(key);
 			directoryRoadEdgesNetwork.put(e3.getKey(), e3);
@@ -540,13 +540,13 @@ public class Network {
 
 			new DrawingNetwork(edgeRoadConnections,inp);
 			int ii = range1+1;
-						for (int ij = ii + 1; ij <= range2; ij++) {
-					String key = ii + "," + ij;
-					Edge e3 = this.directoryAerialEdgesNetwork.get(key);
-					directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-					directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-					ii++;
-				}
+			for (int ij = ii + 1; ij <= range2; ij++) {
+				String key = ii + "," + ij;
+				Edge e3 = this.directoryAerialEdgesNetwork.get(key);
+				directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+				directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+				ii++;
+			}
 
 
 			edgeRoadConnections.clear(); // creating road connections
@@ -558,14 +558,14 @@ public class Network {
 
 			ii = range2+1;
 
-				for (int ij = ii + 1; ij <= range3; ij++) {
+			for (int ij = ii + 1; ij <= range3; ij++) {
 
-					String key = ii + "," + ij;
-					Edge e3 = this.directoryAerialEdgesNetwork.get(key);
-					directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-					directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-					ii++;
-				}
+				String key = ii + "," + ij;
+				Edge e3 = this.directoryAerialEdgesNetwork.get(key);
+				directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+				directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+				ii++;
+			}
 
 			edgeRoadConnections.clear(); // creating road connections
 			for (Edge e : directoryRoadEdgesNetwork.values()) {
@@ -576,14 +576,14 @@ public class Network {
 
 			ii = range3+1;
 
-				for (int ij = ii + 1; ij <= range4; ij++) {
-					String key = ii + "," + ij;
-					Edge e3 = this.directoryAerialEdgesNetwork.get(key);
-					directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-					directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+			for (int ij = ii + 1; ij <= range4; ij++) {
+				String key = ii + "," + ij;
+				Edge e3 = this.directoryAerialEdgesNetwork.get(key);
+				directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+				directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
 
-					ii++;
-				}
+				ii++;
+			}
 
 
 			edgeRoadConnections.clear(); // creating road connections
@@ -593,14 +593,14 @@ public class Network {
 
 			new DrawingNetwork(edgeRoadConnections,inp);
 
-					ii = range4+1;
-				for (int ij = ii + 1; ij <= range5; ij++) {
-					String key = ii + "," + ij;
-					Edge e3 = this.directoryAerialEdgesNetwork.get(key);
-					directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-					directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-					ii++;
-				}
+			ii = range4+1;
+			for (int ij = ii + 1; ij <= range5; ij++) {
+				String key = ii + "," + ij;
+				Edge e3 = this.directoryAerialEdgesNetwork.get(key);
+				directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+				directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+				ii++;
+			}
 
 			edgeRoadConnections.clear(); // creating road connections
 			for (Edge e : directoryRoadEdgesNetwork.values()) {
@@ -609,14 +609,14 @@ public class Network {
 
 			new DrawingNetwork(edgeRoadConnections,inp);
 
-					ii = range5+1;
-				for (int ij = ii + 1; ij <= range6; ij++) {
-					String key = ii + "," + ij;
-					Edge e3 = this.directoryAerialEdgesNetwork.get(key);
-					directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-					directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-					ii++;
-				}
+			ii = range5+1;
+			for (int ij = ii + 1; ij <= range6; ij++) {
+				String key = ii + "," + ij;
+				Edge e3 = this.directoryAerialEdgesNetwork.get(key);
+				directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+				directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+				ii++;
+			}
 
 			edgeRoadConnections.clear(); // creating road connections
 			for (Edge e : directoryRoadEdgesNetwork.values()) {
@@ -628,13 +628,13 @@ public class Network {
 
 
 			ii = range6+1;
-				for (int ij = ii + 1; ij <= range7; ij++) {
-					String key = ii + "," + ij;
-					Edge e3 = this.directoryAerialEdgesNetwork.get(key);
-					directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-					directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-					ii++;
-				}
+			for (int ij = ii + 1; ij <= range7; ij++) {
+				String key = ii + "," + ij;
+				Edge e3 = this.directoryAerialEdgesNetwork.get(key);
+				directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+				directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+				ii++;
+			}
 
 
 			edgeRoadConnections.clear(); // creating road connections
@@ -645,13 +645,13 @@ public class Network {
 			new DrawingNetwork(edgeRoadConnections,inp);
 
 			ii = range7+1;
-				for (int ij = ii + 1; ij <= range8; ij++) {
-					String key = ii + "," + ij;
-					Edge e3 = this.directoryAerialEdgesNetwork.get(key);
-					directoryRoadEdgesNetwork.put(e3.getKey(), e3);
-					directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
-					ii++;
-				}
+			for (int ij = ii + 1; ij <= range8; ij++) {
+				String key = ii + "," + ij;
+				Edge e3 = this.directoryAerialEdgesNetwork.get(key);
+				directoryRoadEdgesNetwork.put(e3.getKey(), e3);
+				directoryRoadEdgesNetwork.put(e3.getInverseEdge().getKey(), e3.getInverseEdge());
+				ii++;
+			}
 
 
 
@@ -1296,15 +1296,7 @@ public class Network {
 		}
 		for (Edge e : directoryRoadEdgesNetwork.values()) { // setting the information of inverse edges in the network
 
-			if(e.getOrigin().getId()==45 && e.getEnd().getId()==44) {
-				System.out.println("stop");
-			}
-
-			if(e.getOrigin().getId()==44 && e.getEnd().getId()==45) {
-				System.out.println("stop");
-			}
-
-				e.setInverse(directoryRoadEdgesNetwork.get(e.getInverseEdge().getKey()));
+			e.setInverse(directoryRoadEdgesNetwork.get(e.getInverseEdge().getKey()));
 		}
 
 	}
